@@ -1,0 +1,18 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore virtual environments
+venv/
+chess_env/
+
+# Ignore test files
+test_chess_app.py
+test_game.json
+
+# Ignore pip installation script
+get-pip.py
+
+# Ignore system-generated files
+.DS_Store
+Thumbs.db
