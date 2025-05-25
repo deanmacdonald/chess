@@ -1,11 +1,18 @@
 import pygame
 import random
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+print(os.getenv("XDG_RUNTIME_DIR"))
 
 # Initialize Pygame
 pygame.init()
 
 # Constants
 WIDTH, HEIGHT = 600, 600
+SQUARE_SIZE = WIDTH // 8
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
@@ -13,11 +20,11 @@ BLACK = (0, 0, 0)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Chess Game")
 
-# Load Assets (Replace with your actual piece images)
+# Load Assets (Placeholder: Replace with actual piece images)
 pawn_img = pygame.Surface((50, 50))
-pawn_img.fill(WHITE)
+pawn_img.fill((200, 200, 200))
 
-# Chess Board
+# Chess Board Initialization
 board = [[None] * 8 for _ in range(8)]
 board[6][4] = "pawn"  # Example placement (White Pawn at e2)
 
@@ -26,13 +33,15 @@ def draw_board():
     for row in range(8):
         for col in range(8):
             color = WHITE if (row + col) % 2 == 0 else BLACK
-            pygame.draw.rect(screen, color, (col * 75, row * 75, 75, 75))
-            if board[row][col] == "pawn":
-                screen.blit(pawn_img, (col * 75 + 12, row * 75 + 12))
+            pygame.draw.rect(screen, color, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
-# AI Random Move (Basic)
+            # Draw pieces
+            if board[row][col] == "pawn":
+                screen.blit(pawn_img, (col * SQUARE_SIZE + 12, row * SQUARE_SIZE + 12))
+
+# AI Random Move Function
 def ai_move():
-    moves = [(6, 4, 5, 4)]  # Example moves (pawn forward)
+    moves = [(6, 4, 5, 4), (6, 3, 5, 3)]  # Pawn moving forward
     move = random.choice(moves)
     board[move[2]][move[3]] = board[move[0]][move[1]]
     board[move[0]][move[1]] = None
