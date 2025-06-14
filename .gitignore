@@ -16,3 +16,9 @@ get-pip.py
 # Ignore system-generated files
 .DS_Store
 Thumbs.db
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
