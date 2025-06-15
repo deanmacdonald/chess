@@ -1,24 +1,25 @@
-# Ignore Python cache
-__pycache__/
-*.pyc
+# Kotlin build files
+/build/
+/out/
 
-# Ignore virtual environments
+# IntelliJ IDEA files
+.idea/
+*.iml
+
+# Gradle files
+.gradle/
+build/
+
+# Virtual environments
 venv/
-chess_env/
 
-# Ignore test files
-test_chess_app.py
-test_game.json
-
-# Ignore pip installation script
-get-pip.py
-
-# Ignore system-generated files
+# OS junk files
 .DS_Store
 Thumbs.db
 
-# Ignore Gradle project-specific cache directory
-.gradle
+# Logs
+*.log
 
-# Ignore Gradle build output directory
-build
+# Local configuration
+*.local
+*.env
