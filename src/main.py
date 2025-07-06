@@ -34,51 +34,50 @@ board = [
     ['wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR']
 ]
 
-# Load and scale all chess piece images from the corrected path
+# Load and scale chess piece images from correct asset path
 def load_images():
-    pieces = ['bK', 'bQ', 'bR', 'bB', 'bN', 'bP',
-              'wK', 'wQ', 'wR', 'wB', 'wN', 'wP']
-    images = {}
-    for piece in pieces:
-        path = os.path.join("..", "public", "assets", f"{piece}.png")  # Adjusted path here
-        try:
+    piece_images = {}
+    assets_dir = os.path.join(os.path.dirname(__file__), "..", "public", "assets")
+
+    for filename in os.listdir(assets_dir):
+        if filename.endswith(".png"):
+            name = filename.split(".")[0]  # 'bK', 'wQ', etc.
+            path = os.path.join(assets_dir, filename)
             image = pygame.image.load(path)
-            images[piece] = pygame.transform.scale(image, (SQUARE_SIZE, SQUARE_SIZE))
-        except pygame.error as e:
-            print(f"Couldn't load {path}: {e}")
-    return images
+            scaled_image = pygame.transform.scale(image, (SQUARE_SIZE, SQUARE_SIZE))
+            piece_images[name] = scaled_image
+    return piece_images
 
-piece_images = load_images()
-
-# Draw the chessboard tiles
+# Draw board squares
 def draw_board():
     for row in range(ROWS):
         for col in range(COLS):
             color = WHITE if (row + col) % 2 == 0 else BLACK
-            rect = pygame.Rect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
-            pygame.draw.rect(screen, color, rect)
+            pygame.draw.rect(screen, color, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
 
-# Draw the chess pieces
-def draw_pieces():
+# Draw chess pieces
+def draw_pieces(images):
     for row in range(ROWS):
         for col in range(COLS):
             piece = board[row][col]
-            if piece != '--':
-                image = piece_images.get(piece)
-                if image:
-                    screen.blit(image, (col * SQUARE_SIZE, row * SQUARE_SIZE))
+            if piece != "--" and piece in images:
+                screen.blit(images[piece], (col * SQUARE_SIZE, row * SQUARE_SIZE))
 
 # Main loop
 def main():
+    clock = pygame.time.Clock()
+    piece_images = load_images()
     running = True
-    while running:
-        draw_board()
-        draw_pieces()
-        pygame.display.flip()
 
+    while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+        draw_board()
+        draw_pieces(piece_images)
+        pygame.display.flip()
+        clock.tick(60)
 
     pygame.quit()
 
