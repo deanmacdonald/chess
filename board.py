@@ -1,32 +1,61 @@
+import pygame
 from pieces import Piece
 
+# Board settings
+WIDTH, HEIGHT = 640, 640
+SQUARE_SIZE = WIDTH // 8
+WHITE = (245, 245, 245)
+GRAY = (100, 100, 100)
+LIGHT = (240, 217, 181)
+DARK = (181, 136, 99)
+
+# Piece images (make sure these exist in your assets folder!)
+PIECE_IMAGES = {}
+
+def load_piece_images():
+    types = ['pawn', 'rook', 'knight', 'bishop', 'queen', 'king']
+    colors = ['white', 'black']
+    for color in colors:
+        for t in types:
+            key = f"{t}_{color}"
+            PIECE_IMAGES[key] = pygame.image.load(f"assets/{key}.png")
+
+def chess_notation_to_xy(pos):
+    file = ord(pos[0]) - ord('a')
+    rank = 8 - int(pos[1])
+    return file * SQUARE_SIZE, rank * SQUARE_SIZE
+
 class ChessBoard:
-    """Class representing the chessboard and managing pieces."""
-    
     def __init__(self):
         self.pieces = self.setup_pieces()
 
     def setup_pieces(self):
-        """Initialize all chess pieces on the board."""
-        initial_positions = {
-            "e2": Piece("pawn", "white", "e2"),
-            "d8": Piece("queen", "black", "d8"),
-            "a1": Piece("rook", "white", "a1"),
-            "h1": Piece("rook", "white", "h1"),
-            "a8": Piece("rook", "black", "a8"),
-            "h8": Piece("rook", "black", "h8"),
-        }
-        
-        # Print all pieces for debugging
-        for pos, piece in initial_positions.items():
-            print(f"Initialized {piece.piece_type} ({piece.color}) at {pos}")
-
-        return initial_positions
-    
-    def get_possible_moves(self, position):
-        """Placeholder for generating valid moves (to be implemented)."""
-        return []  # Implement movement rules later
+        positions = {}
+        for file in "abcdefgh":
+            positions[f"{file}2"] = Piece("pawn", "white", f"{file}2")
+            positions[f"{file}7"] = Piece("pawn", "black", f"{file}7")
+        order = ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"]
+        for i, piece_type in enumerate(order):
+            col = chr(ord("a") + i)
+            positions[f"{col}1"] = Piece(piece_type, "white", f"{col}1")
+            positions[f"{col}8"] = Piece(piece_type, "black", f"{col}8")
+        return positions
 
     def draw(self, screen):
-        """Placeholder for rendering the board (to be implemented)."""
-        pass  # Implement rendering logic here
+        font = pygame.font.SysFont("Arial", 18)
+        for row in range(8):
+            for col in range(8):
+                color = LIGHT if (row + col) % 2 == 0 else DARK
+                pygame.draw.rect(screen, color, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
+
+                # Draw rank and file
+                if col == 0:
+                    screen.blit(font.render(str(8 - row), True, GRAY), (5, row * SQUARE_SIZE + 5))
+                if row == 7:
+                    screen.blit(font.render(chr(ord('a') + col), True, GRAY), (col * SQUARE_SIZE + SQUARE_SIZE - 20, HEIGHT - 20))
+
+        for pos, piece in self.pieces.items():
+            x, y = chess_notation_to_xy(pos)
+            image = PIECE_IMAGES[f"{piece.piece_type}_{piece.color}"]
+            screen.blit(pygame.transform.scale(image, (SQUARE_SIZE, SQUARE_SIZE)), (x, y))
+
