@@ -42,9 +42,11 @@ def load_game_state(filename: str = "game_state.json") -> Optional[Dict[str, Any
             with open(filename, "r") as file:
                 return json.load(file)
         except json.JSONDecodeError:
-            print("⚠️ Save file is corrupted.")
+            print("⚠ Save file is corrupted.")
+        except Exception as e:
+            print(f"❌ Error loading game state: {e}")
     else:
-        print("⚠️ No saved game found. Starting fresh.")
+        print("⚠ No saved game found. Starting fresh.")
     return None
 
 def highlight_moves(piece, board) -> List[Tuple[int, int]]:
@@ -52,3 +54,4 @@ def highlight_moves(piece, board) -> List[Tuple[int, int]]:
     Generate a list of tiles to highlight for available moves.
     """
     return piece.get_valid_moves(board)
+
