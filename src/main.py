@@ -1,86 +1,69 @@
 import pygame
-import os
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
-print("Runtime dir:", os.getenv("XDG_RUNTIME_DIR"))
-
-# Initialize Pygame
-pygame.init()
+from utils import show_popup
+from game import Game
 
 # Constants
-WIDTH, HEIGHT = 600, 600
-ROWS, COLS = 8, 8
-SQUARE_SIZE = WIDTH // COLS
+WIDTH, HEIGHT = 640, 640
+SQUARE_SIZE = WIDTH // 8
 
-# Colors
-WHITE = (255, 255, 255)
-BLACK = (100, 100, 100)
+# Initialize pygame
+pygame.init()
+win = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Chess")
 
-# Create game window
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Chess Game")
+# Show welcome message
+show_popup(win, "Welcome to Chess!", WIDTH, HEIGHT)
 
-# Chess board layout
+# Load piece images (stub — replace with actual loading)
+piece_images = {}  # Add images keyed by piece letter, e.g. 'P', 'p', 'R', etc.
+
+# Starting board setup
 board = [
-    ['bR', 'bN', 'bB', 'bQ', 'bK', 'bB', 'bN', 'bR'],
-    ['bP'] * 8,
-    ['--'] * 8,
-    ['--'] * 8,
-    ['--'] * 8,
-    ['--'] * 8,
-    ['wP'] * 8,
-    ['wR', 'wN', 'wB', 'wQ', 'wK', 'wB', 'wN', 'wR']
+    ['r','n','b','q','k','b','n','r'],
+    ['p','p','p','p','p','p','p','p'],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
+    ['','','','','','','',''],
+    ['P','P','P','P','P','P','P','P'],
+    ['R','N','B','Q','K','B','N','R']
 ]
 
-# Load and scale chess piece images from correct asset path
-def load_images():
-    piece_images = {}
-    assets_dir = os.path.join(os.path.dirname(__file__), "..", "public", "assets")
+# Game state object
+game = Game(board)
 
-    for filename in os.listdir(assets_dir):
-        if filename.endswith(".png"):
-            name = filename.split(".")[0]  # 'bK', 'wQ', etc.
-            path = os.path.join(assets_dir, filename)
-            image = pygame.image.load(path)
-            scaled_image = pygame.transform.scale(image, (SQUARE_SIZE, SQUARE_SIZE))
-            piece_images[name] = scaled_image
-    return piece_images
-
-# Draw board squares
-def draw_board():
-    for row in range(ROWS):
-        for col in range(COLS):
-            color = WHITE if (row + col) % 2 == 0 else BLACK
-            pygame.draw.rect(screen, color, (col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
-
-# Draw chess pieces
-def draw_pieces(images):
-    for row in range(ROWS):
-        for col in range(COLS):
+def draw_pieces(win, board, piece_images):
+    for row in range(8):
+        for col in range(8):
             piece = board[row][col]
-            if piece != "--" and piece in images:
-                screen.blit(images[piece], (col * SQUARE_SIZE, row * SQUARE_SIZE))
+            if piece != '' and piece in piece_images:
+                win.blit(piece_images[piece], (col * SQUARE_SIZE, row * SQUARE_SIZE))
 
-# Main loop
+def get_clicked_pos(pos):
+    x, y = pos
+    return y // SQUARE_SIZE, x // SQUARE_SIZE
+
 def main():
+    run = True
     clock = pygame.time.Clock()
-    piece_images = load_images()
-    running = True
 
-    while running:
+    while run:
+        clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                run = False
 
-        draw_board()
-        draw_pieces(piece_images)
-        pygame.display.flip()
-        clock.tick(60)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                row, col = get_clicked_pos(pygame.mouse.get_pos())
+                if game.selected_piece:
+                    game.move_piece(row, col)
+                else:
+                    game.select_piece(row, col)
+
+        win.fill((200, 200, 200))  # Board background
+        draw_pieces(win, game.board, piece_images)
+        pygame.display.update()
 
     pygame.quit()
 
-if __name__ == "__main__":
-    main()
-
+main()
