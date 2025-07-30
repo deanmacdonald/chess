@@ -1,0 +1,51 @@
+.
+├── .bashr
+├── .bashrc
+├── .editorconfig
+├── .env
+├── .game.swp
+├── .git
+│   ├── COMMIT_EDITMSG
+│   ├── FETCH_HEAD
+│   ├── HEAD
+│   ├── ORIG_HEAD
+│   ├── config
+│   ├── description
+│   ├── hooks
+│   ├── index
+│   ├── info
+│   ├── logs
+│   ├── objects
+│   ├── packed-refs
+│   └── refs
+├── .gitattributes
+├── .github
+│   └── workflows
+├── .gitignore
+├── .pre-commit-config.yaml
+├── .profile
+├── .vscode
+│   ├── launch.json
+│   ├── settings.json
+│   └── tasks.json
+├── Dockerfile
+├── Makefile
+├── docker-bake.hcl
+├── pyproject.toml
+├── requirements-dev.txt
+├── requirements.txt
+├── run_chess.sh
+├── setup.py
+├── src
+│   ├── chessgame
+│   ├── chessgame.egg-info
+│   └── udocker
+├── tree-clean.txt
+└── venv
+    ├── bin
+    ├── include
+    ├── lib
+    ├── lib64 -> lib
+    └── pyvenv.cfg
+
+19 directories, 30 files
