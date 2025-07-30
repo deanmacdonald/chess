@@ -1,11 +1,10 @@
+from pieces import create_starting_pieces
 import pygame
 from utils import show_popup
 from game import Game
 from pieces import create_starting_pieces
 from board import draw_board, draw_pieces
 from game import get_piece_at, capture_piece_at
-pieces = create_starting_pieces()
-
 
 # Constants
 WIDTH, HEIGHT = 640, 640
@@ -72,3 +71,5 @@ def main():
     pygame.quit()
 
 main()
+
+
