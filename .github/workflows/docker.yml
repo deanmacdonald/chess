@@ -29,3 +29,13 @@ jobs:
       - name: 🚀 Push Image
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/chess-app:latest
+
+          build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Image
+        run: docker build -t chess-app:latest .
