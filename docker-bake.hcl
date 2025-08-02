@@ -1,55 +1,41 @@
-// 🔧 Define shared variables
-variable "APP_ENV" {
-  default = "production"
-}
-
-variable "VERSION" {
-  default = "latest"
-}
-
-// 🧵 Common output configuration
 group "default" {
   targets = ["myapp"]
 }
 
-group "all" {
-  targets = ["myapp", "myapp-dev", "myapp-debug"]
-}
-
-// 🚀 Base target configuration
-target "base" {
-  context    = "./"
-  dockerfile = "Dockerfile"
-  output     = ["type=docker"]
-}
-
-// 📦 Production build
 target "myapp" {
-  inherits = ["base"]
-  tags     = ["myapp:${VERSION}"]
-  args = {
-    APP_ENV = "${APP_ENV}"
-  }
-}
+  context    = "."
+  dockerfile = "Dockerfile"
+  tags       = ["myapp:latest"]
 
-// 🧪 Development build with caching
-target "myapp-dev" {
-  inherits   = ["base"]
-  tags       = ["myapp:dev"]
-  cache-from = ["type=local,src=.build-cache"]
-  cache-to   = ["type=local,dest=.build-cache"]
-  args = {
-    APP_ENV = "development"
-  }
-}
+  # Platforms for multi-architecture builds (ensure builder supports this)
+  platforms  = [
+    "linux/amd64",
+    "linux/arm64"
+  ]
 
-// 🕵️ Debug build (optional add-on for verbose logging)
-target "myapp-debug" {
-  inherits   = ["base"]
-  tags       = ["myapp:debug"]
+  # Build arguments
   args = {
-    APP_ENV = "debug"
-    ENABLE_DEBUG = "true"
+    GIT_COMMIT = "override-me"
   }
+
+  # Uncomment if you need SSH access during the build
+  # ssh = [
+  #   "default=/home/deanmacdonald/.ssh/id_rsa"
+  # ]
+
+  # Uncomment to pass a secret for use in Dockerfile
+  # secret = [
+  #   "id=ssh_key,src=/home/deanmacdonald/.ssh/id_rsa"
+  # ]
+
+  # Enable caching from registry
+  cache-from = [
+    "type=registry,ref=myapp:latest"
+  ]
+
+  # Push resulting image to local or remote registry
+  output = [
+    "type=image,name=myapp:latest,push=true"
+  ]
 }
 
