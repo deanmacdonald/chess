@@ -3,6 +3,7 @@ setup.py
 src/chessgame/__init__.py
 src/chessgame/archinfo.py
 src/chessgame/base.py
+src/chessgame/cache_manager.py
 src/chessgame/chess_turns.py
 src/chessgame/chessboard.py
 src/chessgame/chksum.py
