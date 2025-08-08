@@ -2,12 +2,17 @@ pipeline {
     agent {
         docker {
             image "${DOCKER_IMAGE}"
-            args '-u root' // allows root access if needed
+            args '-u root'
         }
     }
 
     environment {
         DOCKER_IMAGE = 'deanmacdonald/chess-app'
+        DOTNET_ROOT = '/usr/share/dotnet' // optional path hint
+    }
+
+    options {
+        timestamps()
     }
 
     stages {
@@ -17,26 +22,54 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Setup Python Environment') {
             steps {
                 sh '''
                     python3 -m venv venv
-                    source venv/bin/activate
+                    . venv/bin/activate
+                    pip install --upgrade pip
                     pip install -r requirements.txt
                 '''
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Python Tests') {
             steps {
-                sh 'source venv/bin/activate && pytest'
+                sh '''
+                    . venv/bin/activate
+                    pytest
+                '''
             }
         }
 
-        stage('Build') {
+        stage('Build .NET Project') {
             steps {
-                sh 'echo "Build completed!"'
+                sh '''
+                    dotnet restore
+                    dotnet build --no-restore
+                '''
             }
+        }
+
+        stage('Run .NET Tests') {
+            steps {
+                sh 'dotnet test --no-build --verbosity normal'
+            }
+        }
+
+        stage('Post-Build Message') {
+            steps {
+                echo '✅ Build and tests completed successfully!'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '🎉 Pipeline finished without errors.'
+        }
+        failure {
+            echo '🔥 Something went wrong. Check the logs for details.'
         }
     }
 }
