@@ -3,44 +3,55 @@ pipeline {
 
   environment {
     DOCKER_IMAGE = "chess-app:${env.BUILD_NUMBER}"
+    REGISTRY = "registry.example.com"
+    FULL_IMAGE = "${REGISTRY}/chess-app:${env.BUILD_NUMBER}"
   }
 
   stages {
     stage('Checkout') {
       steps {
+        echo "📦 Checking out source code..."
         checkout scm
       }
     }
 
-    stage('Build') {
+    stage('Build Docker Image') {
       steps {
-        sh 'docker build -t $DOCKER_IMAGE .'
+        echo "🐳 Building Docker image: ${DOCKER_IMAGE}"
+        sh "docker build -t ${DOCKER_IMAGE} ."
       }
     }
 
-    stage('Test') {
+    stage('Run Tests') {
       steps {
-        sh 'docker run $DOCKER_IMAGE npm test'
+        echo "🧪 Running tests inside container..."
+        sh "docker run --rm ${DOCKER_IMAGE} pytest"
       }
     }
 
     stage('Push to Registry') {
       steps {
-        sh 'docker tag $DOCKER_IMAGE registry.example.com/chess-app:$BUILD_NUMBER'
-        sh 'docker push registry.example.com/chess-app:$BUILD_NUMBER'
+        echo "🚀 Tagging and pushing image to registry..."
+        sh "docker tag ${DOCKER_IMAGE} ${FULL_IMAGE}"
+        sh "docker push ${FULL_IMAGE}"
       }
     }
 
     stage('Deploy to Kubernetes') {
       steps {
-        sh 'kubectl set image deployment/chess-app chess-app=registry.example.com/chess-app:$BUILD_NUMBER'
+        echo "📦 Updating Kubernetes deployment..."
+        sh "kubectl set image deployment/chess-app chess-app=${FULL_IMAGE}"
       }
     }
   }
 
   post {
+    success {
+      echo "✅ Pipeline completed successfully!"
+    }
     failure {
-      echo 'Build failed. Notifying team...'
+      echo "❌ Build failed. Notifying team..."
+      // You can add Slack/email notifications here
     }
   }
 }
