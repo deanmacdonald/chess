@@ -72,6 +72,7 @@ python-dotenv==1.1.1
 python-json-logger==3.3.0
 PyYAML==6.0.2
 pyzmq==27.0.0
+psycopg2-binary==2.9.9
 referencing==0.36.2
 requests==2.32.4
 rfc3339-validator==0.1.4
@@ -95,3 +96,6 @@ wcwidth==0.2.13
 webcolors==24.11.1
 webencodings==0.5.1
 websocket-client==1.8.0
+setuptools
+flask
+gunicorn1

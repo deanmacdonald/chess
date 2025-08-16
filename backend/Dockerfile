@@ -1,4 +1,4 @@
-# ✅ Use official Python image (updated to 3.12)
+# 🐍 Use official Python image
 FROM python:3.12-slim
 
 # 🧼 Set environment variables to reduce Python overhead
@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # 📁 Set working directory
 WORKDIR /app
 
-# 🐍 Install system dependencies (optional: for packages like numpy, pillow, etc.)
+# 🛠️ Install system dependencies (for packages like numpy, pillow, psycopg2)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
@@ -16,13 +16,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # 📦 Install Python dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# 📦 Copy the rest of the app
+# 📄 Copy the rest of the backend code
 COPY . .
 
-# 🌐 Expose port
+# 🔥 Expose port (adjust if needed)
 EXPOSE 5000
 
-# 🚀 Use Gunicorn for production
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
+# 🚀 Run the app (adjust for your framework)
+CMD ["python", "app.py"]

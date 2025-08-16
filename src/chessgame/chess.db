@@ -1,0 +1,20 @@
+import sqlite3
+
+# Connect to database (creates file if it doesn't exist)
+conn = sqlite3.connect("chess.db")
+cursor = conn.cursor()
+
+# Create a table for storing chess moves
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS moves (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    game_id INTEGER,
+    move_number INTEGER,
+    player TEXT,
+    move TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+)
+""")
+
+conn.commit()
+conn.close()
