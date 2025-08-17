@@ -4,7 +4,7 @@ metadata:
   name: chess-backend-service
 spec:
   selector:
-    app: chess-backend
+    app: chess
   ports:
     - protocol: TCP
       port: 80

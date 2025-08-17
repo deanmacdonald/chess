@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Set paths
+K8S_DIR="./k8s"
+IGNORE_FILE="./.k8signore"
+
+# Read ignore patterns
+if [[ -f "$IGNORE_FILE" ]]; then
+  mapfile -t IGNORE_PATTERNS < "$IGNORE_FILE"
+else
+  echo "No .k8signore file found. Proceeding without exclusions."
+  IGNORE_PATTERNS=()
+fi
+
+# Function to check if a file matches ignore patterns
+is_ignored() {
+  local file="$1"
+  for pattern in "${IGNORE_PATTERNS[@]}"; do
+    if [[ "$file" == $pattern ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+# Apply manifests
+echo "Applying Kubernetes manifests from $K8S_DIR..."
+for file in "$K8S_DIR"/*.yaml; do
+  filename=$(basename "$file")
+  if is_ignored "$filename"; then
+    echo "⏭️ Skipping $filename (ignored)"
+  else
+    echo "✅ Applying $filename"
+    kubectl apply -f "$file"
+  fi
+done

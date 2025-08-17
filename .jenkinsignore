@@ -1,0 +1,32 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore Docker artifacts
+.dockerignore
+Dockerfile
+
+# Ignore Git metadata
+.git/
+.gitignore
+
+# Ignore editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Ignore database files
+*.db
+
+# Ignore build artifacts
+build/
+dist/
+*.egg-info/
+
+# Ignore logs
+*.log

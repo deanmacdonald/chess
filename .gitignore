@@ -1,18 +1,32 @@
-# Ignore Python cache
+# Byte-compiled / cache files
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
 
-# Ignore virtual environments
+# Virtual environment
 venv/
-chess_env/
+env/
 
-# Ignore test files
-test_chess_app.py
-test_game.json
+# Database files
+*.db
 
-# Ignore pip installation script
-get-pip.py
+# IDE/editor settings
+.vscode/
+.idea/
+*.swp
 
-# Ignore system-generated files
+# OS files
 .DS_Store
 Thumbs.db
+
+# Logs
+*.log
+
+# Python egg files
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Requirements backup
+requirements*.bak

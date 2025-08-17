@@ -2,21 +2,26 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: chess-backend
+  labels:
+    app: chess
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: chess-backend
+      app: chess
   template:
     metadata:
       labels:
-        app: chess-backend
+        app: chess
     spec:
       containers:
-      - name: backend
+      - name: chess-backend
         image: your-dockerhub-username/chess-backend:latest
         ports:
         - containerPort: 5000
         env:
         - name: DATABASE_URL
-          value: postgres://user:password@chess-db:5432/chess
+          valueFrom:
+            configMapKeyRef:
+              name: chess-config
+              key: DATABASE_URL

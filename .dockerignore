@@ -1,0 +1,35 @@
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+
+# Git
+.git/
+.gitignore
+
+# Docker files
+.dockerignore
+Dockerfile
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Database files
+*.db
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
