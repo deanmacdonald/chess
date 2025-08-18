@@ -1,19 +1,30 @@
-import random
+import chess
+import chess.engine
 
 class ChessAI:
-    def __init__(self, color):
+    def __init__(self, color, engine_path="C:/Program Files/Stockfish/stockfish.exe"):
         self.color = color
+        self.engine_path = engine_path
 
     def choose_move(self, board):
-        pieces = [p for p in board.get_all_pieces() if p.color == self.color]
-        legal_moves = []
+        # Get the python-chess board from your custom Board class
+        internal_board = board.get_chess_board()
 
-        for piece in pieces:
-            for move in piece.get_valid_moves(board):
-                legal_moves.append((piece.position, move))
+        # Flip board if AI plays black (Stockfish assumes white to move)
+        if self.color == "black" and internal_board.turn != chess.BLACK:
+            return None
 
-        if legal_moves:
-            return random.choice(legal_moves)
-        else:
+        try:
+            with chess.engine.SimpleEngine.popen_uci(self.engine_path) as engine:
+                result = engine.play(internal_board, chess.engine.Limit(time=0.5))
+                move = result.move
+
+                # Convert move to (from_square, to_square) as tuple of coordinates
+                from_sq = (chess.square_file(move.from_square), chess.square_rank(move.from_square))
+                to_sq = (chess.square_file(move.to_square), chess.square_rank(move.to_square))
+
+                return (from_sq, to_sq)
+        except Exception as e:
+            print(f"AI Error: {e}")
             return None
 

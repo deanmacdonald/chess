@@ -1,6 +1,6 @@
 import pygame
-from pieces import SQUARE_SIZE, WHITE, BLACK
-from typing import Tuple, List
+import copy
+import chess
 from piece import Piece
 
 class Board:
@@ -8,108 +8,114 @@ class Board:
         self.screen = screen
         self.piece_images = piece_images
         self.game = game
-        self.current_turn = "white"
-        self.board_state = [[None for _ in range(8)] for _ in range(8)]
-        self.setup_board()
+        self.SQUARE_SIZE = 75
+        self.grid = self._initialize_board()
+        self.internal_board = chess.Board()  # python-chess board for AI logic
 
-    def setup_board(self):
-        layout = ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"]
-        for col in range(8):
-            self.board_state[0][col] = Piece("black", layout[col], (0, col))
-            self.board_state[1][col] = Piece("black", "pawn", (1, col))
-            self.board_state[6][col] = Piece("white", "pawn", (6, col))
-            self.board_state[7][col] = Piece("white", layout[col], (7, col))
+    def _initialize_board(self):
+        board = [[None for _ in range(8)] for _ in range(8)]
 
-    def get_piece(self, square: Tuple[int, int]):
-        row, col = square
-        return self.board_state[row][col] if self.is_within_bounds(square) else None
+        def place_row(y, color):
+            types = ["rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook"]
+            for x, t in enumerate(types):
+                board[y][x] = self._create_piece(f"{color}_{t}", (x, y))
 
-    def get_piece_at(self, square: Tuple[int, int]):
-        return self.get_piece(square)  # Maintains compatibility with older calls
-    
-    def get_all_pieces(self):
-       return [p for row in self.board_state for p in row if p]
+        for x in range(8):
+            board[1][x] = self._create_piece("black_pawn", (x, 1))
+            board[6][x] = self._create_piece("white_pawn", (x, 6))
 
-    def is_within_bounds(self, square: Tuple[int, int]):
-        r, c = square
-        return 0 <= r < 8 and 0 <= c < 8
+        place_row(0, "black")
+        place_row(7, "white")
 
-    def is_empty(self, square: Tuple[int, int]):
-        return self.is_within_bounds(square) and self.get_piece(square) is None
+        return board
 
-    def is_enemy(self, square: Tuple[int, int], color: str):
-        p = self.get_piece(square)
-        return p is not None and p.color != color
-
-    def is_friendly(self, square: Tuple[int, int], color: str):
-        p = self.get_piece(square)
-        return p is not None and p.color == color
-
-    def move_piece(self, start: Tuple[int, int], end: Tuple[int, int]):
-        sr, sc = start
-        piece = self.board_state[sr][sc]
-        if piece:
-            self.board_state[sr][sc] = None
-            self.board_state[end[0]][end[1]] = piece
-            piece.position = end
-            piece.has_moved = True
-
-    def remove_piece_at(self, square: Tuple[int, int]):
-        r, c = square
-        if self.is_within_bounds(square):
-            self.board_state[r][c] = None
-
-    def toggle_turn(self):
-        self.current_turn = "black" if self.current_turn == "white" else "white"
-
-    def draw_board_tiles(self):
-        for r in range(8):
-            for c in range(8):
-                color = (255, 255, 255) if (r + c) % 2 == 0 else (220, 20, 60)
-                pygame.draw.rect(self.screen, color, (c * SQUARE_SIZE, r * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
-
-    def draw_pieces(self):
-        for r in range(8):
-            for c in range(8):
-                piece = self.board_state[r][c]
-                if piece:
-                    key = piece.get_image_key()
-                    img = self.piece_images.get(key)
-                    if img:
-                        self.screen.blit(img, (c * SQUARE_SIZE, r * SQUARE_SIZE))
-
-    def draw_highlights(self, moves: List[Tuple[int, int]]):
-        for square in moves:
-            rect = pygame.Rect(square[1] * SQUARE_SIZE, square[0] * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE)
-            pygame.draw.rect(self.screen, (0, 0, 255), rect, 3)
+    def _create_piece(self, image_key, pos):
+        color = image_key.split('_')[0]
+        piece = Piece(color, pos)
+        piece.set_board(self)
+        return piece
 
     def draw(self):
-        self.draw_board_tiles()
-        self.draw_pieces()
-        if self.game.selected_piece:
-            self.draw_highlights(self.game.legal_moves)
+        light = (235, 209, 166)
+        dark = (165, 117, 81)
 
-    def can_castle(self, color: str, side: str) -> bool:
-      # Placeholder logic — always allow for now
-       return True
+        for y in range(8):
+            for x in range(8):
+                square_color = light if (x + y) % 2 == 0 else dark
+                pygame.draw.rect(
+                    self.screen,
+                    square_color,
+                    pygame.Rect(x * self.SQUARE_SIZE, y * self.SQUARE_SIZE, self.SQUARE_SIZE, self.SQUARE_SIZE)
+                )
 
-    def animate_move(self, start_pos: Tuple[int, int], end_pos: Tuple[int, int], piece_key: str):
-        frames = 10
-        sx = start_pos[1] * SQUARE_SIZE
-        sy = start_pos[0] * SQUARE_SIZE
-        ex = end_pos[1] * SQUARE_SIZE
-        ey = end_pos[0] * SQUARE_SIZE
-        dx = (ex - sx) / frames
-        dy = (ey - sy) / frames
+                piece = self.grid[y][x]
+                if piece:
+                    key = f"{piece.color}_{piece.__class__.__name__.lower()}"
+                    img = self.piece_images.get(key)
+                    if img:
+                        self.screen.blit(img, (x * self.SQUARE_SIZE, y * self.SQUARE_SIZE))
 
-        for frame in range(frames):
-            self.draw_board_tiles()
-            self.draw_pieces()
-            x = sx + dx * frame
-            y = sy + dy * frame
-            img = self.piece_images.get(piece_key)
-            if img:
-                self.screen.blit(img, (x, y))
-            pygame.display.flip()
-            pygame.time.delay(30)
+    def get_piece_at(self, pos):
+        x, y = pos
+        if 0 <= x < 8 and 0 <= y < 8:
+            return self.grid[y][x]
+        return None
+
+    def move_piece(self, from_pos, to_pos):
+        piece = self.get_piece_at(from_pos)
+        if not piece:
+            return
+
+        self.grid[to_pos[1]][to_pos[0]] = piece
+        self.grid[from_pos[1]][from_pos[0]] = None
+        piece.position = to_pos
+
+    def push_chess_move(self, move):
+        self.internal_board.push(move)
+        self.sync_visual_board()
+
+    def sync_visual_board(self):
+        """Optional: Update grid if internal_board was changed externally"""
+        # You’d need logic here to map from FEN to grid/pieces
+        pass  # Placeholder
+
+    def get_chess_board(self):
+        return self.internal_board
+
+    def get_all_pieces(self):
+        pieces = []
+        for row in self.grid:
+            for p in row:
+                if p:
+                    pieces.append(p)
+        return pieces
+
+    def clone(self):
+        cloned_board = copy.deepcopy(self)
+        for row in cloned_board.grid:
+            for piece in row:
+                if piece:
+                    piece.set_board(cloned_board)
+        return cloned_board
+
+    def is_in_check(self, color):
+        king_pos = self._find_king(color)
+        if not king_pos:
+            return False
+
+        for row in self.grid:
+            for piece in row:
+                if piece and piece.color != color:
+                    moves = piece.get_valid_moves(check_check=False)
+                    if king_pos in moves:
+                        return True
+        return False
+
+    def _find_king(self, color):
+        for y in range(8):
+            for x in range(8):
+                piece = self.grid[y][x]
+                if piece and piece.color == color and piece.__class__.__name__.lower() == "king":
+                    return (x, y)
+        return None
 

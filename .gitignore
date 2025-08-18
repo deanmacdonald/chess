@@ -13,6 +13,8 @@ test_game.json
 # Ignore pip installation script
 get-pip.py
 
+**/.git
+
 # Ignore system-generated files
 .DS_Store
 Thumbs.db
