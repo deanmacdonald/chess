@@ -1,6 +1,7 @@
 # Set the default behavior for all files.
 * text=auto eol=lf
-
 # Normalized and converts to native line endings on checkout.
 *.py text
 *.pyx text
+src/build/main/main.pkg filter=lfs diff=lfs merge=lfs -text
+src/dist/main filter=lfs diff=lfs merge=lfs -text
