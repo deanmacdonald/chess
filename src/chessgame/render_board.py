@@ -1,50 +1,34 @@
 import pygame
 
-pygame.init()
-screen_size = 480
-square_size = screen_size // 8
-screen = pygame.display.set_mode((screen_size, screen_size))
-pygame.display.set_caption("Chessboard with Pieces")
+# Constants
+WIDTH, HEIGHT = 640, 640
+SQUARE_SIZE = WIDTH // 8
 
-WHITE = (255, 255, 255)
-BLACK = (100, 100, 100)
-PIECE_WHITE = (220, 220, 255)
-PIECE_BLACK = (30, 30, 80)
+# Load board and piece images
+def load_images():
+    # Load and scale the board background
+    board_img = pygame.image.load("assets/chess_theme/board.png")
+    board_img = pygame.transform.scale(board_img, (WIDTH, HEIGHT))
 
-# Draw the board
-for row in range(8):
-    for col in range(8):
-        color = WHITE if (row + col) % 2 == 0 else BLACK
-        pygame.draw.rect(
-            screen,
-            color,
-            pygame.Rect(col * square_size, row * square_size, square_size, square_size)
-        )
+    # Load and scale each piece image
+    pieces = ['wP', 'wR', 'wN', 'wB', 'wQ', 'wK',
+              'bP', 'bR', 'bN', 'bB', 'bQ', 'bK']
+    images = {}
+    for piece in pieces:
+        img = pygame.image.load(f"assets/chess_theme/{piece}.png")
+        images[piece] = pygame.transform.scale(img, (SQUARE_SIZE, SQUARE_SIZE))
 
-# Add test pieces (example: pawns on row 1 and 6)
-for col in range(8):
-    # Black pawns
-    pygame.draw.circle(
-        screen,
-        PIECE_BLACK,
-        (col * square_size + square_size // 2, square_size + square_size // 2),
-        square_size // 3
-    )
-    # White pawns
-    pygame.draw.circle(
-        screen,
-        PIECE_WHITE,
-        (col * square_size + square_size // 2, 6 * square_size + square_size // 2),
-        square_size // 3
-    )
+    return board_img, images
 
-pygame.display.flip()
+# Draw the board background
+def draw_board(screen, board_img):
+    screen.blit(board_img, (0, 0))
 
-# Event loop
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+# Draw pieces on top of the board
+def draw_pieces(screen, board, images):
+    for row in range(8):
+        for col in range(8):
+            piece = board[row][col]
+            if piece != "--":
+                screen.blit(images[piece], (col * SQUARE_SIZE, row * SQUARE_SIZE))
 
-pygame.quit()
