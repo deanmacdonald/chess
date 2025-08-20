@@ -1,0 +1,32 @@
+{
+  "name": "chess-master",
+  "version": "1.0.0",
+  "description": "Multiplayer chess app with real-time play, validation, and logging",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "test": "echo \"No tests yet\" && exit 0",
+    "prepare": "husky install"
+  },
+  "keywords": ["chess", "multiplayer", "socket.io", "nodejs", "express"],
+  "author": "Dean",
+  "license": "MIT",
+  "dependencies": {
+    "chess.js": "^1.0.0",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "lowdb": "^6.0.1",
+    "express-validator": "^7.0.1",
+    "compression": "^1.7.4",
+    "winston": "^3.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.0",
+    "husky": "^8.0.3"
+  }
+}
