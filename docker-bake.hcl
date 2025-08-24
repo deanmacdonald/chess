@@ -1,35 +1,24 @@
 group "default" {
-  targets = ["myapp"]
+  targets = ["app"]
 }
 
-target "myapp" {
-  context    = "."
+target "app" {
+  context = "."
   dockerfile = "Dockerfile"
-
+  platforms = ["linux/amd64", "linux/arm64"]
   tags = [
-    "myapp:latest"
+    "deano408/my-python-app:latest",
+    "deano408/my-python-app:${local.git_sha}"
   ]
-
-  platforms = [
-    "linux/amd64",
-    "linux/arm64"
-  ]
-
+  cache-from = ["type=local,src=./.buildx-cache"]
+  cache-to = ["type=local,dest=./.buildx-cache-new"]
+  output = ["type=image"]
   args = {
-    DOTNET_VERSION = "8.0"
-    PORT           = "8000"
+    ENVIRONMENT = "production"
   }
+}
 
-  cache-from = [
-    "type=registry,ref=myapp:latest"
-  ]
-
-  cache-to = [
-    "type=inline"
-  ]
-
-  output = [
-    "type=image,name=myapp:latest,push=true"
-  ]
+variable "local" {
+  git_sha = "${shell \"git rev-parse --short HEAD\"}"
 }
 

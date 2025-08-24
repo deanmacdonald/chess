@@ -2,16 +2,43 @@
 
 root = true
 
+# Global defaults
 [*]
 indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
 insert_final_newline = true
 end_of_line = lf
+charset = utf-8
 
+# Markdown files — preserve trailing whitespace for formatting
 [*.md]
 trim_trailing_whitespace = false
 
+# Makefiles — tabs required for syntax
 [Makefile]
 indent_style = tab
 trim_trailing_whitespace = false
+
+# Python files
+[*.py]
+indent_style = space
+indent_size = 4
+
+# Jupyter notebooks (JSON format)
+[*.ipynb]
+indent_style = space
+indent_size = 2
+
+# Config files (YAML, TOML, JSON)
+[*.{yml,yaml,toml,json}]
+indent_style = space
+indent_size = 2
+
+# Shell scripts
+[*.sh]
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+end_of_line = lf
+
