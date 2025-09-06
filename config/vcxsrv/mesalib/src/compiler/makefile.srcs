@@ -1,0 +1,97 @@
+ifneq ($(NORELDBG),1)
+$(error NORELDBG should have been set to 1)
+endif
+ifneq ($(IS64),0)
+$(error IS64 should have been set to 0, buld is independent on 64-bit)
+endif
+
+top_srcdir=../..
+srcdir=.
+builddir=.
+
+BISON_PKGDATADIR=../../../tools/mhmake/src/bisondata
+export BISON_PKGDATADIR
+
+YACC_GEN = c:/winflexbison/win_bison.exe -d -v
+LEX_GEN = c:/winflexbison/win_flex.exe --nounistd
+PYTHON_GEN = $(PYTHON3)
+
+glsl/glsl_parser.cpp glsl/glsl_parser.hpp: glsl/glsl_parser.yy
+	$(YACC_GEN) -o glsl/glsl_parser.cpp -p "_mesa_glsl_" $(srcdir)/glsl/glsl_parser.yy
+
+glsl/glsl_lexer.cpp: glsl/glsl_lexer.ll
+	$(LEX_GEN) -o $@ $(srcdir)/glsl/glsl_lexer.ll
+
+glsl/glcpp/glcpp-parse.c glsl/glcpp/glcpp-parse.h: glsl/glcpp/glcpp-parse.y
+	$(YACC_GEN) -o glsl/glcpp/glcpp-parse.c -p "glcpp_parser_" $(srcdir)/glsl/glcpp/glcpp-parse.y
+
+glsl/glcpp/glcpp-lex.c: glsl/glcpp/glcpp-lex.l
+	$(LEX_GEN) -o $@ $(srcdir)/glsl/glcpp/glcpp-lex.l
+
+glsl/ir_expression_operation.h: glsl/ir_expression_operation.py
+	$(PYTHON_GEN) $(srcdir)/glsl/ir_expression_operation.py enum > $@
+
+glsl/ir_expression_operation_constant.h: glsl/ir_expression_operation.py
+	$(PYTHON_GEN) $(srcdir)/glsl/ir_expression_operation.py constant > $@
+
+glsl/ir_expression_operation_strings.h: glsl/ir_expression_operation.py
+	$(PYTHON_GEN) $(srcdir)/glsl/ir_expression_operation.py strings > $@
+
+glsl/float64_glsl.h: $(srcdir)/../util/xxd.py glsl/float64.glsl
+	$(PYTHON_GEN) $(srcdir)/../util/xxd.py $(srcdir)/glsl/float64.glsl $@ -n float64_source
+
+glsl/astc_glsl.h: $(srcdir)/../util/xxd.py glsl/astc_decoder.glsl
+	$(PYTHON_GEN) $(srcdir)/../util/xxd.py $(srcdir)/glsl/astc_decoder.glsl $@ -n astc_source
+
+glsl/bc1_glsl.h: $(srcdir)/../util/xxd.py glsl/bc1.glsl
+	$(PYTHON_GEN) $(srcdir)/../util/xxd.py $(srcdir)/glsl/bc1.glsl $@ -n bc1_source
+
+glsl/bc4_glsl.h: $(srcdir)/../util/xxd.py glsl/bc4.glsl
+	$(PYTHON_GEN) $(srcdir)/../util/xxd.py $(srcdir)/glsl/bc4.glsl $@ -n bc4_source
+
+glsl/etc2_rgba_stitch_glsl.h: $(srcdir)/../util/xxd.py glsl/etc2_rgba_stitch.glsl
+	$(PYTHON_GEN) $(srcdir)/../util/xxd.py $(srcdir)/glsl/etc2_rgba_stitch.glsl $@ -n etc2_rgba_stitch_source
+
+glsl/cross_platform_settings_piece_all.h: $(srcdir)/../util/xxd.py glsl/CrossPlatformSettings_piece_all.glsl
+	$(PYTHON_GEN) $(srcdir)/../util/xxd.py $(srcdir)/glsl/CrossPlatformSettings_piece_all.glsl $@ -n cross_platform_settings_piece_all_header
+
+nir/nir_builder_opcodes.h: nir/nir_opcodes.py nir/nir_builder_opcodes_h.py
+	$(PYTHON_GEN) $(srcdir)/nir/nir_builder_opcodes_h.py > $@
+
+nir/nir_constant_expressions.c: nir/nir_opcodes.py nir/nir_constant_expressions.py
+	$(PYTHON_GEN) $(srcdir)/nir/nir_constant_expressions.py > $@
+
+nir/nir_opcodes.h: nir/nir_opcodes.py nir/nir_opcodes_h.py
+	$(PYTHON_GEN) $(srcdir)/nir/nir_opcodes_h.py > $@
+
+nir/nir_opcodes.c: nir/nir_opcodes.py nir/nir_opcodes_c.py
+	$(PYTHON_GEN) $(srcdir)/nir/nir_opcodes_c.py > $@
+
+nir/nir_opt_algebraic.c: nir/nir_opt_algebraic.py nir/nir_algebraic.py
+	$(PYTHON_GEN) $(srcdir)/nir/nir_opt_algebraic.py --out $@
+
+nir/nir_intrinsics.h: nir/nir_intrinsics.py nir/nir_intrinsics_h.py
+	$(PYTHON_GEN) $(srcdir)/nir/nir_intrinsics_h.py --outdir nir
+
+nir/nir_intrinsics.c: nir/nir_intrinsics.py nir/nir_intrinsics_c.py
+	$(PYTHON_GEN) $(srcdir)/nir/nir_intrinsics_c.py --outdir nir
+
+nir/nir_intrinsics_indices.h: nir/nir_intrinsics.py nir/nir_intrinsics_indices_h.py
+	$(PYTHON_GEN) $(srcdir)/nir/nir_intrinsics_indices_h.py --outdir nir
+
+spirv/spirv_info.c spirv/spirv_info.h: spirv/spirv_info_c.py spirv/spirv.core.grammar.json
+	$(PYTHON_GEN) $(srcdir)/spirv/spirv_info_gen.py --json $(srcdir)/spirv/spirv.core.grammar.json --out-h spirv/spirv_info.h --out-c spirv/spirv_info.c
+
+spirv/vtn_gather_types.c: spirv/vtn_gather_types_c.py spirv/spirv.core.grammar.json
+	$(PYTHON_GEN) $(srcdir)/spirv/vtn_gather_types_c.py $(srcdir)/spirv/spirv.core.grammar.json $@
+
+spirv/vtn_generator_ids.h: spirv/vtn_generator_ids_h.py spirv/spir-v.xml
+	$(PYTHON_GEN) $(srcdir)/spirv/vtn_generator_ids_h.py $(srcdir)/spirv/spir-v.xml $@
+
+builtin_types.h: $(srcdir)/builtin_types_h.py $(srcdir)/builtin_types.py
+	$(PYTHON_GEN) $(srcdir)/builtin_types_h.py $@
+
+builtin_ctypes.c: $(srcdir)/builtin_types_c.py $(srcdir)/builtin_types.py
+	$(PYTHON_GEN) $(srcdir)/builtin_types_c.py $@
+
+

@@ -1,0 +1,8 @@
+fastapi
+safety-schemas
+pydantic
+pygame
+ruff
+black
+mypy
+

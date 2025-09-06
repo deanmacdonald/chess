@@ -1,0 +1,24 @@
+option('xkb-base',
+       type: 'string',
+       value: '',
+       description: 'XKB base path [default=$datadir/X11/xkb]')
+option('compat-rules',
+       type: 'boolean',
+       value: true,
+       description: 'create compatibility rules [default=true]')
+option('xorg-rules-symlinks',
+       type: 'boolean',
+       value: false,
+       description: 'create "xorg" symlinks to the "base" rules files [default=false]')
+option('xorg-rules-copy',
+       type: 'boolean',
+       value: false,
+       description: 'copy "base" rules files to "xorg" rules files [default=false]')
+option('nls',
+       type: 'boolean',
+       value: true,
+       description: 'build with native language support (NLS) [default=true]')
+option('non-latin-layouts-list',
+       type: 'boolean',
+       value: false,
+       description: 'create the list of non-Latin layouts [default=false]')
