@@ -1,43 +1,30 @@
 import pygame
-import sys
-import argparse
-import logging
-
 from game.board import Board
 from ui.renderer import Renderer
+from ui.input import InputHandler
 
 def main():
-    # Parse command-line arguments
-    parser = argparse.ArgumentParser(description="Launch the Chess UI")
-    parser.add_argument("--debug", action="store_true", help="Enable debug logging")
-    args = parser.parse_args()
-
-    # Configure logging
-    logging.basicConfig(
-        level=logging.DEBUG if args.debug else logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(message)s",
-    )
-
-    logging.info("Welcome to Chess! Initializing...")
-
-    # Initialize Pygame
     pygame.init()
+    screen_size = 640  # 8 tiles × 80 pixels
+    screen = pygame.display.set_mode((screen_size, screen_size))
+    pygame.display.set_caption("PyChess")
 
-    try:
-        # Create game board and renderer
-        board = Board()
-        renderer = Renderer(board)
+    board = Board()
+    renderer = Renderer(screen, board)
+    input_handler = InputHandler(renderer, board)
 
-        # Run the game loop
-        renderer.run()
+    clock = pygame.time.Clock()
+    running = True
 
-    except Exception as e:
-        logging.exception("An error occurred during execution")
+    while running:
+        for event in pygame.event.get():
+            input_handler.handle_event(event)
 
-    finally:
-        # Quit Pygame gracefully
-        pygame.quit()
-        logging.info("Game exited cleanly.")
+        renderer.draw_board()
+        pygame.display.flip()
+        clock.tick(60)
+
+    pygame.quit()
 
 if __name__ == "__main__":
     main()
