@@ -1,29 +1,55 @@
 {
-  "name": "frontend-ui",
-  "version": "0.1.0",
-  "private": true,
+  "name": "chess-ui-app",
+  "version": "1.0.0",
+  "description": "A modern chess UI application powered by React and Node.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "keywords": [
+    "chess",
+    "react",
+    "UI",
+    "frontend",
+    "game"
+  ],
+  "author": "Dean",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/chess-ui-app"
   },
   "dependencies": {
-    "@testing-library/dom": "^10.4.1",
-    "@testing-library/jest-dom": "^6.7.0",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "web-vitals": "^2.1.4"
+    "async": "^3.2.4",
+    "bootstrap": "^5.3.2",
+    "chess": "^1.4.0",
+    "chess-ui": "^1.0.2",
+    "chess.js": "^1.4.0",
+    "cors": "^2.8.5",
+    "doctor": "^0.1.26",
+    "dotenv": "^17.2.2",
+    "jupiter": "^1.3.0",
+    "notebook": "^1.0.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-redux": "^9.2.0",
+    "react-scripts": "^5.0.1",
+    "socket.io-client": "^4.8.1",
+    "update": "^0.7.4",
+    "vitals": "^0.1.2",
+    "web": "^0.0.2",
+    "web-vitals": "^5.1.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^5.0.0",
-    "vite": "^7.1.2"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.0",
+    "source-map-loader": "^5.0.0",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
   },
   "browserslist": {
     "production": [

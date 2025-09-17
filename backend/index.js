@@ -1,19 +1,14 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
-
+// Root route
 app.get('/', (req, res) => {
-  res.send('♟️ Chess backend is running');
+  res.send('Hello from the Chess backend!');
 });
 
-app.post('/api/move', (req, res) => {
-  const { from, to } = req.body;
-  console.log(`Received move: ${from} -> ${to}`);
-  res.json({ status: 'ok', move: { from, to } });
-});
+// Your other routes here...
 
-app.listen(port, () => {
-  console.log(`✅ Backend listening at http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
