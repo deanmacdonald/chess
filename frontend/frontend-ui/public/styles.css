@@ -1,0 +1,49 @@
+/* Chessboard container */
+.chessboard {
+  display: grid;
+  grid-template-columns: repeat(8, 60px);
+  grid-template-rows: repeat(8, 60px);
+  border: 2px solid #333;
+  margin: 20px auto;
+  width: fit-content;
+  background-color: #f0f0f0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+}
+
+/* Individual squares */
+.square {
+  width: 60px;
+  height: 60px;
+  border: 1px solid #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #222;
+  transition: outline 0.2s ease;
+}
+
+/* White squares */
+.white {
+  background-color: #ffffff;
+}
+
+/* Black squares */
+.black {
+  background-color: #000000;
+  color: #f0f0f0; /* Light text for visibility */
+}
+
+/* Hover effect */
+.square:hover {
+  outline: 2px solid #00aaff;
+  cursor: pointer;
+}
+
+/* Selected square */
+.selected {
+  background-color: yellow;
+}
