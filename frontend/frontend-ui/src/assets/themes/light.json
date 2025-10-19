@@ -1,0 +1,9 @@
+{
+    "board": {
+        "lightSquare": "#f0d9b5",
+        "darkSquare": "#b58863"
+    },
+    "font": "Lato",
+    "background": "#ffffff",
+    "textColor": "#333333"
+}

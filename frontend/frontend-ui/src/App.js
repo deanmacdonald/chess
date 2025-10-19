@@ -1,65 +1,86 @@
 import React, { useState } from "react";
-import { Chess } from "chess.js";
+import ChessBoard from "./components/ChessBoard";
 import "./App.css";
+import pieceImages from "./assets/piecesImage";
 
-const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
-const ranks = [8, 7, 6, 5, 4, 3, 2, 1];
-
-const pieceUnicode = {
-  w: {
-    p: "♙", r: "♖", n: "♘", b: "♗", q: "♕", k: "♔"
-  },
-  b: {
-    p: "♟", r: "♜", n: "♞", b: "♝", q: "♛", k: "♚"
-  }
+// Demo position
+const initialPosition = {
+    e4: "wp",
+    d5: "bp",
+    f3: "wn",
+    c6: "bn",
+    g1: "wk",
+    g8: "bk",
 };
 
 function App() {
-  const [game, setGame] = useState(new Chess());
-  const [selected, setSelected] = useState(null);
-
-  const handleClick = (file, rank) => {
-    const position = `${file}${rank}`;
-    const piece = game.get(position);
-
-    if (selected) {
-      const move = game.move({ from: selected, to: position, promotion: "q" });
-      if (move) {
-        setGame(new Chess(game.fen()));
-      }
-      setSelected(null);
-    } else if (piece && piece.color === game.turn()) {
-      setSelected(position);
-    }
-  };
-
-  const renderSquare = (file, rank) => {
-    const position = `${file}${rank}`;
-    const piece = game.get(position);
-    const isSelected = selected === position;
-    const isDark = (files.indexOf(file) + ranks.indexOf(rank)) % 2 === 1;
+    const [isFlipped, setIsFlipped] = useState(false);
+    const [showCoordinates, setShowCoordinates] = useState(true);
+    const [showPieces, setShowPieces] = useState(true);
+    const [theme, setTheme] = useState("wood");
+    const [pieceStyle, setPieceStyle] = useState("standard");
 
     return (
-      <div
-        key={position}
-        className={`square ${isDark ? "dark" : "light"} ${isSelected ? "selected" : ""}`}
-        onClick={() => handleClick(file, rank)}
-      >
-        {piece ? pieceUnicode[piece.color][piece.type] : ""}
-      </div>
-    );
-  };
+        <div className="app-container">
+            <header>
+                <h1>♟️ React Chess Board</h1>
+            </header>
 
-  return (
-    <>
-      <p className="turn-indicator">Turn: {game.turn() === "w" ? "White" : "Black"}</p>
-      <div className="board">
-        {ranks.map(rank =>
-          files.map(file => renderSquare(file, rank))
-        )}
-      </div>
-    </>
-  );
+            <section className="controls">
+                <div className="toggle-group">
+                    <button onClick={() => setIsFlipped(!isFlipped)}>
+                        {isFlipped ? "Unflip Board" : "Flip Board"}
+                    </button>
+                    <button
+                        onClick={() => setShowCoordinates(!showCoordinates)}
+                    >
+                        {showCoordinates
+                            ? "Hide Coordinates"
+                            : "Show Coordinates"}
+                    </button>
+                    <button onClick={() => setShowPieces(!showPieces)}>
+                        {showPieces ? "Hide Pieces" : "Show Pieces"}
+                    </button>
+                </div>
+
+                <div className="select-group">
+                    <label>
+                        Theme:
+                        <select
+                            value={theme}
+                            onChange={(e) => setTheme(e.target.value)}
+                        >
+                            <option value="wood">Wood</option>
+                            <option value="classic">Classic</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </label>
+
+                    <label>
+                        Piece Style:
+                        <select
+                            value={pieceStyle}
+                            onChange={(e) => setPieceStyle(e.target.value)}
+                        >
+                            <option value="standard">Standard</option>
+                            {/* Add more styles here */}
+                        </select>
+                    </label>
+                </div>
+            </section>
+
+            <section className="board-wrapper">
+                <ChessBoard
+                    showCoordinates={showCoordinates}
+                    theme={theme}
+                    showPieces={showPieces}
+                    pieceStyle={pieceStyle}
+                    piecePositions={initialPosition}
+                    isFlipped={isFlipped}
+                />
+            </section>
+        </div>
+    );
 }
 
 export default App;

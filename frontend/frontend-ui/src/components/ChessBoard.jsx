@@ -1,32 +1,53 @@
-import React, { useState } from 'react';
-import { Chess } from 'chess.js';
+import React from 'react';
+import Square from './Square';
+import './ChessBoard.css';
+
+// Dynamically import all piece images
+const pieceImages = {
+  bp: require('../assets/images/bp.png'),
+  br: require('../assets/images/br.png'),
+  bn: require('../assets/images/bn.png'),
+  bb: require('../assets/images/bb.png'),
+  bq: require('../assets/images/bq.png'),
+  bk: require('../assets/images/bk.png'),
+  wp: require('../assets/images/wp.png'),
+  wr: require('../assets/images/wr.png'),
+  wn: require('../assets/images/wn.png'),
+  wb: require('../assets/images/wb.png'),
+  wq: require('../assets/images/wq.png'),
+  wk: require('../assets/images/wk.png'),
+};
+
+// Initial board setup
+const initialBoard = [
+  ['br', 'bn', 'bb', 'bq', 'bk', 'bb', 'bn', 'br'],
+  ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
+  [null, null, null, null, null, null, null, null],
+  [null, null, null, null, null, null, null, null],
+  [null, null, null, null, null, null, null, null],
+  [null, null, null, null, null, null, null, null],
+  ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
+  ['wr', 'wn', 'wb', 'wq', 'wk', 'wb', 'wn', 'wr'],
+];
 
 const ChessBoard = () => {
-  const [game] = useState(new Chess());
-  const [fen, setFen] = useState(game.fen());
-  const [error, setError] = useState(null);
-
-  const handleMove = (from, to) => {
-    const move = game.move({ from, to });
-
-    if (!move) {
-      setError(`Invalid move from ${from} to ${to}`);
-      return;
-    }
-
-    setFen(game.fen());
-    setError(null);
-  };
-
   return (
-    <div>
-      <h2>Chess Game</h2>
-      <p>Current FEN: {fen}</p>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div className="chessboard">
+      {initialBoard.map((row, rowIndex) =>
+        row.map((piece, colIndex) => {
+          const isLight = (rowIndex + colIndex) % 2 === 0;
+          const pieceSrc = piece ? pieceImages[piece] : null;
 
-      {/* Example move buttons for testing */}
-      <button onClick={() => handleMove('e2', 'e4')}>Move e2 to e4</button>
-      <button onClick={() => handleMove('e2', 'e5')}>Invalid Move</button>
+          return (
+            <Square
+              key={`${rowIndex}-${colIndex}`}
+              isLight={isLight}
+              piece={piece}
+              pieceSrc={pieceSrc}
+            />
+          );
+        })
+      )}
     </div>
   );
 };

@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import ChessBoard from "./App"; // Assuming ChessBoard is in App.js
-import "./index.css";
+import App from "./App";
+import "./index.css"; // local styles in src/
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <ChessBoard />
-  </React.StrictMode>
+    <React.StrictMode>
+        <App />
+    </React.StrictMode>,
 );

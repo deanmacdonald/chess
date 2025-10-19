@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "Lato";
+    src: url("../assets/fonts/Lato-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "RobotoMono";
+    src: url("../assets/fonts/RobotoMono.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "ChessAlpha";
+    src: url("../assets/fonts/ChessAlpha.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}

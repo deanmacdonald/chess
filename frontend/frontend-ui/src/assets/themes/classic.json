@@ -1,0 +1,9 @@
+{
+    "board": {
+        "lightSquare": "#eae0c2",
+        "darkSquare": "#a57c4f"
+    },
+    "font": "ChessAlpha",
+    "background": "#f5f0e6",
+    "textColor": "#5c4422"
+}
