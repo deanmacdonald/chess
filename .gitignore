@@ -1,6 +1,6 @@
 # Python artifacts
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.log
 
@@ -10,14 +10,40 @@ src/venv/
 
 # Build and dist folders
 dist/
+.build-cache/
+.buildx-cache/
 .buildx-cache-new/
 
-# Environment files
+# Environment and config
 .env
+*.env
 
-# OS and editor junk
+# IDE/editor configs
+.vscode/
+.idea/
 *.swp
 *.swo
+
+# OS junk
 .DS_Store
 Thumbs.db
+
+# Archive folders (optional)
+archive/
+
+# Node/npm artifacts (if using React frontend)
+node_modules/
+*.tsbuildinfo
+
+# Frontend build (if applicable)
+frontend/build/
+frontend/dist/
+
+# Docker artifacts
+docker-bake.hcl
+
+# Misc
+*.bak
+*.tmp
+*.orig
 
