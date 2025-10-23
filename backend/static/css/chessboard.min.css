@@ -1,0 +1,9 @@
+#board {
+  width: 400px;
+  margin: 20px auto;
+  border: 2px solid #333;
+}
+#board div {
+  box-sizing: border-box;
+}
+

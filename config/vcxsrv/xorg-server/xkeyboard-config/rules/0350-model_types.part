@@ -1,3 +1,0 @@
-! model		=	types
-  $applealu	=	complete+numpad(mac)
-  *		=	complete

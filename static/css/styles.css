@@ -1,0 +1,6 @@
+canvas#chessboard {
+  border: 2px solid #333;
+  display: block;
+  margin: 20px auto;
+}
+

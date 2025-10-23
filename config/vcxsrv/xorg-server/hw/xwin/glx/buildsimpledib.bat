@@ -1,1 +1,0 @@
-cl /Zi simpledib.c kernel32.lib user32.lib gdi32.lib opengl32.lib

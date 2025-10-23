@@ -1,0 +1,37 @@
+// src/game/pieces.js
+
+export function getKnightMoves(position) {
+  const [row, col] = position;
+  const offsets = [
+    [2, 1], [1, 2], [-1, 2], [-2, 1],
+    [-2, -1], [-1, -2], [1, -2], [2, -1]
+  ];
+
+  return offsets
+    .map(([dr, dc]) => [row + dr, col + dc])
+    .filter(([r, c]) => r >= 0 && r < 8 && c >= 0 && c < 8);
+}
+
+export function getRookMoves(position, board) {
+  const directions = [[1,0], [-1,0], [0,1], [0,-1]];
+  const moves = [];
+
+  for (const [dr, dc] of directions) {
+    let [r, c] = position;
+    while (true) {
+      r += dr;
+      c += dc;
+      if (r < 0 || r >= 8 || c < 0 || c >= 8) break;
+      if (!board[r][c]) {
+        moves.push([r, c]);
+      } else {
+        // Capture logic
+        moves.push([r, c]);
+        break;
+      }
+    }
+  }
+
+  return moves;
+}
+

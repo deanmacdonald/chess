@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chess Game</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <link rel="icon" href="/static/favicon.ico">
+</head>
+<body>
+  <h1>Chess Game</h1>
+  <div id="board" class="chess-board"></div>
+
+  <script>
+    const pieceImages = {
+      r: 'black-rook', n: 'black-knight', b: 'black-bishop',
+      q: 'black-queen', k: 'black-king', p: 'black-pawn',
+      R: 'white-rook', N: 'white-knight', B: 'white-bishop',
+      Q: 'white-queen', K: 'white-king', P: 'white-pawn'
+    };
+
+    function renderBoard(fen) {
+      const boardEl = document.getElementById('board');
+      boardEl.innerHTML = '';
+      const rows = fen.split(' ')[0].split('/');
+      rows.forEach((row, rIdx) => {
+        let cIdx = 0;
+        [...row].forEach(char => {
+          const square = document.createElement('div');
+          square.className = 'square ' + ((rIdx + cIdx) % 2 === 0 ? 'light' : 'dark');
+          if (isNaN(char)) {
+            const img = document.createElement('img');
+            img.src = `/static/assets/${pieceImages[char]}.png`;
+            img.className = 'piece';
+            square.appendChild(img);
+          } else {
+            cIdx += parseInt(char) - 1;
+          }
+          boardEl.appendChild(square);
+          cIdx++;
+        });
+      });
+    }
+
+    async function sendMove(from, to) {
+      const res = await fetch('/move', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ from, to })
+      });
+      const data = await res.json();
+      if (data.valid) renderBoard(data.fen);
+    }
+
+    // Initial render
+    renderBoard("{{ fen }}");
+
+    // Add click-to-move logic or drag-and-drop here if needed
+  </script>
+</body>
+</html>
+

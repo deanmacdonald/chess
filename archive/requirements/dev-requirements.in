@@ -1,0 +1,10 @@
+-r requirements.in
+
+black
+ruff
+mypy
+pytest
+bandit
+safety
+autopep8
+

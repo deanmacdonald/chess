@@ -1,6 +1,9 @@
-# Python artifacts
+
+# ========================
+# 📦 Python Artifacts
+# ========================
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.pyd
 *.swo
@@ -8,40 +11,75 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+.coverage
+htmlcov/
+*.cover
+*.py,cover
+.cache/
 
-# Virtual environments
+# ========================
+# 🐍 Virtual Environments
+# ========================
 .venv/
 venv/
 ENV/
 
-# Node.js artifacts
+# ========================
+# 📦 Node.js Artifacts
+# ========================
 node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Git
-.git/
-.gitignore
+# ========================
+# 🔒 Environment & Secrets
+# ========================
+.env
+.env.*
+*.pem
+*.key
+*.crt
 
-# Docker
-.dockerignore
-docker-bake.hcl
-
-# OS and editor files
-.DS_Store
-Thumbs.db
+# ========================
+# 🧪 CI/CD & Logs
+# ========================
 *.log
+*.pid
+*.seed
+*.pid.lock
 *.tmp
 *.bak
 
-# IDEs
+# ========================
+# 🧠 Git & Docker
+# ========================
+.git/
+.gitignore
+.dockerignore
+docker-bake.hcl
+
+# ========================
+# 💻 OS & Editor Files
+# ========================
+.DS_Store
+Thumbs.db
+*.orig
+*.rej
+
+# ========================
+# 🛠️ IDEs & Project Files
+# ========================
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
 
-# App-specific
-.env
-.env.*
+# ========================
+# 📁 App-Specific
+# ========================
+tests/
+docs/
+static/
+assets/
 

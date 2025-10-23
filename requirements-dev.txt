@@ -1,0 +1,56 @@
+# 🌐 Web Framework
+flask==3.1.2
+flask-cors==4.0.0
+flask-sqlalchemy==3.1.1
+flask-migrate==4.0.5
+flask-login==0.6.3
+flask-wtf==1.2.1
+flask-mail==0.9.1
+flask-admin==1.6.1
+
+# 🧪 Testing & Coverage
+pytest==7.4.3
+pytest-cov==4.1.0
+coverage==7.3.2
+responses==0.23.1
+requests==2.31.0
+
+# 🧰 Development Tools
+ipython==8.16.1
+watchdog==3.0.0
+python-dotenv==1.0.0
+memory-profiler==0.61.0
+debugpy==1.8.0
+
+# 🧹 Code Quality & Security
+flake8==6.1.0
+black==23.9.1
+isort==5.12.0
+mypy==1.8.0
+bandit==1.7.5
+
+# 📦 Packaging & Dependency Management
+setuptools==68.2.2
+wheel==0.41.2
+pip-tools==7.3.0
+build==1.0.3
+
+# 🐘 Database Drivers
+psycopg2-binary==2.9.7
+
+# 🧠 Type Hints & Static Analysis
+types-requests==2.31.0.0
+types-flask==1.1.6
+types-pyyaml==6.0.12.20250915
+
+# 🧪 Debugging & Profiling
+rich==14.1.0
+pyinstrument==4.6.1
+
+# 🧬 Optional: GraphQL & API Tools
+graphene==3.3
+marshmallow==3.21.0
+
+# 🧪 Optional: Task Queues
+celery==5.3.4
+

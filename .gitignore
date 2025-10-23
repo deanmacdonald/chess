@@ -1,9 +1,23 @@
-venv/
-dist/
+# Python artifacts
 __pycache__/
 *.pyc
+*.pyo
 *.log
-.env
-.buildx-cache-new/
+
+# Virtual environments
 venv/
 src/venv/
+
+# Build and dist folders
+dist/
+.buildx-cache-new/
+
+# Environment files
+.env
+
+# OS and editor junk
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
