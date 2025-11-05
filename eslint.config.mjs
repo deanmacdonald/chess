@@ -1,0 +1,13 @@
+export default [
+  {
+    files: ["**/*.cjs", "**/*.mjs"],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "script",
+    },
+    rules: {
+      "no-unused-vars": "warn",
+      "no-console": "off",
+    },
+  },
+];

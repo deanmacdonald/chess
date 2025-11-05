@@ -15,10 +15,10 @@ spec:
         app: chess-backend
     spec:
       containers:
-      - name: chess-backend-container
-        image: deanmacdonald/chess-app:latest
-        ports:
-        - containerPort: 5000
-        env:
-        - name: ENVIRONMENT
-          value: "production"
+        - name: chess-backend-container
+          image: deanmacdonald/chess-app:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: ENVIRONMENT
+              value: "production"
