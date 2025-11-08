@@ -1,0 +1,107 @@
+/* Base layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Chessboard container */
+#board {
+  width: 100%;
+  max-width: 400px;
+  min-height: 400px;
+  margin: 20px auto;
+  border: 2px solid #333;
+  background-color: #ccc;
+  box-sizing: border-box;
+  transition: transform 0.2s ease;
+}
+
+/* Piece transition (chessboard.js) */
+.piece-417db {
+  transition: transform 0.2s ease;
+}
+
+/* Status display */
+#status {
+  margin-top: 10px;
+  font-weight: bold;
+  min-height: 1.5rem;
+}
+
+/* Status color variants */
+#status.error {
+  color: #dc3545; /* Bootstrap danger red */
+}
+
+#status.success {
+  color: #28a745; /* Bootstrap success green */
+}
+
+/* Controls section */
+#controls {
+  margin-top: 20px;
+}
+
+/* Buttons */
+button {
+  margin: 5px;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  background-color: #6c757d;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #444;
+  cursor: pointer;
+}
+
+/* Optional: highlight squares (if using chessboard.js features) */
+.square-55d63 {
+  transition: background 0.2s ease;
+}
+
+/* Responsive tweaks for mobile */
+@media (max-width: 480px) {
+  #board {
+    max-width: 100%;
+    min-height: 300px;
+  }
+
+  button {
+    width: 100%;
+    font-size: 16px;
+  }
+}
+
+/* Optional dark mode support */
+body.dark {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+}
+
+body.dark #board {
+  border-color: #888;
+  background-color: #444;
+}
+
+body.dark button {
+  background-color: #444;
+  color: #f0f0f0;
+}
+
+body.dark button:hover {
+  background-color: #666;
+}
+
