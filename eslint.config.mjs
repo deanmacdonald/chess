@@ -1,13 +1,8 @@
 export default [
   {
-    files: ["**/*.cjs", "**/*.mjs"],
+    files: ["**/*.{js,mjs,cjs}"],
     languageOptions: {
-      ecmaVersion: 2022,
-      sourceType: "script",
-    },
-    rules: {
-      "no-unused-vars": "warn",
-      "no-console": "off",
-    },
-  },
+      sourceType: "module"
+    }
+  }
 ];

@@ -36,3 +36,11 @@
     "supertest": "^7.1.4"
   }
 }
+,
+"lint-staged": {
+  "*.{js,mjs,cjs}": "eslint"
+}
+,
+"lint-staged": {
+  "*.{js,mjs,cjs}": "eslint --fix"
+}
