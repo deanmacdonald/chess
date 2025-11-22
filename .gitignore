@@ -1,0 +1,33 @@
+# Node.js dependencies
+node_modules/
+yarn.lock
+
+# Logs
+*.log
+tunnel.log
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+
+# Tunneling binaries and archives
+ngrok*
+*.zip
+
+# Kubernetes backups or nested folders
+k8s/k8s-alt/
+*.bak
+*.old
+
+# ESLint cache
+.eslintcache
+
+# Docker artifacts
+*.tar
+
+node_modules/
+node_modules/
