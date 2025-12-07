@@ -1,0 +1,41 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fafafa;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.chess-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.captured-pieces, .move-history {
+  margin-top: 20px;
+  width: 500px;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.captured-pieces h3, .move-history h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #444;
+}
+
+.captured-pieces .pieces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.move-history ol {
+  margin: 0;
+  padding-left: 20px;
+}
+

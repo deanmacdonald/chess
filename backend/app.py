@@ -7,6 +7,7 @@ import platform
 import flask
 import requests
 from importlib.metadata import version, PackageNotFoundError
+from waitress import serve   # ✅ added Waitress
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 CORS(app)
@@ -145,5 +146,6 @@ def diagnose():
         return jsonify(diagnostics), 200
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # ✅ Use Waitress for production
+    serve(app, host="0.0.0.0", port=5000)
 

@@ -1,59 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { initializeBoard } from '../game/board.js';
-import { getValidMoves } from '../game/validator.js';
+import React from "react";
+import "../styles/board.css";
 
-export default function ChessBoard() {
-  const [board, setBoard] = useState(initializeBoard());
-  const [selected, setSelected] = useState(null);
-  const [validMoves, setValidMoves] = useState([]);
+export default function ChessBoard({ onMove, currentTurn, flipped, historyState }) {
+  const renderBoard = () => {
+    const squares = [];
+    // Reverse rows/cols when flipped so black is at bottom
+    const rows = flipped ? [...Array(8).keys()].reverse() : [...Array(8).keys()];
+    const cols = flipped ? [...Array(8).keys()].reverse() : [...Array(8).keys()];
 
-  const handleSquareClick = (row, col) => {
-    const piece = board[row][col];
+    for (let row of rows) {
+      for (let col of cols) {
+        const isLight = (row + col) % 2 === 0;
+        const squareColor = isLight ? "light" : "dark";
+        const piece = historyState?.[row]?.[col] || null;
 
-    if (selected) {
-      const isValid = validMoves.some(([r, c]) => r === row && c === col);
-      if (isValid) {
-        const newBoard = board.map(row => row.slice());
-        newBoard[row][col] = board[selected[0]][selected[1]];
-        newBoard[selected[0]][selected[1]] = null;
-        setBoard(newBoard);
-        setSelected(null);
-        setValidMoves([]);
-      } else {
-        setSelected(null);
-        setValidMoves([]);
+        squares.push(
+          <div
+            key={`${row}-${col}`}
+            className={`square ${squareColor}`}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              const from = JSON.parse(e.dataTransfer.getData("from"));
+              onMove(from, { row, col });
+            }}
+          >
+            {piece && (
+              <img
+                src={`/assets/pieces/${piece.color}-${piece.type}.svg`}
+                alt={`${piece.color} ${piece.type}`}
+                className="piece"
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData("from", JSON.stringify({ row, col }));
+                }}
+              />
+            )}
+          </div>
+        );
       }
-    } else if (piece) {
-      setSelected([row, col]);
-      const moves = getValidMoves(piece, [row, col], board, null, {});
-      setValidMoves(moves);
     }
+    return squares;
   };
 
   return (
     <div className="chess-board">
-      {board.map((rowArr, row) =>
-        rowArr.map((square, col) => {
-          const isHighlighted = validMoves.some(([r, c]) => r === row && c === col);
-          const squareColor = (row + col) % 2 === 0 ? 'light' : 'dark';
-          return (
-            <div
-              key={`${row}-${col}`}
-              className={`square ${squareColor} ${isHighlighted ? 'highlight' : ''}`}
-              onClick={() => handleSquareClick(row, col)}
-            >
-              {square && (
-                <img
-                  src={`/assets/pieces/${square.color}-${square.type}.png`}
-                  alt={`${square.color} ${square.type}`}
-                  className="piece"
-                />
-              )}
-            </div>
-          );
-        })
-      )}
+      {renderBoard()}
     </div>
   );
 }
-

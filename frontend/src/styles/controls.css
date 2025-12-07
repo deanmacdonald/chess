@@ -1,0 +1,32 @@
+.game-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px auto;
+  width: 500px;
+  padding: 10px;
+  background-color: #eee;
+  border: 2px solid #444;
+  border-radius: 6px;
+}
+
+.game-controls h2 {
+  font-size: 18px;
+  margin: 0;
+  color: #222;
+}
+
+.game-controls button {
+  padding: 8px 16px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.game-controls button:hover {
+  background-color: #666;
+}
+

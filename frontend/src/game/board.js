@@ -1,23 +1,35 @@
-// src/game/board.js
+// Initial chess board setup
 
-export function initializeBoard() {
-  const board = Array(8).fill(null).map(() => Array(8).fill(null));
-
-  const setup = {
-    0: ['black-rook', 'black-knight', 'black-bishop', 'black-queen', 'black-king', 'black-bishop', 'black-knight', 'black-rook'],
-    1: Array(8).fill('black-pawn'),
-    6: Array(8).fill('white-pawn'),
-    7: ['white-rook', 'white-knight', 'white-bishop', 'white-queen', 'white-king', 'white-bishop', 'white-knight', 'white-rook']
-  };
-
-  for (const row in setup) {
-    for (let col = 0; col < 8; col++) {
-      const name = setup[row][col];
-      const [color, type] = name.split('-');
-      board[row][col] = { type, color };
-    }
-  }
-
-  return board;
-}
-
+export const initialBoard = [
+  // Row 0 (black major pieces)
+  [
+    { color: "black", type: "rook" },
+    { color: "black", type: "knight" },
+    { color: "black", type: "bishop" },
+    { color: "black", type: "queen" },
+    { color: "black", type: "king" },
+    { color: "black", type: "bishop" },
+    { color: "black", type: "knight" },
+    { color: "black", type: "rook" },
+  ],
+  // Row 1 (black pawns)
+  Array(8).fill({ color: "black", type: "pawn" }),
+  // Rows 2–5 (empty squares)
+  Array(8).fill(null),
+  Array(8).fill(null),
+  Array(8).fill(null),
+  Array(8).fill(null),
+  // Row 6 (white pawns)
+  Array(8).fill({ color: "white", type: "pawn" }),
+  // Row 7 (white major pieces)
+  [
+    { color: "white", type: "rook" },
+    { color: "white", type: "knight" },
+    { color: "white", type: "bishop" },
+    { color: "white", type: "queen" },
+    { color: "white", type: "king" },
+    { color: "white", type: "bishop" },
+    { color: "white", type: "knight" },
+    { color: "white", type: "rook" },
+  ],
+];

@@ -1,7 +1,8 @@
-// Initialize board with custom piece images using absolute HTTP path
+// Initialize board with custom piece images and no internal notation
 const board = Chessboard('board', {
   draggable: true,
   position: 'start',
+  showNotation: false, // disables internal a–h and 1–8 labels
   pieceTheme: function(piece) {
     return 'http://' + window.location.hostname + ':5000/static/img/chesspieces/wikipedia/' + piece + '.png';
   },
@@ -56,4 +57,5 @@ document.getElementById('resetBtn').addEventListener('click', () => {
       document.getElementById('status').textContent = 'Game reset';
     });
 });
+
 
