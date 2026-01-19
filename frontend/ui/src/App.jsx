@@ -1,11 +1,12 @@
-import ChessTest from "./components/ChessTest";
+import ChessBoard from "./components/ChessBoard";
 
-export default function App() {
+function App() {
   return (
-    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
-      <h1>Chess Frontend</h1>
-      <ChessTest />
+    <div style={{ padding: "20px" }}>
+      <ChessBoard />
     </div>
   );
 }
+
+export default App;
 
