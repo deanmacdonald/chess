@@ -2,27 +2,40 @@
 import React, { useState, useRef, useEffect } from "react";
 import ChessSquare from "./ChessSquare";
 import ChessPiece from "./ChessPiece";
+import { game } from "../chessEngine";   // <-- chess.js engine
 
-const initialPosition = {
-  a8: "r", b8: "n", c8: "b", d8: "q", e8: "k", f8: "b", g8: "n", h8: "r",
-  a7: "p", b7: "p", c7: "p", d7: "p", e7: "p", f7: "p", g7: "p", h7: "p",
-  a2: "P", b2: "P", c2: "P", d2: "P", e2: "P", f2: "P", g2: "P", h2: "P",
-  a1: "R", b1: "N", c1: "B", d1: "Q", e1: "K", f1: "B", g1: "N", h1: "R",
-};
+// Convert chess.js board() → your { square: piece } format
+function convertBoardToPosition(board) {
+  const pos = {};
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+      const square = board[r][c];
+      if (square) {
+        const file = "abcdefgh"[c];
+        const rank = 8 - r;
+        pos[file + rank] =
+          square.color === "w"
+            ? square.type.toUpperCase()
+            : square.type.toLowerCase();
+      }
+    }
+  }
+  return pos;
+}
 
 function ChessBoard() {
-  const [position, setPosition] = useState(initialPosition);
+  const [position, setPosition] = useState(
+    convertBoardToPosition(game.board())
+  );
 
-  const [dragging, setDragging] = useState(null); 
-  // { piece, fromSquare }
-
+  const [dragging, setDragging] = useState(null);
   const [dragPos, setDragPos] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
 
   const boardRef = useRef(null);
 
-  const files = ["a","b","c","d","e","f","g","h"];
-  const ranks = [8,7,6,5,4,3,2,1];
+  const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
+  const ranks = [8, 7, 6, 5, 4, 3, 2, 1];
 
   function startDrag(piece, fromSquare, e) {
     e.preventDefault();
@@ -39,15 +52,22 @@ function ChessBoard() {
     return `${"abcdefgh"[file]}${rank + 1}`;
   }
 
+  // 🔥 NEW: rules‑checked drop using chess.js
   function dropPiece(toSquare) {
     if (!dragging || !toSquare) return;
 
-    setPosition(prev => {
-      const newPos = { ...prev };
-      delete newPos[dragging.fromSquare];
-      newPos[toSquare] = dragging.piece;
-      return newPos;
-    });
+    const from = dragging.fromSquare;
+    const to = toSquare;
+
+    const result = game.move({ from, to });
+
+    if (!result) {
+      console.log("Illegal move:", from, "→", to);
+      return;
+    }
+
+    // Update UI from chess.js board state
+    setPosition(convertBoardToPosition(game.board()));
   }
 
   useEffect(() => {
@@ -77,8 +97,8 @@ function ChessBoard() {
 
   return (
     <div ref={boardRef} style={styles.board}>
-      {ranks.map(rank =>
-        files.map(file => {
+      {ranks.map((rank) =>
+        files.map((file) => {
           const square = file + rank;
           const piece = position[square];
           return (

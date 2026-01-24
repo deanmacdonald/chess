@@ -1,70 +1,108 @@
-# Getting Started with Create React App
+# Chess Frontend UI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern Vite + React chess interface with real-time play, Stockfish integration, and a clean modular architecture.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Tech Stack
 
-### `npm start`
+- React 19
+- Vite 7
+- Socket.IO (real-time multiplayer)
+- Stockfish (engine analysis)
+- Chess.js / ChessOps (rules + move validation)
+- Prettier + ESLint (formatting + linting)
+- TypeScript type-checking for JS
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📁 Project Structure
 
-### `npm test`
+src/
+  components/
+  hooks/
+  logic/
+  assets/
+  styles/
+  pages/
+  App.jsx
+  main.jsx
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- components/ — UI building blocks
+- logic/ — chess rules, engine integration, utilities
+- hooks/ — custom React hooks
+- assets/ — images, sounds
+- pages/ — route-level components
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🧩 Scripts
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Command | Description |
+|--------|-------------|
+| npm run dev | Start dev server |
+| npm run build | Build for production |
+| npm run preview | Preview production build |
+| npm run lint | Run ESLint |
+| npm run lint:fix | Auto-fix lint issues |
+| npm run format | Format with Prettier |
+| npm run typecheck | Type-check JS using TS |
+| npm run clean | Remove dist, node_modules, caches |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 🧼 Code Quality
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### ESLint  
+Configured with:
+- React rules
+- Hooks rules
+- React Refresh rules
+- JS recommended rules
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Prettier  
+Configured with:
+- Tailwind plugin
+- 100-char line width
+- No semicolons
+- Single quotes
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🛠️ Development
 
-## Learn More
+Start the dev server:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+npm run dev
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Run type-checking:
 
-### Code Splitting
+npm run typecheck
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Format everything:
 
-### Analyzing the Bundle Size
+npm run format
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## 📦 Build
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+npm run build
 
-### Advanced Configuration
+Output goes to:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+dist/
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🧠 Notes
 
-### `npm run build` fails to minify
+- JS is fully type-checked using TypeScript without converting files.
+- Chess logic is isolated in src/logic/ for clarity and testing.
+- The project is structured for future expansion (themes, puzzles, AI opponents, etc.).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 📄 License
+
+MIT
