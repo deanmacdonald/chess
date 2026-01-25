@@ -1,9 +1,11 @@
 // ChessBoard.jsx
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
+import { useChessGame } from "../api/chess";
 import ChessSquare from "./ChessSquare";
 import ChessPiece from "./ChessPiece";
 import { game } from "../chessEngine";   // <-- chess.js engine
 
+<<<<<<< Updated upstream
 // Convert chess.js board() → your { square: piece } format
 function convertBoardToPosition(board) {
   const pos = {};
@@ -42,16 +44,30 @@ function ChessBoard() {
     setDragging({ piece, fromSquare });
     setDragPos({ x: e.clientX, y: e.clientY });
     setIsDragging(true);
+=======
+const files = ["a","b","c","d","e","f","g","h"];
+const ranks = [8,7,6,5,4,3,2,1];
+
+export default function ChessBoard() {
+  const {
+    game,
+    position,
+    selected,
+    legalMoves,
+    handleSquareClick,
+    handleMove,
+  } = useChessGame();
+
+  function onDragStart(piece, fromSquare) {
+    handleSquareClick(fromSquare);
+>>>>>>> Stashed changes
   }
 
-  function getSquareFromCoords(x, y) {
-    const rect = boardRef.current.getBoundingClientRect();
-    const file = Math.floor(((x - rect.left) / rect.width) * 8);
-    const rank = 7 - Math.floor(((y - rect.top) / rect.height) * 8);
-    if (file < 0 || file > 7 || rank < 0 || rank > 7) return null;
-    return `${"abcdefgh"[file]}${rank + 1}`;
+  function onDrop(from, to) {
+    handleMove(from, to);
   }
 
+<<<<<<< Updated upstream
   // 🔥 NEW: rules‑checked drop using chess.js
   function dropPiece(toSquare) {
     if (!dragging || !toSquare) return;
@@ -99,34 +115,36 @@ function ChessBoard() {
     <div ref={boardRef} style={styles.board}>
       {ranks.map((rank) =>
         files.map((file) => {
+=======
+  return (
+    <div style={styles.board}>
+      {ranks.map(rank =>
+        files.map(file => {
+>>>>>>> Stashed changes
           const square = file + rank;
           const piece = position[square];
+          const isSelected = selected === square;
+          const isLegal = legalMoves.includes(square);
+
           return (
-            <ChessSquare key={square} square={square}>
+            <ChessSquare
+              key={square}
+              square={square}
+              selected={isSelected}
+              legal={isLegal}
+              onClick={() => handleSquareClick(square)}
+            >
               {piece && (
                 <ChessPiece
                   piece={piece}
                   square={square}
-                  onDragStart={startDrag}
+                  onDragStart={onDragStart}
+                  onDrop={onDrop}
                 />
               )}
             </ChessSquare>
           );
         })
-      )}
-
-      {isDragging && dragging && (
-        <div
-          style={{
-            position: "fixed",
-            left: dragPos.x - 30,
-            top: dragPos.y - 30,
-            pointerEvents: "none",
-            zIndex: 999,
-          }}
-        >
-          <ChessPiece piece={dragging.piece} ghost />
-        </div>
       )}
     </div>
   );
@@ -135,14 +153,13 @@ function ChessBoard() {
 const styles = {
   board: {
     display: "grid",
-    gridTemplateColumns: "repeat(8, 60px)",
-    gridTemplateRows: "repeat(8, 60px)",
+    gridTemplateColumns: "repeat(8, 1fr)",
+    gridTemplateRows: "repeat(8, 1fr)",
+    width: "100%",
+    maxWidth: "480px",
+    aspectRatio: "1 / 1",
     border: "4px solid #333",
-    width: "480px",
-    height: "480px",
+    margin: "0 auto",
     position: "relative",
   },
 };
-
-export default ChessBoard;
-
