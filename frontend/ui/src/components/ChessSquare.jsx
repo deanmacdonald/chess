@@ -1,26 +1,32 @@
-// ChessSquare.jsx
-import React from "react";
+export default function ChessSquare({
+  square,
+  isLight,
+  isSelected,
+  onClick,
+  children,
+}) {
+  const lightColor = "#f0d9b5";
+  const darkColor = "#b58863";
+  const selectedColor = "#f6f669";
 
-export default function ChessSquare({ square, children }) {
-  const file = square.charCodeAt(0) - "a".charCodeAt(0);
-  const rank = parseInt(square[1], 10);
-
-  const isDark = (file + rank) % 2 === 0;
+  let backgroundColor = isLight ? lightColor : darkColor;
+  if (isSelected) {
+    backgroundColor = selectedColor;
+  }
 
   return (
     <div
+      onClick={() => onClick(square)}
       style={{
-        width: "60px",
-        height: "60px",
-        backgroundColor: isDark ? "#769656" : "#eeeed2",
+        backgroundColor,
+        width: "100%",
+        height: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        userSelect: "none",
       }}
     >
       {children}
     </div>
   );
 }
-
