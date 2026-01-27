@@ -1,18 +1,27 @@
-// ChessPiece.jsx
-import React from "react";
-
-const unicodePieces = {
-  K: "♔", Q: "♕", R: "♖", B: "♗", N: "♘", P: "♙",
-  k: "♚", q: "♛", r: "♜", b: "♝", n: "♞", p: "♟",
+const UNICODE_PIECES = {
+  wp: "♙",
+  wr: "♖",
+  wn: "♘",
+  wb: "♗",
+  wq: "♕",
+  wk: "♔",
+  bp: "♟",
+  br: "♜",
+  bn: "♞",
+  bb: "♝",
+  bq: "♛",
+  bk: "♚",
 };
 
-function ChessPiece({ piece }) {
+export default function ChessPiece({ piece }) {
+  if (!piece) return null;
+
+  const key = `${piece.color}${piece.type}`;
+  const symbol = UNICODE_PIECES[key] || "?";
+
   return (
-    <span style={{ fontSize: "48px" }}>
-      {unicodePieces[piece]}
+    <span className="text-3xl sm:text-4xl select-none">
+      {symbol}
     </span>
   );
 }
-
-export default ChessPiece;
-
