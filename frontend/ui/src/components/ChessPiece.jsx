@@ -1,27 +1,23 @@
 const UNICODE_PIECES = {
-  wp: "♙",
-  wr: "♖",
-  wn: "♘",
-  wb: "♗",
-  wq: "♕",
-  wk: "♔",
-  bp: "♟",
-  br: "♜",
-  bn: "♞",
-  bb: "♝",
-  bq: "♛",
-  bk: "♚",
-};
+  wp: '♙',
+  wr: '♖',
+  wn: '♘',
+  wb: '♗',
+  wq: '♕',
+  wk: '♔',
+  bp: '♟',
+  br: '♜',
+  bn: '♞',
+  bb: '♝',
+  bq: '♛',
+  bk: '♚',
+}
 
 export default function ChessPiece({ piece }) {
-  if (!piece) return null;
+  if (!piece) return null
 
-  const key = `${piece.color}${piece.type}`;
-  const symbol = UNICODE_PIECES[key] || "?";
+  const key = `${piece.color}${piece.type}`
+  const symbol = UNICODE_PIECES[key] || '?'
 
-  return (
-    <span className="text-3xl sm:text-4xl select-none">
-      {symbol}
-    </span>
-  );
+  return <span className="text-3xl select-none sm:text-4xl">{symbol}</span>
 }

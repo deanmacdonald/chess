@@ -1,4 +1,3 @@
-import { Chess } from 'chess.js';
+import { Chess } from 'chess.js'
 
-export const game = new Chess();
-
+export const game = new Chess()

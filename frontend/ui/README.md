@@ -19,14 +19,14 @@ A modern Vite + React chess interface with real-time play, Stockfish integration
 ## 📁 Project Structure
 
 src/
-  components/
-  hooks/
-  logic/
-  assets/
-  styles/
-  pages/
-  App.jsx
-  main.jsx
+components/
+hooks/
+logic/
+assets/
+styles/
+pages/
+App.jsx
+main.jsx
 
 - components/ — UI building blocks
 - logic/ — chess rules, engine integration, utilities
@@ -38,30 +38,34 @@ src/
 
 ## 🧩 Scripts
 
-| Command | Description |
-|--------|-------------|
-| npm run dev | Start dev server |
-| npm run build | Build for production |
-| npm run preview | Preview production build |
-| npm run lint | Run ESLint |
-| npm run lint:fix | Auto-fix lint issues |
-| npm run format | Format with Prettier |
-| npm run typecheck | Type-check JS using TS |
-| npm run clean | Remove dist, node_modules, caches |
+| Command           | Description                       |
+| ----------------- | --------------------------------- |
+| npm run dev       | Start dev server                  |
+| npm run build     | Build for production              |
+| npm run preview   | Preview production build          |
+| npm run lint      | Run ESLint                        |
+| npm run lint:fix  | Auto-fix lint issues              |
+| npm run format    | Format with Prettier              |
+| npm run typecheck | Type-check JS using TS            |
+| npm run clean     | Remove dist, node_modules, caches |
 
 ---
 
 ## 🧼 Code Quality
 
-### ESLint  
+### ESLint
+
 Configured with:
+
 - React rules
 - Hooks rules
 - React Refresh rules
 - JS recommended rules
 
-### Prettier  
+### Prettier
+
 Configured with:
+
 - Tailwind plugin
 - 100-char line width
 - No semicolons
