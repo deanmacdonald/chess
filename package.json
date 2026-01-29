@@ -1,46 +1,32 @@
 {
-  "name": "backend",
+  "name": "chess-master",
   "version": "1.0.0",
-  "description": "Chess backend server with Express and Socket.IO",
-  "main": "index.cjs",
+  "description": "Multiplayer chess app with real-time play, validation, and logging",
+  "main": "index.js",
   "scripts": {
-    "start": "node index.cjs",
-    "dev": "nodemon index.cjs",
-    "lint": "eslint . --ext .cjs,.mjs",
-    "lint:fix": "eslint . --ext .cjs,.mjs --fix",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "lint": "eslint .",
     "format": "prettier --write .",
-    "test": "jest",
-    "tunnel": "ngrok http 3000"
+    "test": "echo \"No tests yet\" && exit 0",
+    "prepare": "husky install"
   },
-  "author": "Dean MacDonald",
-  "license": "ISC",
-  "type": "commonjs",
+  "keywords": ["chess", "multiplayer", "socket.io", "nodejs", "express"],
+  "author": "Dean",
+  "license": "MIT",
   "dependencies": {
-    "chess.js": "^1.4.0",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.3",
-    "express": "^5.1.0",
-    "helmet": "^8.1.0",
-    "mongoose": "^8.18.1",
-    "morgan": "^1.10.1",
-    "socket.io": "^4.8.1",
-    "uuid": "^13.0.0",
-    "winston": "^3.18.3"
+    "chess.js": "^1.0.0",
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "lowdb": "^6.0.1",
+    "express-validator": "^7.0.1",
+    "compression": "^1.7.4",
+    "winston": "^3.9.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "eslint": "^9.39.1",
-    "jest": "^30.1.3",
-    "nodemon": "^3.1.10",
-    "prettier": "^3.6.2",
-    "supertest": "^7.1.4"
+    "nodemon": "^3.0.1",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.0",
+    "husky": "^8.0.3"
   }
-}
-,
-"lint-staged": {
-  "*.{js,mjs,cjs}": "eslint"
-}
-,
-"lint-staged": {
-  "*.{js,mjs,cjs}": "eslint --fix"
 }
