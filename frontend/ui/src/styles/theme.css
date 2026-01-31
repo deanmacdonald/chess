@@ -1,0 +1,162 @@
+/* ================================
+   GLOBAL CLASSIC WOOD THEME
+   ================================ */
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #e6d5b8;
+  font-family: serif;
+  color: #3b2f2f;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #d4b483;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b58863;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a06f4f;
+}
+
+/* ================================
+   CHESS BOARD + SQUARES
+   ================================ */
+
+.chessboard {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.chess-square {
+  user-select: none;
+  cursor: pointer;
+}
+
+/* ================================
+   PIECES
+   ================================ */
+
+.piece-img {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
+}
+
+/* ================================
+   BUTTONS
+   ================================ */
+
+button {
+  font-family: serif;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* ================================
+   PANELS (MoveViewer, GameList, Forms)
+   ================================ */
+
+.panel {
+  background: #d4b483;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  color: #3b2f2f;
+}
+
+/* ================================
+   INPUTS
+   ================================ */
+
+input {
+  background: #f5e6c8;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 1rem;
+  color: #3b2f2f;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: 2px solid #b58863;
+}
+
+/* ================================
+   HEADERS
+   ================================ */
+
+h1,
+h2,
+h3 {
+  font-family: serif;
+  color: #3b2f2f;
+}
+
+/* ================================
+   PLAYER PANELS
+   ================================ */
+
+.player-panel {
+  width: 480px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ================================
+   CLOCKS
+   ================================ */
+
+.chess-clock {
+  font-family: serif;
+  user-select: none;
+}
+
+/* ================================
+   ANIMATIONS
+   ================================ */
+
+@keyframes highlightPulse {
+  0% {
+    box-shadow: inset 0 0 0 3px rgba(255, 215, 0, 0.5);
+  }
+  50% {
+    box-shadow: inset 0 0 0 3px rgba(255, 215, 0, 1);
+  }
+  100% {
+    box-shadow: inset 0 0 0 3px rgba(255, 215, 0, 0.5);
+  }
+}
+
+.square-selected {
+  animation: highlightPulse 1s infinite;
+}

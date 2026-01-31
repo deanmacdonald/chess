@@ -1,22 +1,40 @@
 import { useState } from 'react'
 import StartScreen from './components/StartScreen'
+import NewGameForm from './components/NewGameForm'
 import GameScreen from './components/GameScreen'
 
 export default function App() {
-  const [gameStarted, setGameStarted] = useState(false)
+  const [screen, setScreen] = useState('start') // 'start' | 'new' | 'game'
   const [playerInfo, setPlayerInfo] = useState(null)
 
-  const handleStart = (data) => {
+  const handleStartScreen = () => {
+    setScreen('new')
+  }
+
+  const handleNewGame = (data) => {
     setPlayerInfo(data)
-    setGameStarted(true)
+    setScreen('game')
   }
 
   return (
-    <div className="flex h-full min-h-screen w-full items-center justify-center bg-gray-900 text-gray-100">
-      {!gameStarted ? (
-        <StartScreen onStart={handleStart} />
-      ) : (
-        <GameScreen playerInfo={playerInfo} />
+    <div
+      style={{
+        minHeight: '100vh',
+        width: '100%',
+        background: '#e6d5b8', // parchment background
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      {screen === 'start' && <StartScreen onNewGame={handleStartScreen} />}
+      {screen === 'new' && <NewGameForm onStart={handleNewGame} />}
+      {screen === 'game' && (
+        <GameScreen
+          whitePlayer={playerInfo.whitePlayer}
+          blackPlayer={playerInfo.blackPlayer}
+          timeControl={playerInfo.timeControl}
+        />
       )}
     </div>
   )

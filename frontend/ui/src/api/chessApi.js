@@ -1,5 +1,6 @@
 const API = '/api'
 
+// Unified request helper
 async function request(path, options = {}) {
   try {
     const res = await fetch(`${API}${path}`, {
@@ -19,16 +20,51 @@ async function request(path, options = {}) {
   }
 }
 
+/* -----------------------------
+   HEALTH CHECK
+----------------------------- */
 export async function getBackendStatus() {
-  return request('/status')
+  return request('/')
 }
 
-export async function getBoard() {
-  return request('/board')
+/* -----------------------------
+   GAME STATE
+----------------------------- */
+export async function getGameState() {
+  return request('/state')
 }
 
-export async function sendMove(from, to) {
-  return request(`/move?from_square=${from}&to_square=${to}`, {
+/* -----------------------------
+   START NEW GAME
+----------------------------- */
+export async function startNewGame() {
+  return request('/new', {
     method: 'POST',
+  })
+}
+
+/* -----------------------------
+   RESET GAME
+----------------------------- */
+export async function resetGame() {
+  return request('/reset', {
+    method: 'POST',
+  })
+}
+
+/* -----------------------------
+   LEGAL MOVES
+----------------------------- */
+export async function getLegalMoves(fromSquare) {
+  return request(`/legal-moves?from=${encodeURIComponent(fromSquare)}`)
+}
+
+/* -----------------------------
+   MAKE MOVE
+----------------------------- */
+export async function sendMove(from, to, promotion = null) {
+  return request('/move', {
+    method: 'POST',
+    body: JSON.stringify({ from, to, promotion }),
   })
 }

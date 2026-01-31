@@ -1,67 +1,53 @@
-import { useState } from 'react'
+import React from 'react'
 import ChessSquare from './ChessSquare'
-import ChessPiece from './ChessPiece'
 
-const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+export default function ChessBoard({
+  board,
+  selectedSquare,
+  legalMoves = [],
+  lastMove = null,
+  onSquareClick,
+}) {
+  // Helper: check if a square is in legalMoves
+  const isLegal = (row, col) => legalMoves.some((m) => m.row === row && m.col === col)
 
-export default function ChessBoard({ game, onMove, orientation = 'white' }) {
-  const [selected, setSelected] = useState(null)
-
-  const board = game.board() // 8x8 from white's perspective, rank 8 -> 1
-
-  const ranks = orientation === 'white' ? [8, 7, 6, 5, 4, 3, 2, 1] : [1, 2, 3, 4, 5, 6, 7, 8]
-  const files = orientation === 'white' ? FILES : [...FILES].reverse()
-
-  const handleSquareClick = (square) => {
-    const piece = game.get(square)
-
-    if (!selected) {
-      if (piece && piece.color === game.turn()) {
-        setSelected(square)
-      }
-      return
-    }
-
-    if (square === selected) {
-      setSelected(null)
-      return
-    }
-
-    const success = onMove(selected, square)
-    if (success) {
-      setSelected(null)
-    }
-  }
+  // Helper: check if square is last move
+  const isLast = (row, col) =>
+    lastMove &&
+    ((lastMove.from.row === row && lastMove.from.col === col) ||
+      (lastMove.to.row === row && lastMove.to.col === col))
 
   return (
     <div
-      className="grid"
+      className="chessboard"
       style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(8, 1fr)',
         gridTemplateRows: 'repeat(8, 1fr)',
-        width: '360px',
-        height: '360px',
+        width: '480px',
+        height: '480px',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
       }}
     >
-      {ranks.map((rankIndex) =>
-        files.map((file, fileIndex) => {
-          const rankFromTop = 8 - rankIndex
-          const piece = board[rankFromTop][fileIndex]
-          const square = `${file}${rankIndex}`
-          const isLight = (fileIndex + rankIndex) % 2 === 0
-          const isSelected = selected === square
+      {board.map((rowArray, row) =>
+        rowArray.map((square, col) => {
+          const isLight = (row + col) % 2 === 0
+          const isSelected =
+            selectedSquare && selectedSquare.row === row && selectedSquare.col === col
 
           return (
             <ChessSquare
-              key={square}
-              square={square}
+              key={`${row}-${col}`}
+              square={{ row, col }}
+              piece={square}
               isLight={isLight}
               isSelected={isSelected}
-              onClick={handleSquareClick}
-            >
-              {piece && <ChessPiece piece={piece} />}
-            </ChessSquare>
+              isLegalMove={isLegal(row, col)}
+              isLastMove={isLast(row, col)}
+              onClick={() => onSquareClick(row, col)}
+            />
           )
         }),
       )}
