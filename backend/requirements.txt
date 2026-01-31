@@ -1,0 +1,47 @@
+# Core framework
+flask
+
+# Production server
+gunicorn
+
+# Environment variables
+python-dotenv
+
+# CORS support
+flask-cors
+
+# Request validation & serialization
+marshmallow
+marshmallow-sqlalchemy
+
+# Database ORM + migrations
+sqlalchemy
+alembic
+
+# Database drivers
+psycopg2-binary        # PostgreSQL
+pymysql                # MySQL/MariaDB
+
+# Authentication & security
+flask-jwt-extended
+passlib[bcrypt]
+
+# Async support
+asgiref
+
+# Background tasks
+celery
+redis
+
+# HTTP client
+requests
+
+# Utilities
+python-dateutil
+pytz
+
+# Testing
+pytest
+pytest-flask
+coverage
+
