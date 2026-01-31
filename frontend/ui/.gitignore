@@ -29,3 +29,5 @@ coverage/
 
 # Docker
 *.pid
+node_modules/
+.env
