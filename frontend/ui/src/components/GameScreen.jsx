@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react'
 import ChessBoard from './ChessBoard'
 import MoveViewer from './MoveViewer'
 import ChessClock from './ChessClock'
-import { getGameState, getLegalMoves, sendMove, startNewGame } from '../api/chessApi'
+import { sendMove, startNewGame } from '../api/chessApi'
 
 export default function GameScreen({ whitePlayer, blackPlayer, timeControl }) {
+  const [gameId, setGameId] = useState(null)
   const [state, setState] = useState(null)
   const [selected, setSelected] = useState(null)
   const [legalMoves, setLegalMoves] = useState([])
@@ -16,7 +17,8 @@ export default function GameScreen({ whitePlayer, blackPlayer, timeControl }) {
   useEffect(() => {
     async function load() {
       const newGame = await startNewGame()
-      if (newGame?.state) {
+      if (newGame?.game_id && newGame?.state) {
+        setGameId(newGame.game_id)
         setState(newGame.state)
       }
     }
@@ -27,36 +29,37 @@ export default function GameScreen({ whitePlayer, blackPlayer, timeControl }) {
      HANDLE SQUARE CLICK
   ----------------------------- */
   const handleSquareClick = async (row, col) => {
-    if (!state) return
+    if (!state || !gameId) return
 
     const square = convertToSquare(row, col)
 
-    // If selecting a piece
+    // Selecting a piece
     if (!selected) {
-      const moves = await getLegalMoves(square)
-      if (moves?.moves?.length) {
+      const moves = state.legal_moves?.[square]
+      if (moves?.length) {
         setSelected({ row, col, square })
-        setLegalMoves(moves.moves.map((m) => m.to))
+        setLegalMoves(moves)
       }
       return
     }
 
-    // If clicking a legal destination
+    // Clicking a legal destination
     if (legalMoves.includes(square)) {
-      const result = await sendMove(selected.square, square)
+      const uciMove = `${selected.square}${square}`
+
+      const result = await sendMove(gameId, uciMove)
 
       if (result?.status === 'ok') {
         setState(result.state)
         setLastMove({ from: selected.square, to: square })
       }
 
-      // Clear selection
       setSelected(null)
       setLegalMoves([])
       return
     }
 
-    // If clicking elsewhere, clear selection
+    // Clicking elsewhere clears selection
     setSelected(null)
     setLegalMoves([])
   }
@@ -76,13 +79,7 @@ export default function GameScreen({ whitePlayer, blackPlayer, timeControl }) {
   ----------------------------- */
   if (!state) {
     return (
-      <div
-        style={{
-          fontFamily: 'serif',
-          fontSize: '1.6rem',
-          color: '#3b2f2f',
-        }}
-      >
+      <div style={{ fontFamily: 'serif', fontSize: '1.6rem', color: '#3b2f2f' }}>
         Loading game…
       </div>
     )

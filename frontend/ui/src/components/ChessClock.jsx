@@ -1,32 +1,31 @@
 import React from 'react'
 
-export default function ChessClock({ time, active }) {
-  // Format seconds → mm:ss
-  const format = (t) => {
-    const m = Math.floor(t / 60)
-    const s = t % 60
-    return `${m}:${s.toString().padStart(2, '0')}`
-  }
-
+export default function ChessClock({ whitePlayer, blackPlayer, timeControl, turn }) {
   return (
     <div
-      className="chess-clock"
+      className="chess-clock-panel"
       style={{
-        width: '480px',
-        padding: '14px 20px',
-        background: active ? '#d4b483' : '#c9a97c',
-        color: '#3b2f2f',
-        fontSize: '2rem',
-        fontWeight: '600',
-        textAlign: 'center',
-        borderRadius: '6px',
+        background: '#d4b483',
+        borderRadius: '8px',
+        padding: '16px',
         boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
-        transition: 'background 0.2s ease, transform 0.15s ease',
-        transform: active ? 'scale(1.02)' : 'scale(1.0)',
-        userSelect: 'none',
+        color: '#3b2f2f',
+        fontFamily: 'serif',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
       }}
     >
-      {format(time)}
+      <div style={{ fontWeight: 700, fontSize: '1.2rem' }}>Time Control: {timeControl}</div>
+      <div>
+        <strong>White:</strong> {whitePlayer.name} ({whitePlayer.rating})
+      </div>
+      <div>
+        <strong>Black:</strong> {blackPlayer.name} ({blackPlayer.rating})
+      </div>
+      <div style={{ marginTop: '8px' }}>
+        <strong>Turn:</strong> {turn === 'w' || turn === 'white' ? 'White' : 'Black'}
+      </div>
     </div>
   )
 }

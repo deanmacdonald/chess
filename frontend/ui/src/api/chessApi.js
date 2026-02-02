@@ -1,4 +1,4 @@
-const API = '/api'
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 // Unified request helper
 async function request(path, options = {}) {
@@ -9,7 +9,8 @@ async function request(path, options = {}) {
     })
 
     if (!res.ok) {
-      console.error(`API error: ${res.status} ${res.statusText}`)
+      const err = await res.json().catch(() => ({}))
+      console.error('API error:', err.detail || res.statusText)
       return null
     }
 
@@ -24,18 +25,12 @@ async function request(path, options = {}) {
    HEALTH CHECK
 ----------------------------- */
 export async function getBackendStatus() {
-  return request('/')
-}
-
-/* -----------------------------
-   GAME STATE
------------------------------ */
-export async function getGameState() {
-  return request('/state')
+  return request('/status')
 }
 
 /* -----------------------------
    START NEW GAME
+   returns: { game_id, state }
 ----------------------------- */
 export async function startNewGame() {
   return request('/new', {
@@ -44,27 +39,24 @@ export async function startNewGame() {
 }
 
 /* -----------------------------
-   RESET GAME
+   GET GAME STATE
+   returns: { game_id, state }
 ----------------------------- */
-export async function resetGame() {
-  return request('/reset', {
-    method: 'POST',
-  })
+export async function getGameState(gameId) {
+  return request(`/state/${gameId}`)
 }
 
 /* -----------------------------
-   LEGAL MOVES
+   MAKE MOVE (UCI format)
+   returns: { status, state }
 ----------------------------- */
-export async function getLegalMoves(fromSquare) {
-  return request(`/legal-moves?from=${encodeURIComponent(fromSquare)}`)
-}
-
-/* -----------------------------
-   MAKE MOVE
------------------------------ */
-export async function sendMove(from, to, promotion = null) {
+export async function sendMove(gameId, uciMove) {
   return request('/move', {
     method: 'POST',
-    body: JSON.stringify({ from, to, promotion }),
+    body: JSON.stringify({
+      game_id: gameId,
+      move: uciMove,
+    }),
   })
 }
+

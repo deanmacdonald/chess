@@ -1,9 +1,3 @@
-@import 'tailwindcss';
-
-/* Keep Tailwind resets, but let theme.css control the look */
-
-body {
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

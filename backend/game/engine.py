@@ -1,30 +1,31 @@
-class ChessEngine:
+import chess
+from typing import Dict
+
+class GameManager:
     def __init__(self):
-        self.board = self._initial_board()
+        self.games: Dict[str, chess.Board] = {}
 
-    def _initial_board(self):
-        return [
-            ["r","n","b","q","k","b","n","r"],
-            ["p","p","p","p","p","p","p","p"],
-            ["","","","","","","",""],
-            ["","","","","","","",""],
-            ["","","","","","","",""],
-            ["","","","","","","",""],
-            ["P","P","P","P","P","P","P","P"],
-            ["R","N","B","Q","K","B","N","R"]
-        ]
+    def create_game(self, game_id: str):
+        board = chess.Board()
+        self.games[game_id] = board
+        return board
 
-    def get_board_state(self):
-        return self.board
+    def get_game(self, game_id: str):
+        return self.games.get(game_id)
 
-    def make_move(self, from_sq, to_sq):
-        # TODO: add real validation
-        fx, fy = int(from_sq[1]), ord(from_sq[0]) - 97
-        tx, ty = int(to_sq[1]), ord(to_sq[0]) - 97
+    def make_move(self, game_id: str, move_uci: str):
+        board = self.get_game(game_id)
+        if board is None:
+            return None
 
-        piece = self.board[fx][fy]
-        self.board[fx][fy] = ""
-        self.board[tx][ty] = piece
+        try:
+            move = chess.Move.from_uci(move_uci)
+        except:
+            return "invalid"
 
-        return "ok"
+        if move not in board.legal_moves:
+            return "illegal"
+
+        board.push(move)
+        return board
 

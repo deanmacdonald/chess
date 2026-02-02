@@ -1,21 +1,53 @@
 import React from 'react'
 import ChessSquare from './ChessSquare'
 
+function parseFEN(fen) {
+  const [placement] = fen.split(' ')
+  const rows = placement.split('/')
+  const board = []
+
+  for (let r = 0; r < 8; r++) {
+    const row = []
+    const fenRow = rows[r]
+    for (const ch of fenRow) {
+      if (/[1-8]/.test(ch)) {
+        const empty = parseInt(ch, 10)
+        for (let i = 0; i < empty; i++) row.push(null)
+      } else {
+        row.push(ch)
+      }
+    }
+    board.push(row)
+  }
+
+  return board
+}
+
+function squareFromCoords(row, col) {
+  const file = 'abcdefgh'[col]
+  const rank = 8 - row
+  return `${file}${rank}`
+}
+
 export default function ChessBoard({
-  board,
+  fen,
   selectedSquare,
   legalMoves = [],
   lastMove = null,
   onSquareClick,
 }) {
-  // Helper: check if a square is in legalMoves
-  const isLegal = (row, col) => legalMoves.some((m) => m.row === row && m.col === col)
+  const board = parseFEN(fen)
 
-  // Helper: check if square is last move
-  const isLast = (row, col) =>
-    lastMove &&
-    ((lastMove.from.row === row && lastMove.from.col === col) ||
-      (lastMove.to.row === row && lastMove.to.col === col))
+  const isLegal = (row, col) => {
+    const sq = squareFromCoords(row, col)
+    return legalMoves.includes(sq)
+  }
+
+  const isLast = (row, col) => {
+    if (!lastMove) return false
+    const sq = squareFromCoords(row, col)
+    return lastMove.from === sq || lastMove.to === sq
+  }
 
   return (
     <div

@@ -1,6 +1,13 @@
 import React from 'react'
 
 export default function MoveViewer({ moves = [] }) {
+  const renderMove = (move) => {
+    if (typeof move === 'string') return move
+    if (move.san) return move.san
+    if (move.uci) return move.uci
+    return JSON.stringify(move)
+  }
+
   return (
     <div
       className="move-viewer"
@@ -27,7 +34,9 @@ export default function MoveViewer({ moves = [] }) {
         Moves
       </h2>
 
-      {moves.length === 0 && <div style={{ opacity: 0.7, fontStyle: 'italic' }}>No moves yet.</div>}
+      {moves.length === 0 && (
+        <div style={{ opacity: 0.7, fontStyle: 'italic' }}>No moves yet.</div>
+      )}
 
       <ol style={{ paddingLeft: '20px', margin: 0 }}>
         {moves.map((move, i) => (
@@ -39,7 +48,7 @@ export default function MoveViewer({ moves = [] }) {
               lineHeight: '1.4rem',
             }}
           >
-            {move}
+            {renderMove(move)}
           </li>
         ))}
       </ol>
