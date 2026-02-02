@@ -30,3 +30,6 @@ build/
 
 # Requirements backup
 requirements*.bak
+
+# Local Netlify folder
+.netlify
