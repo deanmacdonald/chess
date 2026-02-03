@@ -1,7 +1,30 @@
-node_modules/
-.env
-dist/
-build/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+.env.*
+
+# SQLite / local DBs
+*.db
+
+# Logs
 logs/
 *.log
+
+# Build / dist (if you ever package Python)
+build/
+dist/
+
+# Node leftovers (from frontend or past structure)
+node_modules/
+
+# Editor cruft
+.vscode/
+.idea/
+*.swp
 
