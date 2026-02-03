@@ -34,9 +34,7 @@ export default function MoveViewer({ moves = [] }) {
         Moves
       </h2>
 
-      {moves.length === 0 && (
-        <div style={{ opacity: 0.7, fontStyle: 'italic' }}>No moves yet.</div>
-      )}
+      {moves.length === 0 && <div style={{ opacity: 0.7, fontStyle: 'italic' }}>No moves yet.</div>}
 
       <ol style={{ paddingLeft: '20px', margin: 0 }}>
         {moves.map((move, i) => (

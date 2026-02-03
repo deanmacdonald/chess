@@ -79,9 +79,7 @@ export default function GameScreen({ whitePlayer, blackPlayer, timeControl }) {
   ----------------------------- */
   if (!state) {
     return (
-      <div style={{ fontFamily: 'serif', fontSize: '1.6rem', color: '#3b2f2f' }}>
-        Loading game…
-      </div>
+      <div style={{ fontFamily: 'serif', fontSize: '1.6rem', color: '#3b2f2f' }}>Loading game…</div>
     )
   }
 

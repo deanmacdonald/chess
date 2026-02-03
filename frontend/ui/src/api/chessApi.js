@@ -1,3 +1,5 @@
+console.log('API:', import.meta.env.VITE_API_URL)
+
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 // Unified request helper
@@ -59,4 +61,3 @@ export async function sendMove(gameId, uciMove) {
     }),
   })
 }
-
