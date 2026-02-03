@@ -1,32 +1,107 @@
-# Byte-compiled / cache files
-__pycache__/
-*.py[cod]
-*.pyo
+########################################
+# Python Backend
+########################################
 
-# Virtual environment
+# Bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
 venv/
 env/
+.venv/
+.env/
+.env.*
 
-# Database files
+# Local databases
 *.db
 
-# IDE/editor settings
-.vscode/
-.idea/
-*.swp
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
-# Python egg files
-*.egg
+# Python build artifacts
+build/
+dist/
 *.egg-info/
+*.egg
+
+
+########################################
+# Node Frontend
+########################################
+
+# Dependencies
+node_modules/
+
+# Build output
 dist/
 build/
 
-# Requirements backup
-requirements*.bak
+# Environment files
+frontend/ui/.env
+frontend/ui/.env.*
+
+# Frontend tooling
+*.tsbuildinfo
+
+
+########################################
+# Docker / BuildKit
+########################################
+
+# Docker ignore patterns
+.dockerignore
+
+# Build caches
+.build-cache/
+.buildx-cache/
+
+# Compose overrides
+docker-compose.override.yml
+
+
+########################################
+# Kubernetes / Deployment
+########################################
+
+# K8s local configs
+*.kube/
+*.kubeconfig
+*.yaml.backup
+
+
+########################################
+# R / RStudio Leftovers
+########################################
+
+.RData
+.Rhistory
+.Rproj.user/
+
+
+########################################
+# Dev Scripts / Local Tools
+########################################
+
+dev.sh
+run.sh
+.configfiles/
+source/
+
+
+########################################
+# OS / Editor Junk
+########################################
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
