@@ -1,35 +1,56 @@
-# Byte-compiled / cache files
-__pycache__/
-*.py[cod]
-*.pyo
+# -------------------------
+# Node / Frontend
+# -------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
 
-# Virtual environment
+# Vite / React build output
+dist/
+.vite/
+.cache/
+*.local
+
+# Tailwind / PostCSS
+*.css.map
+
+# -------------------------
+# Python / Backend
+# -------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
 venv/
 env/
+.venv/
 
-# Database files
+# SQLite database (keep if needed)
 *.db
 
-# IDE/editor settings
-.vscode/
-.idea/
-*.swp
-
-# OS files
+# -------------------------
+# OS / Editor junk
+# -------------------------
 .DS_Store
 Thumbs.db
+*.swp
+*.swo
 
-# Logs
-*.log
+# -------------------------
+# Environment / Secrets
+# -------------------------
+.env
+.env.*
+*.secret
+*.key
 
-# Python egg files
-*.egg
-*.egg-info/
-dist/
-build/
-
-# Requirements backup
-requirements*.bak
-
-# Local Netlify folder
-.netlify
+# -------------------------
+# Docker
+# -------------------------
+*.pid
+*.tar
