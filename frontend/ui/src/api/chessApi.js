@@ -1,5 +1,8 @@
+// Pull the backend URL from config.js
+import { API_URL } from '../config.js'
+
 // Base API URL for backend
-const API = 'http://localhost:8000'
+const API = API_URL
 
 // Unified request helper
 async function request(path, options = {}) {

@@ -9,7 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "start-all": "./run-all.sh"
   },
   "dependencies": {
     "react": "^18.3.1",

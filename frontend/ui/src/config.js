@@ -1,2 +1,2 @@
-// src/config.js
-export const API_URL = 'http://localhost:8000'
+// config.js
+export const API_URL = 'https://super-fwd-grande-wanna.trycloudflare.com'

@@ -1,0 +1,21 @@
+{
+  "siteId": "cb2db728-efc8-4015-bda7-e012074003bc",
+  "geolocation": {
+    "data": {
+      "city": "Edmonton",
+      "country": {
+        "code": "CA",
+        "name": "Canada"
+      },
+      "subdivision": {
+        "code": "AB",
+        "name": "Alberta"
+      },
+      "timezone": "America/Edmonton",
+      "latitude": 53.4179,
+      "longitude": -113.5785,
+      "postalCode": "T6W"
+    },
+    "timestamp": 1769799962898
+  }
+}
