@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Node.js dependencies
 node_modules/
 yarn.lock
@@ -32,3 +33,12 @@ k8s/k8s-alt/
 node_modules/
 node_modules/
 node_modules/
+=======
+node_modules/
+.env
+dist/
+build/
+logs/
+*.log
+
+>>>>>>> 25f939171416cc5b14092408dfc66b3e08497b41

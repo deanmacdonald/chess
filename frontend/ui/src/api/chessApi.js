@@ -1,5 +1,7 @@
-const API = '/api'
+// Base API URL for backend
+const API = 'http://localhost:8000'
 
+// Unified request helper
 async function request(path, options = {}) {
   try {
     const res = await fetch(`${API}${path}`, {
@@ -8,7 +10,8 @@ async function request(path, options = {}) {
     })
 
     if (!res.ok) {
-      console.error(`API error: ${res.status} ${res.statusText}`)
+      const err = await res.json().catch(() => ({}))
+      console.error('API error:', err.detail || res.statusText)
       return null
     }
 
@@ -19,16 +22,38 @@ async function request(path, options = {}) {
   }
 }
 
+/* -----------------------------
+   HEALTH CHECK
+----------------------------- */
 export async function getBackendStatus() {
   return request('/status')
 }
 
-export async function getBoard() {
-  return request('/board')
+/* -----------------------------
+   START NEW GAME
+----------------------------- */
+export async function startNewGame() {
+  return request('/new', {
+    method: 'POST',
+  })
 }
 
-export async function sendMove(from, to) {
-  return request(`/move?from_square=${from}&to_square=${to}`, {
+/* -----------------------------
+   GET GAME STATE
+----------------------------- */
+export async function getGameState(gameId) {
+  return request(`/state/${gameId}`)
+}
+
+/* -----------------------------
+   MAKE MOVE
+----------------------------- */
+export async function sendMove(gameId, uciMove) {
+  return request('/move', {
     method: 'POST',
+    body: JSON.stringify({
+      game_id: gameId,
+      move: uciMove,
+    }),
   })
 }

@@ -1,14 +1,31 @@
-export default function ChessClock({ time }) {
-  const safe = typeof time === 'number' && !isNaN(time) ? time : 0
+import React from 'react'
 
-  const minutes = Math.floor(safe / 60)
-  const seconds = safe % 60
-
-  const pad = (n) => String(n).padStart(2, '0')
-
+export default function ChessClock({ whitePlayer, blackPlayer, timeControl, turn }) {
   return (
-    <span>
-      {pad(minutes)}:{pad(seconds)}
-    </span>
+    <div
+      className="chess-clock-panel"
+      style={{
+        background: '#d4b483',
+        borderRadius: '8px',
+        padding: '16px',
+        boxShadow: '0 2px 6px rgba(0,0,0,0.25)',
+        color: '#3b2f2f',
+        fontFamily: 'serif',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
+      }}
+    >
+      <div style={{ fontWeight: 700, fontSize: '1.2rem' }}>Time Control: {timeControl}</div>
+      <div>
+        <strong>White:</strong> {whitePlayer.name} ({whitePlayer.rating})
+      </div>
+      <div>
+        <strong>Black:</strong> {blackPlayer.name} ({blackPlayer.rating})
+      </div>
+      <div style={{ marginTop: '8px' }}>
+        <strong>Turn:</strong> {turn === 'w' || turn === 'white' ? 'White' : 'Black'}
+      </div>
+    </div>
   )
 }

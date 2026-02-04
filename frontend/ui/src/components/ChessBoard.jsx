@@ -1,67 +1,136 @@
-import { useState } from 'react'
+import React from 'react'
 import ChessSquare from './ChessSquare'
-import ChessPiece from './ChessPiece'
 
-const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+/* -----------------------------------------
+   SAFE FEN PARSER WITH VALIDATION
+----------------------------------------- */
+function parseFEN(fen) {
+  if (!fen || typeof fen !== 'string') {
+    console.warn('ChessBoard: Missing or invalid FEN:', fen)
+    return null
+  }
 
-export default function ChessBoard({ game, onMove, orientation = 'white' }) {
-  const [selected, setSelected] = useState(null)
+  const parts = fen.trim().split(' ')
+  const placement = parts[0]
 
-  const board = game.board() // 8x8 from white's perspective, rank 8 -> 1
+  if (!placement) {
+    console.warn('ChessBoard: FEN missing placement section:', fen)
+    return null
+  }
 
-  const ranks = orientation === 'white' ? [8, 7, 6, 5, 4, 3, 2, 1] : [1, 2, 3, 4, 5, 6, 7, 8]
-  const files = orientation === 'white' ? FILES : [...FILES].reverse()
+  const rows = placement.split('/')
+  if (rows.length !== 8) {
+    console.warn('ChessBoard: FEN does not contain 8 rows:', fen)
+    return null
+  }
 
-  const handleSquareClick = (square) => {
-    const piece = game.get(square)
+  const board = []
 
-    if (!selected) {
-      if (piece && piece.color === game.turn()) {
-        setSelected(square)
+  for (let r = 0; r < 8; r++) {
+    const fenRow = rows[r]
+    if (!fenRow) return null
+
+    const row = []
+
+    for (const ch of fenRow) {
+      if (/[1-8]/.test(ch)) {
+        const empty = parseInt(ch, 10)
+        for (let i = 0; i < empty; i++) row.push(null)
+      } else {
+        row.push(ch)
       }
-      return
     }
 
-    if (square === selected) {
-      setSelected(null)
-      return
+    if (row.length !== 8) {
+      console.warn('ChessBoard: Row does not have 8 squares:', fenRow)
+      return null
     }
 
-    const success = onMove(selected, square)
-    if (success) {
-      setSelected(null)
-    }
+    board.push(row)
+  }
+
+  return board
+}
+
+/* -----------------------------------------
+   COORD → SQUARE ("a8".."h1")
+----------------------------------------- */
+function squareFromCoords(row, col) {
+  const file = 'abcdefgh'[col]
+  const rank = 8 - row
+  return `${file}${rank}`
+}
+
+/* -----------------------------------------
+   MAIN COMPONENT
+----------------------------------------- */
+export default function ChessBoard({
+  fen,
+  selectedSquare,
+  legalMoves = [],
+  lastMove = null,
+  onSquareClick,
+}) {
+  const board = parseFEN(fen)
+
+  // If FEN is invalid, show a friendly message instead of crashing
+  if (!board) {
+    return (
+      <div
+        style={{
+          padding: '20px',
+          fontSize: '1.2rem',
+          fontFamily: 'serif',
+          color: '#5a3e2b',
+        }}
+      >
+        Unable to load board — invalid FEN from server.
+      </div>
+    )
+  }
+
+  const isLegal = (row, col) => {
+    const sq = squareFromCoords(row, col)
+    return legalMoves.includes(sq)
+  }
+
+  const isLast = (row, col) => {
+    if (!lastMove) return false
+    const sq = squareFromCoords(row, col)
+    return lastMove.from === sq || lastMove.to === sq
   }
 
   return (
     <div
-      className="grid"
+      className="chessboard"
       style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(8, 1fr)',
         gridTemplateRows: 'repeat(8, 1fr)',
-        width: '360px',
-        height: '360px',
+        width: '480px',
+        height: '480px',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.25)',
       }}
     >
-      {ranks.map((rankIndex) =>
-        files.map((file, fileIndex) => {
-          const rankFromTop = 8 - rankIndex
-          const piece = board[rankFromTop][fileIndex]
-          const square = `${file}${rankIndex}`
-          const isLight = (fileIndex + rankIndex) % 2 === 0
-          const isSelected = selected === square
+      {board.map((rowArray, row) =>
+        rowArray.map((square, col) => {
+          const isLight = (row + col) % 2 === 0
+          const isSelected =
+            selectedSquare && selectedSquare.row === row && selectedSquare.col === col
 
           return (
             <ChessSquare
-              key={square}
-              square={square}
+              key={`${row}-${col}`}
+              square={{ row, col }}
+              piece={square}
               isLight={isLight}
               isSelected={isSelected}
-              onClick={handleSquareClick}
-            >
-              {piece && <ChessPiece piece={piece} />}
-            </ChessSquare>
+              isLegalMove={isLegal(row, col)}
+              isLastMove={isLast(row, col)}
+              onClick={() => onSquareClick(row, col)}
+            />
           )
         }),
       )}
