@@ -29,9 +29,7 @@ export default function MoveListDialog({ moves, open, onClose }) {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 style={{ marginBottom: 12, fontSize: 20, fontWeight: 700 }}>
-          Move List
-        </h2>
+        <h2 style={{ marginBottom: 12, fontSize: 20, fontWeight: 700 }}>Move List</h2>
 
         {moves.map((m, i) => (
           <div

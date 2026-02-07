@@ -35,18 +35,22 @@ export default function GameScreen() {
 
   return (
     <div style={{ padding: 12, maxWidth: 500, margin: '0 auto' }}>
-
       <PlayerHeader name="Black" rating={1500} isTurn={turn === 'black'} />
-      <ChessClock timeLeft={blackTime} running={turn === 'black'} onPress={() => setTurn('white')} />
+      <ChessClock
+        timeLeft={blackTime}
+        running={turn === 'black'}
+        onPress={() => setTurn('white')}
+      />
       <CapturedPieces pieces={capturedBlack} />
 
-      <ChessBoard
-        board={game.board()}
-        onDragEnd={handleMove}
-      />
+      <ChessBoard board={game.board()} onDragEnd={handleMove} />
 
       <CapturedPieces pieces={capturedWhite} />
-      <ChessClock timeLeft={whiteTime} running={turn === 'white'} onPress={() => setTurn('black')} />
+      <ChessClock
+        timeLeft={whiteTime}
+        running={turn === 'white'}
+        onPress={() => setTurn('black')}
+      />
       <PlayerHeader name="Dean" rating={1400} isTurn={turn === 'white'} />
 
       <button
@@ -65,11 +69,7 @@ export default function GameScreen() {
         Show Moves
       </button>
 
-      <MoveListDialog
-        moves={moveHistory}
-        open={showMoves}
-        onClose={() => setShowMoves(false)}
-      />
+      <MoveListDialog moves={moveHistory} open={showMoves} onClose={() => setShowMoves(false)} />
     </div>
   )
 }

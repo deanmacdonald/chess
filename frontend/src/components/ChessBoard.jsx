@@ -5,13 +5,12 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
   const boardRef = useRef(null)
   const [squareSize, setSquareSize] = useState(0)
 
-  // Resize board dynamically
+  // Always compute square size from a guaranteed square board
   useEffect(() => {
     const updateSize = () => {
-      if (boardRef.current) {
-        const rect = boardRef.current.getBoundingClientRect()
-        setSquareSize(rect.width / 8)
-      }
+      if (!boardRef.current) return
+      const rect = boardRef.current.getBoundingClientRect()
+      setSquareSize(rect.width / 8)
     }
 
     updateSize()
@@ -19,7 +18,6 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
     return () => window.removeEventListener('resize', updateSize)
   }, [])
 
-  // Render the 8×8 squares
   const renderSquares = () => {
     const squares = []
     for (let row = 0; row < 8; row++) {
@@ -35,19 +33,16 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
               width: squareSize,
               height: squareSize,
               background: isDark ? '#b58863' : '#f0d9b5',
-              transition: 'background 0.15s ease',
             }}
-          />,
+          />
         )
       }
     }
     return squares
   }
 
-  // Yellow highlight for last move
   const renderLastMove = () => {
     if (!lastMove) return null
-
     const { from, to } = lastMove
 
     return (
@@ -61,7 +56,7 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
               top: sq.row * squareSize,
               width: squareSize,
               height: squareSize,
-              background: 'rgba(255, 255, 0, 0.35)',
+              background: 'rgba(255,255,0,0.35)',
               pointerEvents: 'none',
             }}
           />
@@ -70,7 +65,6 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
     )
   }
 
-  // Legal move dots
   const renderLegalMoves = () => {
     if (!legalMoves) return null
 
@@ -101,7 +95,6 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
     ))
   }
 
-  // Render pieces
   const renderPieces = () => {
     const pieces = []
     for (let row = 0; row < 8; row++) {
@@ -111,14 +104,14 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
 
         pieces.push(
           <ChessPiece
-            key={`${piece}-${row}-${col}`}
+            key={`${piece.color}${piece.type}-${row}-${col}`}
             piece={piece}
             row={row}
             col={col}
             boardRef={boardRef}
             onDragStart={onDragStart}
             onDragEnd={onDragEnd}
-          />,
+          />
         )
       }
     }
@@ -130,9 +123,8 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
       ref={boardRef}
       style={{
         position: 'relative',
-        width: '100%',
-        maxWidth: '100vw',
-        aspectRatio: '1 / 1',
+        width: 'min(100vw, 100vh)',
+        height: 'min(100vw, 100vh)',
         margin: '0 auto',
         border: '12px solid #5a3e2b',
         borderRadius: '8px',

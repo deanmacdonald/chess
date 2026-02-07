@@ -13,7 +13,7 @@ export default function CapturedPieces({ pieces }) {
       {pieces.map((p, i) => (
         <img
           key={i}
-          src={"/pieces/" + p.color + p.type + ".png"}
+          src={'/pieces/' + p.color + p.type + '.png'}
           alt={p.type}
           style={{
             width: 28,
