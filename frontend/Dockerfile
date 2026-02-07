@@ -1,20 +1,16 @@
 # Build stage
-FROM node:18-alpine AS builder
-
+FROM node:20 AS build
 WORKDIR /app
+
 COPY package*.json ./
-RUN npm install
+RUN npm ci
+
 COPY . .
 RUN npm run build
 
-# Serve stage
-FROM nginx:alpine
+# Production stage
+FROM nginx:stable-alpine
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy build output to Nginx's public folder
-COPY --from=builder /app/build /usr/share/nginx/html
-
-# Expose port 80
 EXPOSE 80
-
-# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

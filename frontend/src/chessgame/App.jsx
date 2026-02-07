@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import GameList from "./GameList";
-import MoveViewer from "./MoveViewer";
-import NewGameForm from "./NewGameForm";
+import React, { useState } from 'react'
+import GameList from './GameList'
+import MoveViewer from './MoveViewer'
+import NewGameForm from './NewGameForm'
 
 const App = () => {
-  const [selectedGameId, setSelectedGameId] = useState(null);
+  const [selectedGameId, setSelectedGameId] = useState(null)
 
   return (
     <div>
@@ -13,7 +13,7 @@ const App = () => {
       <GameList onSelectGame={setSelectedGameId} />
       {selectedGameId && <MoveViewer gameId={selectedGameId} />}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
