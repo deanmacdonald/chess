@@ -1,29 +1,33 @@
 {
-  "name": "frontend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "frontend-ui",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "dev:frontend": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "clean": "rimraf node_modules .vite dist && npm cache clean --force",
+    "reinstall": "npm run clean && npm install"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/material": "^7.3.1",
-    "axios": "^1.11.0",
-    "chessboardjsx": "^2.4.7",
-    "chessground": "^9.2.1",
-    "dotenv": "^17.2.1",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-router-dom": "^7.8.1"
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "eslint": "^9.33.0",
-    "prettier": "^3.6.2"
+    "@vitejs/plugin-react": "4.7.0",
+    "autoprefixer": "10.4.20",
+    "eslint": "9.39.2",
+    "eslint-plugin-react": "7.35.0",
+    "eslint-plugin-react-hooks": "7.0.1",
+    "postcss": "8.4.47",
+    "prettier": "3.3.3",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "tailwindcss": "3.4.13",
+    "vite": "7.3.1",
+    "rimraf": "5.0.5"
   }
 }
