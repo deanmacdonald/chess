@@ -1,0 +1,49 @@
+.move-dialog {
+  width: 240px;
+  background: #ffffff;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  margin-left: 20px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.move-title {
+  margin: 0 0 10px 0;
+  text-align: center;
+  font-weight: bold;
+}
+
+.move-table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.move-header,
+.move-row {
+  display: grid;
+  grid-template-columns: 30px 1fr 1fr;
+  padding: 4px 0;
+}
+
+.move-header {
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 6px;
+}
+
+.move-row:nth-child(even) {
+  background: #f7f7f7;
+}
+
+.col-num {
+  text-align: right;
+  padding-right: 6px;
+}
+
+.col-white,
+.col-black {
+  text-align: center;
+}
+
