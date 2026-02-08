@@ -5,7 +5,7 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
   const boardRef = useRef(null)
   const [squareSize, setSquareSize] = useState(0)
 
-  // Always compute square size from a guaranteed square board
+  // Compute square size from board width
   useEffect(() => {
     const updateSize = () => {
       if (!boardRef.current) return
@@ -25,7 +25,7 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
         const isDark = (row + col) % 2 === 1
         squares.push(
           <div
-            key={`${row}-${col}`}
+            key={`sq-${row}-${col}`}
             style={{
               position: 'absolute',
               left: col * squareSize,
@@ -49,7 +49,7 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
       <>
         {[from, to].map((sq, i) => (
           <div
-            key={i}
+            key={`last-${i}`}
             style={{
               position: 'absolute',
               left: sq.col * squareSize,
@@ -70,7 +70,7 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
 
     return legalMoves.map((m, i) => (
       <div
-        key={i}
+        key={`legal-${i}`}
         style={{
           position: 'absolute',
           left: m.col * squareSize,
@@ -108,6 +108,7 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
             piece={piece}
             row={row}
             col={col}
+            squareSize={squareSize}
             boardRef={boardRef}
             onDragStart={onDragStart}
             onDragEnd={onDragEnd}
@@ -120,23 +121,30 @@ export default function ChessBoard({ board, legalMoves, lastMove, onDragStart, o
 
   return (
     <div
-      ref={boardRef}
       style={{
-        position: 'relative',
-        width: 'min(100vw, 100vh)',
-        height: 'min(100vw, 100vh)',
-        margin: '0 auto',
-        border: '12px solid #5a3e2b',
-        borderRadius: '8px',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.35)',
-        background: '#000',
-        overflow: 'hidden',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
       }}
     >
-      {renderSquares()}
-      {renderLastMove()}
-      {renderLegalMoves()}
-      {renderPieces()}
+      <div
+        ref={boardRef}
+        style={{
+          position: 'relative',
+          width: 'min(100vw, 100vh)',
+          height: 'min(100vw, 100vh)',
+          border: '12px solid #5a3e2b',
+          borderRadius: '8px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.35)',
+          background: '#000',
+          overflow: 'hidden',
+        }}
+      >
+        {renderSquares()}
+        {renderLastMove()}
+        {renderLegalMoves()}
+        {renderPieces()}
+      </div>
     </div>
   )
 }

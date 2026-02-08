@@ -3,8 +3,19 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  pointer-events: none;
   user-select: none;
   touch-action: none;
-  transform: none;
+
+  /* Smooth movement when snapping to a square */
+  transition:
+    left 150ms ease-out,
+    top 150ms ease-out,
+    transform 150ms ease-out;
+}
+
+/* Lift effect while dragging */
+.chess-piece.dragging {
+  transition: none;
+  transform: scale(1.08);
+  z-index: 999;
 }

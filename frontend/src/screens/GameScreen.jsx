@@ -1,62 +1,62 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import ChessBoard from '../components/ChessBoard'
 import PlayerHeader from '../components/PlayerHeader'
 import ChessClock from '../components/ChessClock'
 import CapturedPieces from '../components/CapturedPieces'
 import MoveListDialog from '../components/MoveListDialog'
-import { Chess } from 'chess.js'
+import useGameState from '../hooks/useGameState'
 
 export default function GameScreen() {
-  const [game] = useState(new Chess())
+  const {
+    board,
+    turn,
+    whiteTime,
+    blackTime,
+    capturedWhite,
+    capturedBlack,
+    moveHistory,
+    legalMoves,
+    lastMove,
+    handleDragStart,
+    handleDragEnd,
+  } = useGameState()
 
-  const [turn, setTurn] = useState('white')
-  const [whiteTime, setWhiteTime] = useState(300)
-  const [blackTime, setBlackTime] = useState(300)
-  const [capturedWhite, setCapturedWhite] = useState([])
-  const [capturedBlack, setCapturedBlack] = useState([])
-  const [moveHistory, setMoveHistory] = useState([])
-  const [showMoves, setShowMoves] = useState(false)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (turn === 'white') {
-        setWhiteTime((t) => Math.max(t - 1, 0))
-      } else {
-        setBlackTime((t) => Math.max(t - 1, 0))
-      }
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [turn])
-
-  const handleMove = (piece, fromRow, fromCol, clientX, clientY) => {
-    // You will wire this up once your drag logic is finalized
-  }
+  const [showMoves, setShowMoves] = React.useState(false)
 
   return (
-    <div style={{ padding: 12, maxWidth: 500, margin: '0 auto' }}>
+    <div
+      style={{
+        width: '100%',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',     // <-- centers EVERYTHING
+        justifyContent: 'flex-start',
+        padding: 12,
+      }}
+    >
       <PlayerHeader name="Black" rating={1500} isTurn={turn === 'black'} />
-      <ChessClock
-        timeLeft={blackTime}
-        running={turn === 'black'}
-        onPress={() => setTurn('white')}
-      />
+      <ChessClock timeLeft={blackTime} running={turn === 'black'} />
+
       <CapturedPieces pieces={capturedBlack} />
 
-      <ChessBoard board={game.board()} onDragEnd={handleMove} />
+      <ChessBoard
+        board={board}
+        legalMoves={legalMoves}
+        lastMove={lastMove}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      />
 
       <CapturedPieces pieces={capturedWhite} />
-      <ChessClock
-        timeLeft={whiteTime}
-        running={turn === 'white'}
-        onPress={() => setTurn('black')}
-      />
+      <ChessClock timeLeft={whiteTime} running={turn === 'white'} />
       <PlayerHeader name="Dean" rating={1400} isTurn={turn === 'white'} />
 
       <button
         onClick={() => setShowMoves(true)}
         style={{
           width: '100%',
+          maxWidth: 500,
           padding: 12,
           marginTop: 12,
           background: '#333',
@@ -69,7 +69,11 @@ export default function GameScreen() {
         Show Moves
       </button>
 
-      <MoveListDialog moves={moveHistory} open={showMoves} onClose={() => setShowMoves(false)} />
+      <MoveListDialog
+        moves={moveHistory}
+        open={showMoves}
+        onClose={() => setShowMoves(false)}
+      />
     </div>
   )
 }

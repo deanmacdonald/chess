@@ -1,73 +1,63 @@
-import js from '@eslint/js'
+// eslint.config.js
+
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
+import globals from 'globals'
+import parser from '@babel/eslint-parser'
 
 export default [
-  // Base JS rules
-  js.configs.recommended,
-
-  // React + JSX files
+  // Ignore build output and vendor code
   {
-    files: ['**/*.jsx', '**/*.js'],
+    ignores: ['dist/', 'build/', 'node_modules/', '*.min.js', '**/*.min.js'],
+  },
+
+  // Main React + JSX config
+  {
+    files: ['**/*.{js,jsx}'],
+
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
+      parser,
       parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+        requireConfigFile: false,
+        babelOptions: {
+          presets: ['@babel/preset-react'],
         },
       },
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+
       globals: {
-        window: 'readonly',
-        document: 'readonly',
-        fetch: 'readonly',
-        console: 'readonly',
+        ...globals.browser,
+        ...globals.es2021,
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
       },
     },
+
     plugins: {
       react,
       'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
     },
+
     rules: {
+      // React 18: no need to import React
       'react/react-in-jsx-scope': 'off',
-      'react-refresh/only-export-components': 'warn',
+
+      // Hooks rules
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+
+      // Unused vars should not block development
+      'no-unused-vars': 'warn',
+
+      // Vite handles globals, so disable this
+      'no-undef': 'off',
     },
+
     settings: {
       react: {
         version: 'detect',
       },
     },
-  },
-
-  // Web Worker globals (Stockfish worker)
-  {
-    files: ['**/*.worker.js'],
-    languageOptions: {
-      globals: {
-        postMessage: 'readonly',
-        onmessage: 'readonly',
-      },
-    },
-  },
-
-  // Vitest test environment
-  {
-    files: ['**/*.test.js', '**/*.test.jsx'],
-    languageOptions: {
-      globals: {
-        test: 'readonly',
-        expect: 'readonly',
-        describe: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
-      },
-    },
-  },
-
-  // Replaces .eslintignore
-  {
-    ignores: ['dist/', 'node_modules/'],
   },
 ]

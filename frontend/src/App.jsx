@@ -1,9 +1,9 @@
-import GameScreenUI from './components/GameScreenUI.jsx'
+import GameScreen from './screens/GameScreen.jsx'
 
 export default function App() {
   return (
     <div style={{ width: '100%', height: '100%' }}>
-      <GameScreenUI />
+      <GameScreen />
     </div>
   )
 }
