@@ -1,20 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from game.router import router as game_router
 
-# Import database + router
-from db.database import Base, engine
-from src.api.game import router as game_router
-
-
-def init_db():
-    Base.metadata.create_all(bind=engine)
-
-
-app = FastAPI(
-    title="Chess Backend",
-    description="A persistent multi‑game FastAPI backend powered by python‑chess and SQLite.",
-    version="1.0.0",
-)
+app = FastAPI(title="Chess Backend")
 
 # CORS
 app.add_middleware(
@@ -25,27 +13,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/status")
-def status():
-    return {
-        "service": "chess-backend",
-        "status": "ok",
-        "database": "connected",
-    }
+# Routes
+app.include_router(game_router, prefix="/api")
 
-# Register routers
-app.include_router(game_router)
+@app.get("/")
+def root():
+    return {"status": "ok", "message": "Backend running"}
 
-@app.on_event("startup")
-def startup_event():
-    init_db()
-    print("🚀 Chess backend started and database initialized")
 
+# Uvicorn runner
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
         port=8000,
-        reload=True
+        reload=False
     )
