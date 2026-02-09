@@ -2,9 +2,9 @@ name: Deploy Chess Frontend
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "black-knight" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "black-knight" ]
 
 jobs:
   build:
