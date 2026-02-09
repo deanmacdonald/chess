@@ -1,110 +1,125 @@
 // src/hooks/useGameState.js
-import { useState, useEffect } from 'react'
-import { Chess } from 'chess.js'
+import { useState, useEffect } from "react";
+import { Chess } from "chess.js";
 
 export default function useGameState() {
-  const [game] = useState(new Chess())
+    const [game] = useState(new Chess());
 
-  const [turn, setTurn] = useState('white')
-  const [whiteTime, setWhiteTime] = useState(300)
-  const [blackTime, setBlackTime] = useState(300)
+    const [turn, setTurn] = useState("white");
+    const [whiteTime, setWhiteTime] = useState(300);
+    const [blackTime, setBlackTime] = useState(300);
 
-  const [capturedWhite, setCapturedWhite] = useState([])
-  const [capturedBlack, setCapturedBlack] = useState([])
+    const [capturedWhite, setCapturedWhite] = useState([]);
+    const [capturedBlack, setCapturedBlack] = useState([]);
 
-  const [moveHistory, setMoveHistory] = useState([])
-  const [legalMoves, setLegalMoves] = useState([])
-  const [lastMove, setLastMove] = useState(null)
+    // Move list now stores objects: { white: "e4", black: "e5" }
+    const [moveHistory, setMoveHistory] = useState([]);
 
-  const [dragFrom, setDragFrom] = useState(null)
+    const [legalMoves, setLegalMoves] = useState([]);
+    const [lastMove, setLastMove] = useState(null);
 
-  // Clock logic
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (turn === 'white') {
-        setWhiteTime((t) => Math.max(t - 1, 0))
-      } else {
-        setBlackTime((t) => Math.max(t - 1, 0))
-      }
-    }, 1000)
+    const [dragFrom, setDragFrom] = useState(null);
 
-    return () => clearInterval(interval)
-  }, [turn])
+    // Clock logic
+    useEffect(() => {
+        const interval = setInterval(() => {
+            if (turn === "white") {
+                setWhiteTime((t) => Math.max(t - 1, 0));
+            } else {
+                setBlackTime((t) => Math.max(t - 1, 0));
+            }
+        }, 1000);
 
-  // Convert row/col → algebraic square ("e4")
-  const toSquare = (row, col) => {
-    const files = 'abcdefgh'
-    return files[col] + (8 - row)
-  }
+        return () => clearInterval(interval);
+    }, [turn]);
 
-  // DRAG START
-  const handleDragStart = (piece, row, col) => {
-    const from = toSquare(row, col)
-    setDragFrom(from)
+    // Convert row/col → algebraic square ("e4")
+    const toSquare = (row, col) => {
+        const files = "abcdefgh";
+        return files[col] + (8 - row);
+    };
 
-    const moves = game.moves({ square: from, verbose: true })
-    const formatted = moves.map((m) => ({
-      row: 8 - m.to[1],
-      col: m.to.charCodeAt(0) - 97,
-    }))
-    setLegalMoves(formatted)
-  }
+    // DRAG START
+    const handleDragStart = (piece, row, col) => {
+        const from = toSquare(row, col);
+        setDragFrom(from);
 
-  // DRAG END
-  const handleDragEnd = (piece, fromRow, fromCol, toRow, toCol) => {
-    if (!dragFrom) return
+        const moves = game.moves({ square: from, verbose: true });
+        const formatted = moves.map((m) => ({
+            row: 8 - m.to[1],
+            col: m.to.charCodeAt(0) - 97,
+        }));
+        setLegalMoves(formatted);
+    };
 
-    const to = toSquare(toRow, toCol)
-    const move = game.move({ from: dragFrom, to, promotion: 'q' })
+    // DRAG END
+    const handleDragEnd = (piece, fromRow, fromCol, toRow, toCol) => {
+        if (!dragFrom) return;
 
-    if (!move) {
-      setLegalMoves([])
-      setDragFrom(null)
-      return
-    }
+        const to = toSquare(toRow, toCol);
+        const move = game.move({ from: dragFrom, to, promotion: "q" });
 
-    // Captures
-    if (move.captured) {
-      if (move.color === 'w') {
-        setCapturedBlack((prev) => [...prev, move.captured])
-      } else {
-        setCapturedWhite((prev) => [...prev, move.captured])
-      }
-    }
+        if (!move) {
+            setLegalMoves([]);
+            setDragFrom(null);
+            return;
+        }
 
-    // Move history
-    setMoveHistory(game.history())
+        // Captures
+        if (move.captured) {
+            if (move.color === "w") {
+                setCapturedBlack((prev) => [...prev, move.captured]);
+            } else {
+                setCapturedWhite((prev) => [...prev, move.captured]);
+            }
+        }
 
-    // Last move highlight
-    setLastMove({
-      from: {
-        row: 8 - move.from[1],
-        col: move.from.charCodeAt(0) - 97,
-      },
-      to: {
-        row: 8 - move.to[1],
-        col: move.to.charCodeAt(0) - 97,
-      },
-    })
+        // ⭐ FIXED MOVE HISTORY — now stores SAN notation in white/black pairs
+        setMoveHistory((prev) => {
+            const san = move.san;
+            const last = prev[prev.length - 1];
 
-    // Switch turn
-    setTurn(game.turn() === 'w' ? 'white' : 'black')
+            // White move → start new pair
+            if (!last || last.black) {
+                return [...prev, { white: san, black: "" }];
+            }
 
-    setLegalMoves([])
-    setDragFrom(null)
-  }
+            // Black move → complete the pair
+            const updated = [...prev];
+            updated[updated.length - 1].black = san;
+            return updated;
+        });
 
-  return {
-    board: game.board(),
-    turn,
-    whiteTime,
-    blackTime,
-    capturedWhite,
-    capturedBlack,
-    moveHistory,
-    legalMoves,
-    lastMove,
-    handleDragStart,
-    handleDragEnd,
-  }
+        // Last move highlight
+        setLastMove({
+            from: {
+                row: 8 - move.from[1],
+                col: move.from.charCodeAt(0) - 97,
+            },
+            to: {
+                row: 8 - move.to[1],
+                col: move.to.charCodeAt(0) - 97,
+            },
+        });
+
+        // Switch turn
+        setTurn(game.turn() === "w" ? "white" : "black");
+
+        setLegalMoves([]);
+        setDragFrom(null);
+    };
+
+    return {
+        board: game.board(),
+        turn,
+        whiteTime,
+        blackTime,
+        capturedWhite,
+        capturedBlack,
+        moveHistory,
+        legalMoves,
+        lastMove,
+        handleDragStart,
+        handleDragEnd,
+    };
 }
