@@ -54,3 +54,5 @@ Thumbs.db
 # -------------------------
 *.pid
 *.tar
+.vercel
+.env*.local
