@@ -1,3 +1,0 @@
-[submodule "src/udocker"]
-	path = src/udocker
-	url = https://github.com/deanmacdonald/udocker.git

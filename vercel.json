@@ -1,7 +1,11 @@
 {
-  "name": "chess-monorepo",
-  "private": true,
-  "scripts": {
-    "build": "echo building-root"
-  }
+  "version": 2,
+  "builds": [
+    { "src": "frontend/package.json", "use": "@vercel/static-build" },
+    { "src": "backend-node/index.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/backend-node/$1" },
+    { "src": "/(.*)", "dest": "/frontend/$1" }
+  ]
 }
