@@ -1,0 +1,21 @@
+.chess-piece {
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+  transition: transform 0.1s ease;
+}
+
+.chess-piece[data-color="white"] {
+  color: #f5f5f5;
+}
+
+.chess-piece[data-color="black"] {
+  color: #222;
+}
+
+.chess-piece:active {
+  transform: scale(0.9);
+}

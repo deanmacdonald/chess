@@ -1,0 +1,14 @@
+/* Optional extra styles — safe to keep minimal or expand later */
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 600;
+}
+
+.container {
+  padding: 16px;
+}

@@ -1,0 +1,40 @@
+.move-list-dialog {
+  padding: 12px;
+  background: #222;
+  color: #fff;
+  border-radius: 6px;
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+.move-list-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.move-list {
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.move-list-empty {
+  text-align: center;
+  opacity: 0.7;
+}
+
+.move-list-item {
+  display: flex;
+  gap: 6px;
+  padding: 4px 0;
+  border-bottom: 1px solid #444;
+}
+
+.move-number {
+  font-weight: bold;
+}
+
+.move-arrow {
+  opacity: 0.8;
+}
