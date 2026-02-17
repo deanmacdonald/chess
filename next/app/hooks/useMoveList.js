@@ -1,21 +1,26 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 
-export default function useMoveList() {
+/**
+ * useMoveList
+ * Syncs move history with backend chess state.
+ *
+ * Pass in the backend `state` object from useGameState or useChess.
+ */
+export default function useMoveList(state) {
   const [moves, setMoves] = useState([]);
 
-  const addMove = useCallback((move) => {
-    setMoves((prev) => [...prev, move]);
-  }, []);
+  useEffect(() => {
+    if (!state) return;
 
-  const clearMoves = useCallback(() => {
-    setMoves([]);
-  }, []);
+    // chess.js returns verbose move objects in state.moves
+    if (state.moves && Array.isArray(state.moves)) {
+      setMoves(state.moves);
+    }
+  }, [state]);
 
   return {
-    moves,
-    addMove,
-    clearMoves,
+    moves
   };
 }
