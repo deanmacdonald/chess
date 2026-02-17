@@ -5,14 +5,14 @@ import { useState, useCallback } from "react";
 export default function useGameState() {
   // Full starting chess position
   const [board, setBoard] = useState(() => [
-    ["r","n","b","q","k","b","n","r"],
-    ["p","p","p","p","p","p","p","p"],
-    [null,null,null,null,null,null,null,null],
-    [null,null,null,null,null,null,null,null],
-    [null,null,null,null,null,null,null,null],
-    [null,null,null,null,null,null,null,null],
-    ["P","P","P","P","P","P","P","P"],
-    ["R","N","B","Q","K","B","N","R"]
+    ["r", "n", "b", "q", "k", "b", "n", "r"],
+    ["p", "p", "p", "p", "p", "p", "p", "p"],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    ["P", "P", "P", "P", "P", "P", "P", "P"],
+    ["R", "N", "B", "Q", "K", "B", "N", "R"],
   ]);
 
   const [selectedSquare, setSelectedSquare] = useState(null);
@@ -26,10 +26,10 @@ export default function useGameState() {
   }, []);
 
   const makeMove = useCallback((from, to) => {
-    setMoveList(prev => [...prev, { from, to }]);
+    setMoveList((prev) => [...prev, { from, to }]);
 
-    setBoard(prev => {
-      const newBoard = prev.map(row => [...row]);
+    setBoard((prev) => {
+      const newBoard = prev.map((row) => [...row]);
       const [fromRow, fromCol] = from.split("-").map(Number);
       const [toRow, toCol] = to.split("-").map(Number);
 

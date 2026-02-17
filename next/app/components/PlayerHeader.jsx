@@ -2,7 +2,10 @@
 
 import React from "react";
 
-export default function PlayerHeader({ whiteName = "White", blackName = "Black" }) {
+export default function PlayerHeader({
+  whiteName = "White",
+  blackName = "Black",
+}) {
   return (
     <div className="player-header">
       <div className="player player-white">

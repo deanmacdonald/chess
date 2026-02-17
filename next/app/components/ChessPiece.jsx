@@ -21,9 +21,5 @@ export default function ChessPiece({ piece }) {
     P: "♙",
   };
 
-  return (
-    <span className="chess-piece">
-      {pieceMap[piece]}
-    </span>
-  );
+  return <span className="chess-piece">{pieceMap[piece]}</span>;
 }

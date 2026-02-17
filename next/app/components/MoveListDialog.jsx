@@ -8,9 +8,7 @@ export default function MoveListDialog({ moves = [] }) {
       <h3 className="move-list-title">Move List</h3>
 
       <div className="move-list">
-        {moves.length === 0 && (
-          <p className="move-list-empty">No moves yet.</p>
-        )}
+        {moves.length === 0 && <p className="move-list-empty">No moves yet.</p>}
 
         {moves.map((move, index) => (
           <div key={index} className="move-list-item">

@@ -5,7 +5,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   background: #111;
   color: #fff;
   font-family: Arial, Helvetica, sans-serif;
