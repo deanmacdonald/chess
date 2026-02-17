@@ -1,26 +1,28 @@
 {
-  "name": "next",
-  "version": "0.1.0",
+  "name": "chess-app",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "next lint",
+    "doctor": "npx next doctor",
+    "format": "prettier --write ."
   },
   "dependencies": {
-    "next": "^15.5.12",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^4.1.1",
-    "eslint-config-next": "^0.2.4",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.19",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "14.2.5",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.14",
+    "typescript": "^5.4.2"
   }
 }
