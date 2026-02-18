@@ -1,0 +1,26 @@
+{
+  "name": "Chess App Dev",
+  "dockerFile": "Dockerfile",
+
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "editor.formatOnSave": true
+  },
+
+  "postCreateCommand": "npm install --prefix next && npm install --prefix api",
+
+  "forwardPorts": [3000, 3001],
+
+  "portsAttributes": {
+    "3000": { "label": "Next.js Frontend" },
+    "3001": { "label": "Express Backend" }
+  },
+
+  "remoteUser": "vscode",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    }
+  }
+}
