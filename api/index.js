@@ -1,24 +1,17 @@
-let game = require("./gameEngine"); // your chess logic
+const express = require('express');
+const cors = require('cors');
+const app = express();
 
-module.exports = async (req, res) => {
-    if (req.method === "GET") {
-        return res.json(game.getState());
-    }
+// Middleware
+app.use(cors());
+app.use(express.json());
 
-    if (req.method === "POST") {
-        const body = req.body;
+// Routes
+const chessRoutes = require('./routes/chess');
+app.use('/api/chess', chessRoutes);
 
-        if (body.type === "legalMoves") {
-            return res.json({
-                legalMoves: game.getLegalMoves(body.from)
-            });
-        }
-
-        if (body.type === "move") {
-            game.makeMove(body.from, body.to);
-            return res.json(game.getState());
-        }
-    }
-
-    res.status(400).json({ error: "Invalid request" });
-};
+// Server
+const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`Backend running on port ${PORT}`);
+});
