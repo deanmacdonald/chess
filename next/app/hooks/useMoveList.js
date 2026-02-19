@@ -21,6 +21,6 @@ export default function useMoveList(state) {
   }, [state]);
 
   return {
-    moves
+    moves,
   };
 }

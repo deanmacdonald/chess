@@ -15,7 +15,7 @@ export default function useBoardUI({
   selectedSquare,
   validMoves,
   selectSquare,
-  makeMove
+  makeMove,
 }) {
   // Convert board coordinates (row, col) → algebraic square ("e2")
   const toSquare = useCallback((row, col) => {
@@ -43,7 +43,7 @@ export default function useBoardUI({
       const sq = toSquare(row, col);
       return validMoves.some((m) => m.to === sq);
     },
-    [validMoves, toSquare]
+    [validMoves, toSquare],
   );
 
   // Handle clicking a square on the board
@@ -60,13 +60,13 @@ export default function useBoardUI({
       // Otherwise, select this square and fetch legal moves
       await selectSquare(sq);
     },
-    [selectedSquare, validMoves, makeMove, selectSquare, toSquare]
+    [selectedSquare, validMoves, makeMove, selectSquare, toSquare],
   );
 
   return {
     toSquare,
     fromSquare,
     isLegalTarget,
-    onSquareClick
+    onSquareClick,
   };
 }

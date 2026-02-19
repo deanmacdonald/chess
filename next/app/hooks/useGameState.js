@@ -31,8 +31,8 @@ export default function useGameState() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type: "legalMoves",
-          from: square
-        })
+          from: square,
+        }),
       });
 
       const data = await res.json();
@@ -53,8 +53,8 @@ export default function useGameState() {
         body: JSON.stringify({
           type: "move",
           from,
-          to
-        })
+          to,
+        }),
       });
 
       const data = await res.json();
@@ -76,11 +76,14 @@ export default function useGameState() {
   }, []);
 
   // Select a square on the board
-  const selectSquare = useCallback(async (square) => {
-    setSelectedSquare(square);
-    const moves = await getLegalMoves(square);
-    setValidMoves(moves);
-  }, [getLegalMoves]);
+  const selectSquare = useCallback(
+    async (square) => {
+      setSelectedSquare(square);
+      const moves = await getLegalMoves(square);
+      setValidMoves(moves);
+    },
+    [getLegalMoves],
+  );
 
   // Load initial state on mount
   useEffect(() => {
@@ -95,6 +98,6 @@ export default function useGameState() {
     moveList,
     selectSquare,
     makeMove,
-    reload: loadState
+    reload: loadState,
   };
 }

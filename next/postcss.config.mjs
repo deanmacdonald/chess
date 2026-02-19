@@ -1,7 +1,3 @@
-const config = {
-  plugins: {
-    "@tailwindcss/postcss": {},
-  },
-};
+import next from "eslint-config-next";
 
-export default config;
+export default [...next()];

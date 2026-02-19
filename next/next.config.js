@@ -3,8 +3,8 @@ const nextConfig = {
   swcMinify: false,
   compiler: {},
   experimental: {
-    forceSwcTransforms: false
-  }
+    forceSwcTransforms: false,
+  },
 };
 
 module.exports = nextConfig;
