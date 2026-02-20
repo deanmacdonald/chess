@@ -1,4 +1,4 @@
-import game from "@/api/gameEngine"; // adjust path if needed
+import game from "@/lib/gameEngine"; // <-- update this path after running find command
 
 export async function GET() {
   return Response.json(game.getState());
@@ -14,11 +14,9 @@ export async function POST(request) {
   }
 
   if (body.type === "move") {
-    game.makeMove(body.from, body.to);
-    return Response.json(game.getState());
+    const result = game.makeMove(body.from, body.to);
+    return Response.json(result);
   }
 
-  return new Response(JSON.stringify({ error: "Invalid request" }), {
-    status: 400,
-  });
+  return Response.json({ error: "Invalid request" }, { status: 400 });
 }

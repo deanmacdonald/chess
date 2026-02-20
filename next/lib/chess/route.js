@@ -7,7 +7,7 @@ export async function GET() {
   return NextResponse.json(gameState);
 }
 
-export async function POST(req: Request) {
+export async function POST(req) {
   const body = await req.json();
   const { from, to } = body;
 
