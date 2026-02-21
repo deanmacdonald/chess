@@ -1,22 +1,15 @@
-import game from "@/lib/gameEngine"; // <-- update this path after running find command
+import { runEngine, getLegalMoves } from "@lib/chess";
 
-export async function GET() {
-  return Response.json(game.getState());
-}
+export async function POST(req) {
+  const body = await req.json();
+  const state = body.state;
 
-export async function POST(request) {
-  const body = await request.json();
+  const legal = getLegalMoves(state);
+  const result = runEngine(state);
 
-  if (body.type === "legalMoves") {
-    return Response.json({
-      legalMoves: game.getLegalMoves(body.from),
-    });
-  }
-
-  if (body.type === "move") {
-    const result = game.makeMove(body.from, body.to);
-    return Response.json(result);
-  }
-
-  return Response.json({ error: "Invalid request" }, { status: 400 });
+  return Response.json({
+    legalMoves: legal,
+    engineMove: result.bestMove,
+    newState: result.newState,
+  });
 }

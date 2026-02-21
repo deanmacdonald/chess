@@ -1,22 +1,18 @@
-import { NextResponse } from "next/server";
-import { createInitialState, applyMove } from "@/lib/chess/engine";
+/**
+ * Applies a move to the board and returns a NEW game state.
+ */
+export function applyMove(state, move) {
+  const newState = structuredClone(state);
 
-let gameState = createInitialState();
+  // Move the piece
+  newState.board[move.to] = newState.board[move.from];
+  newState.board[move.from] = null;
 
-export async function GET() {
-  return NextResponse.json(gameState);
-}
+  // Switch turns
+  newState.turn = state.turn === "white" ? "black" : "white";
 
-export async function POST(req) {
-  const body = await req.json();
-  const { from, to } = body;
+  // Track move history
+  newState.moves.push(move);
 
-  const result = applyMove(gameState, from, to);
-
-  if ("error" in result) {
-    return NextResponse.json(result, { status: 400 });
-  }
-
-  gameState = result;
-  return NextResponse.json(gameState);
+  return newState;
 }

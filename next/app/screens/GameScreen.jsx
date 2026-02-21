@@ -1,51 +1,27 @@
 "use client";
 
-import React from "react";
-import ChessBoard from "../components/ChessBoard";
-import PlayerHeader from "../components/PlayerHeader";
-import CapturedPieces from "../components/CapturedPieces";
-import MoveListDialog from "../components/MoveListDialog";
 import useGameState from "../hooks/useGameState";
+import useBoardUI from "../hooks/useBoardUI";
 import useMoveList from "../hooks/useMoveList";
+import INITIAL_STATE from "../lib/initialState";
 
 export default function GameScreen() {
-  const {
-    board,
-    selectedSquare,
-    validMoves,
-    moveList,
-    selectSquare,
-    makeMove,
-  } = useGameState();
+  // ALL HOOKS MUST RUN FIRST
+  const { state, makeMove } = useGameState(INITIAL_STATE);
+  const boardUI = useBoardUI(state);
+  const moveList = useMoveList(state);
 
-  const { moves, addMove } = useMoveList();
-
-  const handleSquareClick = (row, col) => {
-    const square = `${row}-${col}`;
-
-    if (!selectedSquare) {
-      selectSquare(row, col);
-      return;
-    }
-
-    addMove({ from: selectedSquare, to: square });
-    makeMove(selectedSquare, square);
-    selectSquare(null);
-  };
+  // SAFE GUARD AFTER HOOKS
+  if (!state || !state.board) {
+    return <div>Loading…</div>;
+  }
 
   return (
     <div className="game-screen">
-      <PlayerHeader />
+      <h1>Chess Game</h1>
 
-      <ChessBoard
-        board={board}
-        selectedSquare={selectedSquare}
-        validMoves={validMoves}
-        onSquareClick={handleSquareClick}
-      />
-
-      <CapturedPieces />
-      <MoveListDialog moves={moves} />
+      <pre>{JSON.stringify(boardUI.pieces, null, 2)}</pre>
+      <pre>{JSON.stringify(moveList.moves, null, 2)}</pre>
     </div>
   );
 }

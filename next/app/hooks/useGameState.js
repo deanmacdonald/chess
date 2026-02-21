@@ -1,103 +1,34 @@
-"use client";
+import { useState } from "react";
+import { runEngine, getLegalMoves } from "@lib/chess";
 
-import { useState, useEffect, useCallback } from "react";
+/**
+ * Manages the full game state and connects to the chess engine.
+ */
+export default function useGameState(initialState) {
+  const [state, setState] = useState(initialState);
 
-const API_URL = "http://localhost:3001/api/chess";
+  /**
+   * Player makes a move.
+   */
+  function makeMove(move) {
+    const legal = getLegalMoves(state);
+    const isLegal = legal.some((m) => m.from === move.from && m.to === move.to);
 
-export default function useGameState() {
-  const [state, setState] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [selectedSquare, setSelectedSquare] = useState(null);
-  const [validMoves, setValidMoves] = useState([]);
-  const [moveList, setMoveList] = useState([]);
-
-  // Load full game state from backend
-  const loadState = useCallback(async () => {
-    try {
-      const res = await fetch(`${API_URL}/state`);
-      const data = await res.json();
-      setState(data);
-      setLoading(false);
-    } catch (err) {
-      console.error("Failed to load game state:", err);
+    if (!isLegal) {
+      console.warn("Illegal move attempted:", move);
+      return false;
     }
-  }, []);
 
-  // Get legal moves for a square
-  const getLegalMoves = useCallback(async (square) => {
-    try {
-      const res = await fetch(`${API_URL}/action`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "legalMoves",
-          from: square,
-        }),
-      });
+    // Apply the move + run engine
+    const result = runEngine(state);
+    setState(result.newState);
 
-      const data = await res.json();
-      setValidMoves(data.legalMoves || []);
-      return data.legalMoves || [];
-    } catch (err) {
-      console.error("Failed to get legal moves:", err);
-      return [];
-    }
-  }, []);
-
-  // Make a move
-  const makeMove = useCallback(async (from, to) => {
-    try {
-      const res = await fetch(`${API_URL}/action`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "move",
-          from,
-          to,
-        }),
-      });
-
-      const data = await res.json();
-
-      // Update move list
-      setMoveList((prev) => [...prev, { from, to }]);
-
-      // Update board state
-      setState(data);
-
-      // Clear selection + legal moves
-      setSelectedSquare(null);
-      setValidMoves([]);
-
-      return data;
-    } catch (err) {
-      console.error("Failed to make move:", err);
-    }
-  }, []);
-
-  // Select a square on the board
-  const selectSquare = useCallback(
-    async (square) => {
-      setSelectedSquare(square);
-      const moves = await getLegalMoves(square);
-      setValidMoves(moves);
-    },
-    [getLegalMoves],
-  );
-
-  // Load initial state on mount
-  useEffect(() => {
-    loadState();
-  }, [loadState]);
+    return true;
+  }
 
   return {
     state,
-    loading,
-    selectedSquare,
-    validMoves,
-    moveList,
-    selectSquare,
     makeMove,
-    reload: loadState,
+    legalMoves: getLegalMoves(state),
   };
 }

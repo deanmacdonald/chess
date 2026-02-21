@@ -1,43 +1,29 @@
-// Chess engine logic (JS version)
+import { getLegalMoves } from "@lib/chess/validate";
+import { applyMove } from "@lib/chess/route";
 
-export function createInitialState() {
-  return {
-    board: [
-      ["r","n","b","q","k","b","n","r"],
-      ["p","p","p","p","p","p","p","p"],
-      ["","","","","","","",""],
-      ["","","","","","","",""],
-      ["","","","","","","",""],
-      ["","","","","","","",""],
-      ["P","P","P","P","P","P","P","P"],
-      ["R","N","B","Q","K","B","N","R"]
-    ],
-    turn: "white"
-  };
-}
+/**
+ * Runs the chess engine on the current game state.
+ * Returns the best move and the updated state.
+ */
+export function runEngine(gameState) {
+  const legalMoves = getLegalMoves(gameState);
 
-export function applyMove(state, from, to) {
-  const board = state.board.map(row => [...row]);
-
-  const [fromFile, fromRank] = from.split("");
-  const [toFile, toRank] = to.split("");
-
-  const fromRow = 8 - parseInt(fromRank);
-  const fromCol = fromFile.charCodeAt(0) - 97;
-
-  const toRow = 8 - parseInt(toRank);
-  const toCol = toFile.charCodeAt(0) - 97;
-
-  const piece = board[fromRow][fromCol];
-  if (!piece) {
-    return { error: "No piece at source square" };
+  if (legalMoves.length === 0) {
+    return {
+      gameOver: true,
+      reason: "No legal moves",
+      bestMove: null,
+      newState: gameState,
+    };
   }
 
-  board[toRow][toCol] = piece;
-  board[fromRow][fromCol] = "";
+  // Simple evaluation: pick the first legal move
+  const bestMove = legalMoves[0];
+  const newState = applyMove(gameState, bestMove);
 
   return {
-    board,
-    turn: state.turn === "white" ? "black" : "white"
+    gameOver: false,
+    bestMove,
+    newState,
   };
 }

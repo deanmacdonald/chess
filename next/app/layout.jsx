@@ -1,8 +1,8 @@
-import './globals.css';
+import "./globals.css";
 
 export const metadata = {
-  title: 'Chess App',
-  description: 'A simple chess application',
+  title: "Chess App",
+  description: "A simple chess application",
 };
 
 export default function RootLayout({ children }) {
