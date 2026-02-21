@@ -1,6 +1,5 @@
 {
   "name": "Chess App Dev",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "20"
