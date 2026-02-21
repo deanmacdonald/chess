@@ -1,16 +1,13 @@
 {
   "name": "Chess App Dev",
+  "image": "mcr.microsoft.com/devcontainers/base:debian",
   "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20"
-    },
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/common-utils:2": {
-      "installZsh": false,
-      "installOhMyZsh": false
-    },
     "ghcr.io/devcontainers/features/sshd:1": {
       "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
     }
-  }
+  },
+  "postCreateCommand": "npm install"
 }
