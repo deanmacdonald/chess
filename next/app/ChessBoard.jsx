@@ -1,56 +1,63 @@
 "use client";
 
+import { useState } from "react";
+
 const PIECES = {
-  wK: "♔",
-  wQ: "♕",
-  wR: "♖",
-  wB: "♗",
-  wN: "♘",
-  wP: "♙",
-  bK: "♚",
-  bQ: "♛",
-  bR: "♜",
-  bB: "♝",
-  bN: "♞",
-  bP: "♟",
+  wK: "♔", wQ: "♕", wR: "♖", wB: "♗", wN: "♘", wP: "♙",
+  bK: "♚", bQ: "♛", bR: "♜", bB: "♝", bN: "♞", bP: "♟",
 };
 
-export default function ChessBoard({ board }) {
-  const rows = [];
+export default function ChessBoard({ board, onMove }) {
+  const [dragFrom, setDragFrom] = useState(null);
 
-  for (let r = 8; r >= 1; r--) {
-    const row = [];
-    for (let c = 0; c < 8; c++) {
-      const file = "abcdefgh"[c];
-      const square = file + r;
-      const piece = board[square];
-
-      row.push(
-        <div
-          key={square}
-          style={{
-            width: 45,
-            height: 45,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: (r + c) % 2 === 0 ? "#eee" : "#444",
-            color: (r + c) % 2 === 0 ? "#000" : "#fff",
-            fontSize: 28,
-            userSelect: "none",
-          }}
-        >
-          {piece ? PIECES[piece] : ""}
-        </div>
-      );
-    }
-
-    rows.push(
-      <div key={r} style={{ display: "flex" }}>
-        {row}
-      </div>
-    );
+  function handleDown(square) {
+    setDragFrom(square);
   }
 
-  return <div>{rows}</div>;
+  function handleUp(square) {
+    if (dragFrom && dragFrom !== square) {
+      onMove(dragFrom, square);
+    }
+    setDragFrom(null);
+  }
+
+  return (
+    <div style={{ display: "inline-block", border: "2px solid #000" }}>
+      {board.map((row, rIndex) => (
+        <div key={rIndex} style={{ display: "flex" }}>
+          {row.map((cell, cIndex) => {
+            const square =
+              "abcdefgh"[cIndex] + (8 - rIndex);
+
+            const piece = cell ? PIECES[cell.color + cell.type.toUpperCase()] : "";
+
+            return (
+              <div
+                key={square}
+                onMouseDown={() => handleDown(square)}
+                onMouseUp={() => handleUp(square)}
+                onTouchStart={() => handleDown(square)}
+                onTouchEnd={() => handleUp(square)}
+                style={{
+                  width: 45,
+                  height: 45,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor:
+                    (rIndex + cIndex) % 2 === 0 ? "#eee" : "#444",
+                  color:
+                    (rIndex + cIndex) % 2 === 0 ? "#000" : "#fff",
+                  fontSize: 28,
+                  userSelect: "none",
+                }}
+              >
+                {piece}
+              </div>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
 }

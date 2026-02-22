@@ -1,23 +1,8 @@
-export const dynamic = "force-dynamic";
+"use client";
 
-import { headers } from "next/headers";
-import ChessBoard from "./ChessBoard";
+import ChessStage from "./ChessStage";
 
-export default async function Home() {
-  const host = headers().get("host");
-  const protocol = host.includes("localhost") ? "http" : "https";
-  const base = `${protocol}://${host}`;
-
-  const res = await fetch(`${base}/api/chess`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch board data");
-  }
-
-  const board = await res.json();
-
+export default function Home() {
   return (
     <main
       style={{
@@ -28,8 +13,8 @@ export default async function Home() {
         gap: 20,
       }}
     >
-      <h1 style={{ fontSize: 32, marginBottom: 10 }}>Chess Game</h1>
-      <ChessBoard board={board} />
+      <h1 style={{ fontSize: 32 }}>Chess Game</h1>
+      <ChessStage />
     </main>
   );
 }
