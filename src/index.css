@@ -1,0 +1,184 @@
+/* =========================================
+   GLOBAL RESET
+   ========================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background: #0d0d0d;
+  color: #f0f0f0;
+  font-family: Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove default scrollbars on WebKit */
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* =========================================
+   TYPOGRAPHY
+   ========================================= */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+p {
+  line-height: 1.5;
+  color: #d0d0d0;
+}
+
+/* Responsive type scaling */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.6rem;
+  }
+  h2 {
+    font-size: 1.3rem;
+  }
+  h3 {
+    font-size: 1.1rem;
+  }
+  p {
+    font-size: 0.95rem;
+  }
+}
+
+/* =========================================
+   LINKS
+   ========================================= */
+a {
+  color: #4da3ff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* =========================================
+   GLOBAL LAYOUT UTILITIES
+   ========================================= */
+.flex {
+  display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.center {
+  justify-content: center;
+  align-items: center;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.gap-sm {
+  gap: 8px;
+}
+.gap-md {
+  gap: 16px;
+}
+.gap-lg {
+  gap: 24px;
+}
+
+/* =========================================
+   MAIN CHESS LAYOUT (used in App.jsx)
+   ========================================= */
+.chess-layout {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 16px;
+  padding: 16px;
+  height: 100%;
+}
+
+/* Mobile: collapse sidebar under board */
+@media (max-width: 900px) {
+  .chess-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================
+   SCROLLING
+   ========================================= */
+.scroll-y {
+  overflow-y: auto;
+}
+
+.scroll-y::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-y::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+/* =========================================
+   BUTTONS
+   ========================================= */
+button {
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+button:hover {
+  background: #333;
+}
+
+/* =========================================
+   FORMS
+   ========================================= */
+input,
+select {
+  background: #1a1a1a;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+/* =========================================
+   ANIMATIONS (optional polish)
+   ========================================= */
+.fade-in {
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

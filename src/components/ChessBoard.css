@@ -1,0 +1,32 @@
+.board-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.board-container {
+  position: relative;
+  width: min(90vw, 600px);
+  height: min(90vw, 600px);
+  border: 12px solid #5a3e2b;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  background: #000;
+  overflow: hidden;
+}
+
+/* Shrink earlier on laptops */
+@media (max-width: 1100px) {
+  .board-container {
+    width: min(85vw, 550px);
+    height: min(85vw, 550px);
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .board-container {
+    width: 95vw;
+    height: 95vw;
+  }
+}
