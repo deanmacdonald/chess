@@ -3,9 +3,19 @@ export const dynamic = "force-dynamic";
 import ChessBoard from "./ChessBoard";
 
 export default async function Home() {
-  const res = await fetch("http://localhost:3000/api/chess", {
+  // Detect correct base URL (Vercel or local)
+  const base =
+    process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000";
+
+  const res = await fetch(`${base}/api/chess`, {
     cache: "no-store",
   });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch board data");
+  }
 
   const board = await res.json();
 

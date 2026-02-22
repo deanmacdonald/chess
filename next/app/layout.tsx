@@ -1,12 +1,11 @@
 import "./globals.css";
-import type { ReactNode } from "react";
 
 export const metadata = {
-  title: "Chess App",
-  description: "A simple chess game built with Next.js",
+  title: "Black Knight",
+  description: "Chess app",
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>{children}</body>
