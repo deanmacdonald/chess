@@ -1,13 +1,12 @@
 export const dynamic = "force-dynamic";
 
+import { headers } from "next/headers";
 import ChessBoard from "./ChessBoard";
 
 export default async function Home() {
-  // Detect correct base URL (Vercel or local)
-  const base =
-    process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
+  const host = headers().get("host");
+  const protocol = host.includes("localhost") ? "http" : "https";
+  const base = `${protocol}://${host}`;
 
   const res = await fetch(`${base}/api/chess`, {
     cache: "no-store",
