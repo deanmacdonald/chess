@@ -1,121 +1,58 @@
-// src/hooks/useGameState.js
-import { useState, useEffect } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Chess } from "chess.js";
 
 export default function useGameState() {
-  const [game] = useState(new Chess());
+  // Keep a single Chess instance for the entire game
+  const chess = useRef(new Chess());
 
-  const [turn, setTurn] = useState("white");
-  const [whiteTime, setWhiteTime] = useState(300);
-  const [blackTime, setBlackTime] = useState(300);
-
-  const [capturedWhite, setCapturedWhite] = useState([]);
-  const [capturedBlack, setCapturedBlack] = useState([]);
-
-  // Move list now stores objects: { white: "e4", black: "e5" }
+  // React state mirrors the chess engine state
+  const [board, setBoard] = useState(chess.current.board());
+  const [turn, setTurn] = useState(chess.current.turn());
   const [moveHistory, setMoveHistory] = useState([]);
-
   const [legalMoves, setLegalMoves] = useState([]);
   const [lastMove, setLastMove] = useState(null);
 
-  const [dragFrom, setDragFrom] = useState(null);
+  // Sync React state with the chess engine
+  const updateBoardState = useCallback(() => {
+    setBoard(chess.current.board());
+    setTurn(chess.current.turn());
+    setMoveHistory(chess.current.history({ verbose: true }));
+    setLegalMoves(chess.current.moves({ verbose: true }));
+  }, []);
 
-  // Clock logic
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (turn === "white") {
-        setWhiteTime((t) => Math.max(t - 1, 0));
-      } else {
-        setBlackTime((t) => Math.max(t - 1, 0));
-      }
-    }, 1000);
+  // When dragging starts, highlight legal moves for that square
+  const handleDragStart = useCallback((from) => {
+    const moves = chess.current.moves({ square: from, verbose: true });
+    setLegalMoves(moves);
+  }, []);
 
-    return () => clearInterval(interval);
-  }, [turn]);
+  // When dragging ends, attempt the move
+  const handleDragEnd = useCallback((from, to) => {
+    console.log("DragEnd:", { from, to });
 
-  // Convert row/col → algebraic square ("e4")
-  const toSquare = (row, col) => {
-    const files = "abcdefgh";
-    return files[col] + (8 - row);
-  };
-
-  // DRAG START
-  const handleDragStart = (piece, row, col) => {
-    const from = toSquare(row, col);
-    setDragFrom(from);
-
-    const moves = game.moves({ square: from, verbose: true });
-    const formatted = moves.map((m) => ({
-      row: 8 - m.to[1],
-      col: m.to.charCodeAt(0) - 97,
-    }));
-    setLegalMoves(formatted);
-  };
-
-  // DRAG END
-  const handleDragEnd = (piece, fromRow, fromCol, toRow, toCol) => {
-    if (!dragFrom) return;
-
-    const to = toSquare(toRow, toCol);
-    const move = game.move({ from: dragFrom, to, promotion: "q" });
-
-    if (!move) {
-      setLegalMoves([]);
-      setDragFrom(null);
+    if (!to || from === to) {
+      console.warn("Invalid drop:", { from, to });
       return;
     }
 
-    // Captures
-    if (move.captured) {
-      if (move.color === "w") {
-        setCapturedBlack((prev) => [...prev, move.captured]);
-      } else {
-        setCapturedWhite((prev) => [...prev, move.captured]);
+    try {
+      const move = chess.current.move({ from, to, promotion: "q" });
+
+      if (!move) {
+        console.warn("Illegal move:", { from, to });
+        return;
       }
+
+      setLastMove({ from, to });
+      updateBoardState();
+    } catch (err) {
+      console.error("Move error:", err);
     }
-
-    // ⭐ FIXED MOVE HISTORY — now stores SAN notation in white/black pairs
-    setMoveHistory((prev) => {
-      const san = move.san;
-      const last = prev[prev.length - 1];
-
-      // White move → start new pair
-      if (!last || last.black) {
-        return [...prev, { white: san, black: "" }];
-      }
-
-      // Black move → complete the pair
-      const updated = [...prev];
-      updated[updated.length - 1].black = san;
-      return updated;
-    });
-
-    // Last move highlight
-    setLastMove({
-      from: {
-        row: 8 - move.from[1],
-        col: move.from.charCodeAt(0) - 97,
-      },
-      to: {
-        row: 8 - move.to[1],
-        col: move.to.charCodeAt(0) - 97,
-      },
-    });
-
-    // Switch turn
-    setTurn(game.turn() === "w" ? "white" : "black");
-
-    setLegalMoves([]);
-    setDragFrom(null);
-  };
+  }, [updateBoardState]);
 
   return {
-    board: game.board(),
+    board,
     turn,
-    whiteTime,
-    blackTime,
-    capturedWhite,
-    capturedBlack,
     moveHistory,
     legalMoves,
     lastMove,
@@ -123,3 +60,4 @@ export default function useGameState() {
     handleDragEnd,
   };
 }
+
