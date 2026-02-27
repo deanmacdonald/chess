@@ -27,28 +27,31 @@ export default function useGameState() {
   }, []);
 
   // When dragging ends, attempt the move
-  const handleDragEnd = useCallback((from, to) => {
-    console.log("DragEnd:", { from, to });
+  const handleDragEnd = useCallback(
+    (from, to) => {
+      console.log("DragEnd:", { from, to });
 
-    if (!to || from === to) {
-      console.warn("Invalid drop:", { from, to });
-      return;
-    }
-
-    try {
-      const move = chess.current.move({ from, to, promotion: "q" });
-
-      if (!move) {
-        console.warn("Illegal move:", { from, to });
+      if (!to || from === to) {
+        console.warn("Invalid drop:", { from, to });
         return;
       }
 
-      setLastMove({ from, to });
-      updateBoardState();
-    } catch (err) {
-      console.error("Move error:", err);
-    }
-  }, [updateBoardState]);
+      try {
+        const move = chess.current.move({ from, to, promotion: "q" });
+
+        if (!move) {
+          console.warn("Illegal move:", { from, to });
+          return;
+        }
+
+        setLastMove({ from, to });
+        updateBoardState();
+      } catch (err) {
+        console.error("Move error:", err);
+      }
+    },
+    [updateBoardState],
+  );
 
   return {
     board,
@@ -60,4 +63,3 @@ export default function useGameState() {
     handleDragEnd,
   };
 }
-

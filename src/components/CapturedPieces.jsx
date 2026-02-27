@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function CapturedPieces({ pieces }) {
+export default function CapturedPieces({ pieces = [] }) {
   return (
     <div
       style={{

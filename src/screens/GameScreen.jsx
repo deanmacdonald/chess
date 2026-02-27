@@ -7,17 +7,19 @@ import ChessClock from "../components/ChessClock.jsx";
 export default function GameScreen() {
   return (
     <div className="chess-layout">
-      {/* LEFT SIDE — BOARD + PLAYER HEADERS */}
       <div className="board-column">
         <PlayerHeader position="top" />
         <ChessBoard />
         <PlayerHeader position="bottom" />
       </div>
 
-      {/* RIGHT SIDE — SIDEBAR */}
       <div className="sidebar">
         <ChessClock />
-        <CapturedPieces />
+
+        {/* Always pass arrays so CapturedPieces never receives undefined */}
+        <CapturedPieces pieces={[]} />
+        <CapturedPieces pieces={[]} />
+
         <MoveListDialog />
       </div>
     </div>
