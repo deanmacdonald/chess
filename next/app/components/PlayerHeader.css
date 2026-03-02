@@ -1,27 +1,73 @@
+/* ============================
+   TRON PLAYER HEADER THEME
+   ============================ */
+
 .player-header {
   display: flex;
   justify-content: space-between;
-  padding: 10px 16px;
-  background: #111;
-  color: #fff;
-  border-bottom: 2px solid #333;
+  align-items: center;
+
+  padding: 12px 18px;
+  margin-bottom: 8px;
+
+  background: #05070f;
+  border-bottom: 2px solid #0ff;
+
+  box-shadow: 0 0 12px rgba(0,255,255,0.4),
+              inset 0 0 18px rgba(0,255,255,0.25);
+
+  animation: headerPulse 4s ease-in-out infinite;
+  border-radius: 6px;
 }
+
+/* Tron breathing glow */
+@keyframes headerPulse {
+  0% { box-shadow: 0 0 10px #0ff, inset 0 0 14px rgba(0,255,255,0.25); }
+  50% { box-shadow: 0 0 22px #0ff, inset 0 0 26px rgba(0,255,255,0.45); }
+  100% { box-shadow: 0 0 10px #0ff, inset 0 0 14px rgba(0,255,255,0.25); }
+}
+
+/* ============================
+   PLAYER NAME + COLOR
+   ============================ */
 
 .player {
   display: flex;
   align-items: center;
-  font-size: 18px;
-  font-weight: 600;
-}
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 
-.player-white {
-  color: #f5f5f5;
-}
-
-.player-black {
-  color: #d4d4d4;
+  color: #0ff;
+  text-shadow: 0 0 6px #0ff;
 }
 
 .player-name {
-  margin-left: 6px;
+  margin-left: 8px;
+}
+
+/* White player glow */
+.player-white {
+  color: #bff;
+  text-shadow: 0 0 8px #9ff;
+}
+
+/* Black player glow */
+.player-black {
+  color: #7df;
+  text-shadow: 0 0 8px #5cf;
+}
+
+/* ============================
+   RESPONSIVE
+   ============================ */
+
+@media (max-width: 480px) {
+  .player-header {
+    padding: 10px 14px;
+  }
+
+  .player {
+    font-size: 17px;
+  }
 }

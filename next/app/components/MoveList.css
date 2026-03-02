@@ -1,40 +1,122 @@
+/* ============================
+   TRON MOVE LIST PANEL
+   ============================ */
+
 .move-list-dialog {
-  padding: 12px;
-  background: #222;
-  color: #fff;
-  border-radius: 6px;
-  max-width: 260px;
+  padding: 14px;
+  background: #05070f;
+  color: #cff;
+  border-radius: 8px;
+  max-width: 280px;
   margin: 0 auto;
+
+  border: 2px solid #0ff;
+  box-shadow: 0 0 16px #0ff, inset 0 0 22px rgba(0,255,255,0.25);
+
+  animation: tronPanelPulse 4s ease-in-out infinite;
 }
+
+/* Tron breathing glow */
+@keyframes tronPanelPulse {
+  0% { box-shadow: 0 0 12px #0ff, inset 0 0 16px rgba(0,255,255,0.25); }
+  50% { box-shadow: 0 0 26px #0ff, inset 0 0 30px rgba(0,255,255,0.45); }
+  100% { box-shadow: 0 0 12px #0ff, inset 0 0 16px rgba(0,255,255,0.25); }
+}
+
+/* ============================
+   TITLE
+   ============================ */
 
 .move-list-title {
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 20px;
+  margin-bottom: 12px;
   text-align: center;
+  color: #0ff;
+  text-shadow: 0 0 8px #0ff;
+  letter-spacing: 0.5px;
 }
 
+/* ============================
+   LIST CONTAINER
+   ============================ */
+
 .move-list {
-  max-height: 240px;
+  max-height: 260px;
   overflow-y: auto;
   padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: #0ff #0a0f1f;
 }
+
+/* Custom scrollbar (WebKit) */
+.move-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.move-list::-webkit-scrollbar-thumb {
+  background: #0ff;
+  border-radius: 4px;
+  box-shadow: 0 0 8px #0ff;
+}
+
+.move-list::-webkit-scrollbar-track {
+  background: #0a0f1f;
+}
+
+/* ============================
+   EMPTY STATE
+   ============================ */
 
 .move-list-empty {
   text-align: center;
   opacity: 0.7;
+  color: #7df;
+  text-shadow: 0 0 6px rgba(0,255,255,0.4);
 }
+
+/* ============================
+   MOVE ROWS
+   ============================ */
 
 .move-list-item {
   display: flex;
-  gap: 6px;
-  padding: 4px 0;
-  border-bottom: 1px solid #444;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(0,255,255,0.15);
+
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
+.move-list-item:hover {
+  background: rgba(0,255,255,0.08);
+  box-shadow: inset 0 0 12px rgba(0,255,255,0.4);
+}
+
+/* Move number */
 .move-number {
   font-weight: bold;
+  color: #0ff;
+  text-shadow: 0 0 6px #0ff;
 }
 
+/* Arrow between moves */
 .move-arrow {
-  opacity: 0.8;
+  opacity: 0.9;
+  color: #7df;
+  text-shadow: 0 0 6px #5cf;
+}
+
+/* ============================
+   RESPONSIVE
+   ============================ */
+
+@media (max-width: 480px) {
+  .move-list-dialog {
+    max-width: 90vw;
+    padding: 12px;
+  }
+
+  .move-list-title {
+    font-size: 18px;
+  }
 }
