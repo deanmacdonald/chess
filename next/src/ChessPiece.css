@@ -11,7 +11,9 @@
   pointer-events: none;
   user-select: none;
 
-  transition: transform 0.25s ease, filter 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
 }
 
 /* ============================
@@ -20,12 +22,16 @@
 
 .chess-piece[data-color="white"] {
   color: #cff;
-  text-shadow: 0 0 8px #9ff, 0 0 14px rgba(0,255,255,0.6);
+  text-shadow:
+    0 0 8px #9ff,
+    0 0 14px rgba(0, 255, 255, 0.6);
 }
 
 .chess-piece[data-color="black"] {
   color: #7df;
-  text-shadow: 0 0 8px #5cf, 0 0 14px rgba(0,255,255,0.6);
+  text-shadow:
+    0 0 8px #5cf,
+    0 0 14px rgba(0, 255, 255, 0.6);
 }
 
 /* ============================
@@ -42,8 +48,14 @@
    ============================ */
 
 @keyframes tronCaptureFlash {
-  0% { filter: drop-shadow(0 0 14px #f00); opacity: 1; }
-  100% { filter: drop-shadow(0 0 0 #000); opacity: 0.4; }
+  0% {
+    filter: drop-shadow(0 0 14px #f00);
+    opacity: 1;
+  }
+  100% {
+    filter: drop-shadow(0 0 0 #000);
+    opacity: 0.4;
+  }
 }
 
 .chess-piece.captured {

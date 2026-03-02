@@ -13,8 +13,9 @@
   background: #05070f;
   border-bottom: 2px solid #0ff;
 
-  box-shadow: 0 0 12px rgba(0,255,255,0.4),
-              inset 0 0 18px rgba(0,255,255,0.25);
+  box-shadow:
+    0 0 12px rgba(0, 255, 255, 0.4),
+    inset 0 0 18px rgba(0, 255, 255, 0.25);
 
   animation: headerPulse 4s ease-in-out infinite;
   border-radius: 6px;
@@ -22,9 +23,21 @@
 
 /* Tron breathing glow */
 @keyframes headerPulse {
-  0% { box-shadow: 0 0 10px #0ff, inset 0 0 14px rgba(0,255,255,0.25); }
-  50% { box-shadow: 0 0 22px #0ff, inset 0 0 26px rgba(0,255,255,0.45); }
-  100% { box-shadow: 0 0 10px #0ff, inset 0 0 14px rgba(0,255,255,0.25); }
+  0% {
+    box-shadow:
+      0 0 10px #0ff,
+      inset 0 0 14px rgba(0, 255, 255, 0.25);
+  }
+  50% {
+    box-shadow:
+      0 0 22px #0ff,
+      inset 0 0 26px rgba(0, 255, 255, 0.45);
+  }
+  100% {
+    box-shadow:
+      0 0 10px #0ff,
+      inset 0 0 14px rgba(0, 255, 255, 0.25);
+  }
 }
 
 /* ============================
