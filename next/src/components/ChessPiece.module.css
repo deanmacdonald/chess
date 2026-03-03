@@ -1,0 +1,39 @@
+.piece {
+  color: #0ff;
+  font-size: 32px;
+  user-select: none;
+
+  /* Multi-layer neon glow */
+  text-shadow:
+    0 0 6px #0ff,
+    0 0 12px #0ff,
+    0 0 20px #0ff,
+    0 0 40px rgba(0, 255, 255, 0.6);
+
+  /* Breathing neon pulse */
+  animation: tronPulse 2.2s ease-in-out infinite;
+}
+
+@keyframes tronPulse {
+  0% {
+    text-shadow:
+      0 0 4px #0ff,
+      0 0 10px #0ff,
+      0 0 18px #0ff,
+      0 0 30px rgba(0, 255, 255, 0.4);
+  }
+  50% {
+    text-shadow:
+      0 0 8px #0ff,
+      0 0 16px #0ff,
+      0 0 28px #0ff,
+      0 0 50px rgba(0, 255, 255, 0.8);
+  }
+  100% {
+    text-shadow:
+      0 0 4px #0ff,
+      0 0 10px #0ff,
+      0 0 18px #0ff,
+      0 0 30px rgba(0, 255, 255, 0.4);
+  }
+}

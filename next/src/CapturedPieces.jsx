@@ -1,24 +1,13 @@
-"use client";
-
-import React from "react";
-
-export default function CapturedPieces({ white = [], black = [] }) {
+export default function CapturedPieces({ whiteCaptured, blackCaptured }) {
   return (
     <div className="captured-pieces">
-      <div className="captured-row white-captured">
-        {white.map((piece, index) => (
-          <span key={index} className="captured-piece" data-color="white">
-            {piece.symbol}
-          </span>
-        ))}
+      <div>
+        <h4>White Captured</h4>
+        <div>{whiteCaptured.join(" ")}</div>
       </div>
-
-      <div className="captured-row black-captured">
-        {black.map((piece, index) => (
-          <span key={index} className="captured-piece" data-color="black">
-            {piece.symbol}
-          </span>
-        ))}
+      <div>
+        <h4>Black Captured</h4>
+        <div>{blackCaptured.join(" ")}</div>
       </div>
     </div>
   );

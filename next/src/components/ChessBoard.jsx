@@ -3,15 +3,10 @@
 import styles from "./ChessBoard.module.css";
 import ChessPiece from "./ChessPiece";
 
-export default function ChessBoard({ board, pieces, onMove }) {
+export default function ChessBoard({ board, pieces, onSquareClick }) {
   if (!board || !pieces) {
     return <div className={styles.loading}>Loading board…</div>;
   }
-
-  const handleSquareClick = (row, col) => {
-    const from = `${row}-${col}`;
-    onMove({ from, to: null }); // your makeMove will handle this
-  };
 
   return (
     <div className={styles.board}>
@@ -28,14 +23,12 @@ export default function ChessBoard({ board, pieces, onMove }) {
               <div
                 key={key}
                 className={`${styles.square} ${squareClass}`}
-                onClick={() => handleSquareClick(rowIndex, colIndex)}
+                onClick={() => onSquareClick(rowIndex, colIndex)}
               >
                 {piece && (
                   <ChessPiece
-                    type={piece[1]} // "P"
-                    color={piece[0]} // "w"
-                    row={rowIndex}
-                    col={colIndex}
+                    type={piece[1]}
+                    color={piece[0]}
                   />
                 )}
               </div>
