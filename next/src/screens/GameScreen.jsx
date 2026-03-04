@@ -1,57 +1,46 @@
-"use client";
-
-import useChessEngine from "../hooks/useChessEngine";
-import useBoardUI from "../hooks/useBoardUI";
-import useMoveList from "../hooks/useMoveList";
-
-// UI components
+import React from "react";
 import ChessBoard from "../components/ChessBoard";
-import ChessClock from "../components/ChessClock";
+import useBoardUI from "../hooks/useBoardUI";
+import useChessEngine from "../hooks/useChessEngine";
+import useMoveList from "../hooks/useMoveList";
 import PlayerHeader from "../PlayerHeader";
 import MoveListDialog from "../MoveListDialog";
-import CapturedPieces from "../CapturedPieces";
 
 export default function GameScreen() {
-  const engine = useChessEngine();
+  const { board, mappedPieces, selectedSquare, selectSquare } = useBoardUI();
+  const { makeMove, legalMoves } = useChessEngine();
+  const { moves } = useMoveList();
 
-  const board = engine.getBoard();
-  const boardUI = useBoardUI({ board });
-  const moveList = useMoveList({ pgn: engine.pgn() });
-
-  // 🔥 FIX: Normalize pieces into "row-col" keys
-  const mappedPieces = {};
-  for (let row = 0; row < 8; row++) {
-    for (let col = 0; col < 8; col++) {
-      const piece = board[row][col];
-      if (piece) {
-        mappedPieces[`${row}-${col}`] = piece;
-      }
+  function handleSquareClick(square) {
+    if (!selectedSquare) {
+      selectSquare(square);
+      return;
     }
-  }
 
-  const handleSquareClick = (from, to) => {
-    engine.makeMove(from, to);
-  };
+    makeMove(square);
+  }
 
   return (
     <div className="game-screen">
-      <PlayerHeader />
+      <div className="player-section top-player">
+        <PlayerHeader player="Black" />
+      </div>
 
-      <ChessBoard
-        board={board}
-        pieces={mappedPieces}   {/* ← FIXED */}
-        onSquareClick={handleSquareClick}
-      />
+      <div className="board-container">
+        <ChessBoard
+          board={board}
+          pieces={mappedPieces}
+          selectedSquare={selectedSquare}
+          onSquareClick={handleSquareClick}
+          legalMoves={legalMoves}
+        />
+      </div>
 
-      <ChessClock
-        whiteTime={300}
-        blackTime={300}
-        currentPlayer={engine.turn}
-      />
+      <div className="player-section bottom-player">
+        <PlayerHeader player="White" />
+      </div>
 
-      <CapturedPieces whiteCaptured={[]} blackCaptured={[]} />
-
-      <MoveListDialog moves={moveList.moves} />
+      <MoveListDialog moves={moves} />
     </div>
   );
 }

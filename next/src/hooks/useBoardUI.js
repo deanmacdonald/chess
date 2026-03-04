@@ -1,19 +1,29 @@
-/**
- * UI helpers for rendering the board.
- * Converts the 8×8 array into a flat map of "row-col" → "wP" strings.
- */
-export default function useBoardUI(state) {
-  const pieces = {};
+import useGameState from "./useGameState";
 
-  // state.board is a 2D array: board[row][col]
-  state.board.forEach((row, rowIndex) => {
+export default function useBoardUI() {
+  const { state, setState } = useGameState();
+
+  const board = state.board || [];
+  const mappedPieces = {};
+
+  board.forEach((row, rowIndex) => {
     row.forEach((piece, colIndex) => {
       const key = `${rowIndex}-${colIndex}`;
-      pieces[key] = piece; // keep string format: "wP", "bK", or ""
+      mappedPieces[key] = piece;
     });
   });
 
+  function selectSquare(square) {
+    setState({
+      ...state,
+      selectedSquare: square,
+    });
+  }
+
   return {
-    pieces,
+    board,
+    mappedPieces,
+    selectedSquare: state.selectedSquare,
+    selectSquare,
   };
 }

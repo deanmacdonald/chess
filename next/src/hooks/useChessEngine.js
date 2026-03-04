@@ -1,48 +1,25 @@
-import { useState } from "react";
-import { Chess } from "chess.js";
+import useGameState from "./useGameState";
 
 export default function useChessEngine() {
-  const [chess] = useState(() => new Chess());
-  const [fen, setFen] = useState(chess.fen());
-  const [turn, setTurn] = useState(chess.turn());
-  const [legalMoves, setLegalMoves] = useState([]);
+  const { state, makeMove, legalMoves } = useGameState();
 
-  const getBoard = () => chess.board();
+  function attemptMove(square, addMove) {
+    const from = state.selectedSquare;
+    const to = square;
 
-  const getLegalMoves = (square) => {
-    const moves = chess.moves({ square, verbose: true });
-    setLegalMoves(moves.map((m) => m.to));
-    return moves;
-  };
+    if (!from) return;
 
-  const makeMove = (from, to) => {
-    const move = chess.move({ from, to, promotion: "q" });
+    const move = { from, to };
 
-    if (move) {
-      setFen(chess.fen());
-      setTurn(chess.turn());
-      setLegalMoves([]);
-      return true;
+    const success = makeMove(move);
+
+    if (success && addMove) {
+      addMove(move);
     }
-
-    return false;
-  };
-
-  const reset = () => {
-    chess.reset();
-    setFen(chess.fen());
-    setTurn(chess.turn());
-    setLegalMoves([]);
-  };
+  }
 
   return {
-    fen,
-    turn,
+    makeMove: attemptMove,
     legalMoves,
-    getBoard,
-    getLegalMoves,
-    makeMove,
-    reset,
-    pgn: () => chess.pgn(),
   };
 }

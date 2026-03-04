@@ -1,8 +1,8 @@
-/**
- * Returns the move history from the game state.
- * Pure UI/data helper — no engine logic here.
- */
-export default function useMoveList(state) {
+import useGameState from "./useGameState";
+
+export default function useMoveList() {
+  const { state } = useGameState();
+
   return {
     moves: state.moves || [],
   };
