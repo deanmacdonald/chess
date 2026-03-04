@@ -18,6 +18,17 @@ export default function GameScreen() {
   const boardUI = useBoardUI({ board });
   const moveList = useMoveList({ pgn: engine.pgn() });
 
+  // 🔥 FIX: Normalize pieces into "row-col" keys
+  const mappedPieces = {};
+  for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < 8; col++) {
+      const piece = board[row][col];
+      if (piece) {
+        mappedPieces[`${row}-${col}`] = piece;
+      }
+    }
+  }
+
   const handleSquareClick = (from, to) => {
     engine.makeMove(from, to);
   };
@@ -28,7 +39,7 @@ export default function GameScreen() {
 
       <ChessBoard
         board={board}
-        pieces={boardUI.pieces}
+        pieces={mappedPieces}   {/* ← FIXED */}
         onSquareClick={handleSquareClick}
       />
 
@@ -38,10 +49,7 @@ export default function GameScreen() {
         currentPlayer={engine.turn}
       />
 
-      <CapturedPieces
-        whiteCaptured={[]}
-        blackCaptured={[]}
-      />
+      <CapturedPieces whiteCaptured={[]} blackCaptured={[]} />
 
       <MoveListDialog moves={moveList.moves} />
     </div>

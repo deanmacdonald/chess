@@ -25,12 +25,7 @@ export default function ChessBoard({ board, pieces, onSquareClick }) {
                 className={`${styles.square} ${squareClass}`}
                 onClick={() => onSquareClick(rowIndex, colIndex)}
               >
-                {piece && (
-                  <ChessPiece
-                    type={piece[1]}
-                    color={piece[0]}
-                  />
-                )}
+                {piece && <ChessPiece type={piece[1]} color={piece[0]} />}
               </div>
             );
           })}

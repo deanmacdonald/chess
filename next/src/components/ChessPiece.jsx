@@ -1,20 +1,19 @@
+import Image from "next/image";
 import styles from "./ChessPiece.module.css";
 
 export default function ChessPiece({ type, color }) {
-  const pieceMap = {
-    K: "♔",
-    Q: "♕",
-    R: "♖",
-    B: "♗",
-    N: "♘",
-    P: "♙",
-  };
+  if (!type || !color) return null;
 
-  const char = pieceMap[type] || "?";
+  const upper = type.toUpperCase();
+  const file = `${color}${upper}.png`; // e.g. wP.png
 
   return (
-    <span className={color === "w" ? styles.white : styles.black}>
-      {char}
-    </span>
+    <Image
+      src={`/pieces/${file}`}
+      alt={`${color}${upper}`}
+      width={40}
+      height={40}
+      className={styles.piece}
+    />
   );
 }
