@@ -96,3 +96,9 @@ a:hover {
 * {
   transition: 0.15s ease;
 }
+
+/* Prevent horizontal overflow caused by neon borders or grid background */
+html,
+body {
+  overflow-x: hidden;
+}
