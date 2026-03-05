@@ -1,3 +1,4 @@
+import "../styles/styles.css";
 import "../src/MoveList.css";
 import "../src/PlayerHeader.css";
 import GameStateProvider from "../src/context/GameStateProvider";

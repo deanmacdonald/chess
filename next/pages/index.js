@@ -1,8 +1,4 @@
-import dynamic from "next/dynamic";
-
-const GameScreen = dynamic(() => import("../src/screens/GameScreen"), {
-  ssr: false,
-});
+import GameScreen from "../src/screens/GameScreen";
 
 export default function Home() {
   return <GameScreen />;

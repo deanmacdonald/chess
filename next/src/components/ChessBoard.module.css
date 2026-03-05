@@ -1,51 +1,68 @@
 .board {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 420px;
-  margin: 0 auto;
-  border: 2px solid #0ff;
-  box-shadow: 0 0 20px #0ff;
+  display: inline-block;
+  border: 4px solid #0ff;
+  box-shadow:
+    0 0 25px #0ff,
+    inset 0 0 20px #0ff;
+  background: #000814;
 }
 
-.row {
+.rank {
   display: flex;
 }
 
 .square {
-  width: 50px;
-  height: 50px;
+  width: 56px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 32px;
   cursor: pointer;
-  transition: background 0.15s;
+  position: relative;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+  font-family: "Segoe UI Symbol", sans-serif;
 }
 
 .light {
-  background: #1a1a1a;
+  background: #001122;
 }
 
 .dark {
-  background: #0d0d0d;
+  background: #000a18;
 }
 
 .square:hover {
-  background: #222;
+  transform: scale(1.05);
+  box-shadow: 0 0 12px #0ff;
 }
 
-.loading {
+.selected {
+  box-shadow:
+    inset 0 0 10px #00eaff,
+    0 0 15px #00eaff;
+  background: #002233;
+}
+
+.legal {
+  box-shadow:
+    inset 0 0 10px #00ff88,
+    0 0 15px #00ff88;
+  background: #00331a;
+}
+
+.piece {
+  font-size: 34px;
+  text-shadow:
+    0 0 8px #0ff,
+    0 0 12px #0ff;
   color: #0ff;
-  text-align: center;
-  padding: 20px;
+  user-select: none;
+  transition: transform 0.15s ease;
 }
 
-.dragOver {
-  box-shadow: inset 0 0 12px #0ff;
-}
-
-.draggingPiece {
-  opacity: 0.4;
-  transform: scale(1.1);
+.piece:active {
+  transform: scale(0.9);
 }
