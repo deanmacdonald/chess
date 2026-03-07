@@ -1,68 +1,73 @@
+/* Board container */
 .board {
-  display: inline-block;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  width: 100%;
+  max-width: 100vw;
+  aspect-ratio: 1 / 1;
   border: 4px solid #0ff;
   box-shadow:
     0 0 25px #0ff,
     inset 0 0 20px #0ff;
-  background: #000814;
+  background: #000;
 }
 
-.rank {
-  display: flex;
-}
-
+/* Each square must be a perfect square */
 .square {
-  width: 56px;
-  height: 56px;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  cursor: pointer;
-  position: relative;
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.15s ease;
-  font-family: "Segoe UI Symbol", sans-serif;
-}
-
-.light {
-  background: #001122;
-}
-
-.dark {
-  background: #000a18;
-}
-
-.square:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 12px #0ff;
-}
-
-.selected {
-  box-shadow:
-    inset 0 0 10px #00eaff,
-    0 0 15px #00eaff;
-  background: #002233;
-}
-
-.legal {
-  box-shadow:
-    inset 0 0 10px #00ff88,
-    0 0 15px #00ff88;
-  background: #00331a;
-}
-
-.piece {
-  font-size: 34px;
-  text-shadow:
-    0 0 8px #0ff,
-    0 0 12px #0ff;
-  color: #0ff;
+  align-items: center;
   user-select: none;
-  transition: transform 0.15s ease;
+  position: relative;
+  z-index: 1;
 }
 
-.piece:active {
-  transform: scale(0.9);
+/* TRON glowing square colors */
+.light-square {
+  background-color: rgba(0, 255, 255, 0.15);
+}
+
+.dark-square {
+  background-color: rgba(0, 255, 255, 0.05);
+}
+
+/* Piece images */
+.square img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Tron glow for pieces */
+.whitePiece {
+  filter: drop-shadow(0 0 6px #0ff);
+}
+
+.blackPiece {
+  filter: drop-shadow(0 0 6px #ff0033);
+}
+
+/* Highlights */
+.selectedSquare {
+  box-shadow:
+    inset 0 0 0 3px #0ff,
+    0 0 12px #0ff;
+}
+
+.legalMoveSquare {
+  box-shadow: inset 0 0 0 3px rgba(0, 255, 170, 0.9);
+}
+
+.lastMoveSquare {
+  box-shadow: inset 0 0 0 3px rgba(255, 255, 0, 0.9);
+}
+
+.inCheckSquare {
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 0, 0, 0.95),
+    0 0 16px #f00;
 }

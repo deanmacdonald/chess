@@ -8,6 +8,8 @@ export default function GameScreen() {
     status,
     selectedSquare,
     legalMoves,
+    lastMove,
+    inCheckSquare,
     handleSquareClick,
     resetGame,
   } = useChessEngine();
@@ -38,6 +40,8 @@ export default function GameScreen() {
         board={board}
         selectedSquare={selectedSquare}
         legalMoves={legalMoves}
+        lastMove={lastMove}
+        inCheckSquare={inCheckSquare}
         onSquareClick={handleSquareClick}
       />
 

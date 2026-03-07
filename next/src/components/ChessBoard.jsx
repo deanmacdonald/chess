@@ -1,67 +1,75 @@
 import React from "react";
 import styles from "./ChessBoard.module.css";
 
-const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
-
-function squareName(fileIndex, rankIndex) {
-  const file = files[fileIndex];
-  const rank = 8 - rankIndex;
-  return `${file}${rank}`;
-}
-
-function pieceToChar(piece) {
+const getPieceClass = (piece) => {
   if (!piece) return "";
-  const map = {
-    p: "♟",
-    r: "♜",
-    n: "♞",
-    b: "♝",
-    q: "♛",
-    k: "♚",
-  };
-  const char = map[piece.type];
-  return piece.color === "w" ? char.toUpperCase() : char;
-}
+  return piece.color === "b" ? styles.blackPiece : styles.whitePiece;
+};
+
+const toSquare = (row, col) => {
+  const files = "abcdefgh";
+  const file = files[col];
+  const rank = 8 - row;
+  return file + rank;
+};
 
 export default function ChessBoard({
   board,
   selectedSquare,
   legalMoves,
+  lastMove,
+  inCheckSquare,
   onSquareClick,
 }) {
+  const legalSet = new Set(legalMoves || []);
+
   return (
     <div className={styles.board}>
-      {board.map((rank, rankIndex) => (
-        <div key={rankIndex} className={styles.rank}>
-          {rank.map((piece, fileIndex) => {
-            const square = squareName(fileIndex, rankIndex);
-            const isDark = (fileIndex + rankIndex) % 2 === 1;
-            const isSelected = selectedSquare === square;
-            const isLegalTarget = legalMoves.includes(square);
+      {board.map((row, rowIndex) =>
+        row.map((piece, colIndex) => {
+          const square = toSquare(rowIndex, colIndex);
+          const isLight = (rowIndex + colIndex) % 2 === 0;
 
-            const squareClasses = [
-              styles.square,
-              isDark ? styles.dark : styles.light,
-              isSelected ? styles.selected : "",
-              isLegalTarget ? styles.legal : "",
-            ]
-              .filter(Boolean)
-              .join(" ");
+          let squareClass = `${styles.square} ${
+            isLight ? styles["light-square"] : styles["dark-square"]
+          }`;
 
-            return (
-              <div
-                key={square}
-                className={squareClasses}
-                onClick={() => onSquareClick(square)}
-              >
-                {piece && (
-                  <span className={styles.piece}>{pieceToChar(piece)}</span>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      ))}
+          if (square === selectedSquare) {
+            squareClass += ` ${styles.selectedSquare}`;
+          }
+
+          if (legalSet.has(square)) {
+            squareClass += ` ${styles.legalMoveSquare}`;
+          }
+
+          if (
+            lastMove &&
+            (square === lastMove.from || square === lastMove.to)
+          ) {
+            squareClass += ` ${styles.lastMoveSquare}`;
+          }
+
+          if (inCheckSquare && square === inCheckSquare) {
+            squareClass += ` ${styles.inCheckSquare}`;
+          }
+
+          return (
+            <div
+              key={`${rowIndex}-${colIndex}`}
+              className={squareClass}
+              onClick={() => onSquareClick(square)}
+            >
+              {piece && (
+                <img
+                  src={`/pieces/${piece.color}${piece.type}.png`}
+                  alt={piece.type}
+                  className={getPieceClass(piece)}
+                />
+              )}
+            </div>
+          );
+        }),
+      )}
     </div>
   );
 }
