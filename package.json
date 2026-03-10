@@ -2,6 +2,7 @@
   "name": "chess",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "concurrently \"npm:dev:client\" \"npm:dev:server\"",
     "dev:client": "vite",
@@ -15,6 +16,7 @@
     "chess.js": "^1.4.0",
     "fastify": "^4.28.0",
     "fastify-plugin": "^4.5.1",
+    "format": "^0.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

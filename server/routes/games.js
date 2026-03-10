@@ -1,24 +1,26 @@
-const fp = require("fastify-plugin");
-const { createGame, getGame } = require("../gameStore");
+import fp from "fastify-plugin";
+import { createGame, getGame } from "../controllers/gamesController.js";
 
 async function gamesRoutes(fastify) {
-  fastify.post("/api/games", async (request, reply) => {
-    const { whiteId, blackId } = request.body || {};
-    const game = createGame(whiteId ?? 1, blackId ?? 2);
-    return { gameId: game.id };
-  });
+  fastify.post("/games", createGame);
 
-  fastify.get("/api/games/:id", async (request, reply) => {
+  fastify.get("/games/:id", async (request, reply) => {
     const id = Number(request.params.id);
     const game = getGame(id);
+
     if (!game) {
       return reply.code(404).send({ error: "Game not found" });
     }
+
     return {
-      game: { id: game.id, white_id: game.white_id, black_id: game.black_id },
+      game: {
+        id: game.id,
+        white_id: game.white_id,
+        black_id: game.black_id
+      },
       moves: game.moves
     };
   });
 }
 
-module.exports = fp(gamesRoutes);
+export default fp(gamesRoutes);

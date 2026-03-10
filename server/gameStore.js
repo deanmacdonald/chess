@@ -1,28 +1,23 @@
-const games = new Map();
-let nextGameId = 1;
-let nextMoveId = 1;
+// Simple in-memory game store.
+// Each gameId maps to an object containing its move list.
 
-function createGame(whiteId = 1, blackId = 2) {
-  const game = {
-    id: nextGameId++,
-    white_id: whiteId,
-    black_id: blackId,
+const games = {};
+
+export function createNewGame(whiteId, blackId) {
+  const gameId = crypto.randomUUID();
+
+  games[gameId] = {
+    id: gameId,
+    whiteId,
+    blackId,
     moves: []
   };
-  games.set(game.id, game);
-  return game;
+
+  return games[gameId];
 }
 
-function getGame(id) {
-  return games.get(id);
+export function getGame(gameId) {
+  return games[gameId] || null;
 }
 
-function addMove(gameId, move) {
-  const game = games.get(gameId);
-  if (!game) return null;
-  const fullMove = { id: nextMoveId++, ...move };
-  game.moves.push(fullMove);
-  return fullMove;
-}
-
-module.exports = { createGame, getGame, addMove };
+export { games };

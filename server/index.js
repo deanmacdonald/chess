@@ -2,13 +2,16 @@ const path = require("path");
 const fastify = require("fastify")({ logger: true });
 const fastifyStatic = require("@fastify/static");
 const cors = require("@fastify/cors");
+
 const gamesRoutes = require("./routes/games");
 const movesRoutes = require("./routes/moves");
 
 async function build() {
   await fastify.register(cors, { origin: true });
-  await fastify.register(gamesRoutes);
-  await fastify.register(movesRoutes);
+
+  // IMPORTANT: mount routes under /api
+  await fastify.register(gamesRoutes, { prefix: "/api" });
+  await fastify.register(movesRoutes, { prefix: "/api" });
 
   const isProd = process.env.NODE_ENV === "production";
 
