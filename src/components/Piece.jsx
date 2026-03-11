@@ -1,9 +1,9 @@
 // src/components/Piece.jsx
 export default function Piece({ piece, squareSize }) {
-  if (!piece) return null;
+  if (!piece) return null
 
   // piece format: "WP", "BK", etc.
-  const file = piece.toLowerCase(); // wp, bk, etc.
+  const file = piece.toLowerCase() // wp, bk, etc.
 
   return (
     <img
@@ -12,9 +12,9 @@ export default function Piece({ piece, squareSize }) {
       style={{
         width: squareSize,
         height: squareSize,
-        userSelect: "none",
-        pointerEvents: "none"
+        userSelect: 'none',
+        pointerEvents: 'none'
       }}
     />
-  );
+  )
 }

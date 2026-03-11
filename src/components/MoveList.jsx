@@ -1,6 +1,6 @@
 export default function MoveList({ moves }) {
   return (
-    <div style={{ minWidth: "180px" }}>
+    <div style={{ minWidth: '180px' }}>
       <h3>Moves</h3>
       <ul>
         {moves.map((m) => (
@@ -10,5 +10,5 @@ export default function MoveList({ moves }) {
         ))}
       </ul>
     </div>
-  );
+  )
 }

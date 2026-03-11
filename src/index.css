@@ -1,0 +1,22 @@
+/* Base styles for your chess app */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #0a0a0a;
+  color: #fff;
+  font-family: sans-serif;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.chess-container {
+  width: 400px;
+  margin: auto;
+}

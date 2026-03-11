@@ -1,1 +1,16 @@
-{"projectId":"prj_0nccWH542fYDNXsvRXLyByQq2MkC","orgId":"team_YFlWZLhWF9wM017lAcfDhZoo","projectName":"chess-v15"}
+{
+  "projectId": "prj_0nccWH542fYDNXsvRXLyByQq2MkC",
+  "orgId": "team_YFlWZLhWF9wM017lAcfDhZoo",
+  "projectName": "chess-v15",
+  "settings": {
+    "createdAt": 1770930442522,
+    "framework": null,
+    "devCommand": null,
+    "installCommand": "npm install",
+    "buildCommand": "npm run build",
+    "outputDirectory": "dist",
+    "rootDirectory": "frontend",
+    "directoryListing": false,
+    "nodeVersion": "24.x"
+  }
+}

@@ -1,37 +1,25 @@
-const path = require("path");
-const fastify = require("fastify")({ logger: true });
-const fastifyStatic = require("@fastify/static");
-const cors = require("@fastify/cors");
+import Fastify from 'fastify'
+import fenRoute from './routes/fen.js'
+import moveRoute from './routes/move.js'
 
-const gamesRoutes = require("./routes/games");
-const movesRoutes = require("./routes/moves");
+const fastify = Fastify({ logger: true })
 
-async function build() {
-  await fastify.register(cors, { origin: true });
+// Root route — prevents 404 on GET /
+fastify.get('/', async () => {
+  return { status: 'ok', message: 'Chess backend is running' }
+})
 
-  // IMPORTANT: mount routes under /api
-  await fastify.register(gamesRoutes, { prefix: "/api" });
-  await fastify.register(movesRoutes, { prefix: "/api" });
+// Register API routes
+fastify.register(fenRoute)
+fastify.register(moveRoute)
 
-  const isProd = process.env.NODE_ENV === "production";
-
-  if (isProd) {
-    const distPath = path.join(__dirname, "..", "dist");
-
-    await fastify.register(fastifyStatic, {
-      root: distPath
-    });
-
-    fastify.get("/*", async (request, reply) => {
-      return reply.sendFile("index.html");
-    });
-  }
-
-  const port = process.env.PORT || 3000;
-  await fastify.listen({ port, host: "0.0.0.0" });
-}
-
-build().catch((err) => {
-  fastify.log.error(err);
-  process.exit(1);
-});
+// Start server
+fastify
+  .listen({ port: 3000, host: '0.0.0.0' })
+  .then(() => {
+    console.log('Backend running at http://localhost:3000')
+  })
+  .catch((err) => {
+    console.error(err)
+    process.exit(1)
+  })
