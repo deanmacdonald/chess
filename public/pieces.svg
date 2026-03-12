@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="120">
+  <defs>
+    <g id="white-pawn"><circle cx="20" cy="20" r="18" fill="#fff"/></g>
+    <g id="white-rook"><rect x="5" y="5" width="30" height="30" fill="#fff"/></g>
+    <g id="white-knight"><polygon points="5,35 35,35 20,5" fill="#fff"/></g>
+    <g id="white-bishop"><ellipse cx="20" cy="20" rx="15" ry="18" fill="#fff"/></g>
+    <g id="white-queen"><circle cx="20" cy="15" r="10" fill="#fff"/><rect x="10" y="20" width="20" height="15" fill="#fff"/></g>
+    <g id="white-king"><rect x="10" y="10" width="20" height="25" fill="#fff"/></g>
+
+    <g id="black-pawn"><circle cx="20" cy="20" r="18" fill="#000"/></g>
+    <g id="black-rook"><rect x="5" y="5" width="30" height="30" fill="#000"/></g>
+    <g id="black-knight"><polygon points="5,35 35,35 20,5" fill="#000"/></g>
+    <g id="black-bishop"><ellipse cx="20" cy="20" rx="15" ry="18" fill="#000"/></g>
+    <g id="black-queen"><circle cx="20" cy="15" r="10" fill="#000"/><rect x="10" y="20" width="20" height="15" fill="#000"/></g>
+    <g id="black-king"><rect x="10" y="10" width="20" height="25" fill="#000"/></g>
+  </defs>
+
+  <use href="#white-king" x="0" y="0"/>
+  <use href="#white-queen" x="60" y="0"/>
+  <use href="#white-bishop" x="120" y="0"/>
+  <use href="#white-knight" x="180" y="0"/>
+  <use href="#white-rook" x="240" y="0"/>
+  <use href="#white-pawn" x="300" y="0"/>
+
+  <use href="#black-king" x="0" y="60"/>
+  <use href="#black-queen" x="60" y="60"/>
+  <use href="#black-bishop" x="120" y="60"/>
+  <use href="#black-knight" x="180" y="60"/>
+  <use href="#black-rook" x="240" y="60"/>
+  <use href="#black-pawn" x="300" y="60"/>
+</svg>

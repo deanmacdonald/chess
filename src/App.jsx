@@ -1,33 +1,69 @@
-import { useEffect, useRef } from 'react'
-import { Chessboard } from 'cm-chessboard'
-import { loadFEN } from './loadFen.js'
-import { sendMove } from './sendMove.js'
+import React, { useState } from 'react'
+import Board from './components/Board'
+import { Chess } from 'chess.js'
 
 export default function App() {
-  const boardRef = useRef(null)
+  const [game] = useState(new Chess())
+  const [selected, setSelected] = useState(null)
+  const [position, setPosition] = useState(() => {
+    const pos = {}
+    game.board().forEach((row, r) => {
+      row.forEach((piece, f) => {
+        if (piece) {
+          const square = 'abcdefgh'[f] + (8 - r)
+          pos[square] = { color: piece.color, type: piece.type }
+        }
+      })
+    })
+    return pos
+  })
 
-  useEffect(() => {
-    const board = new Chessboard(boardRef.current, {
-      position: 'start',
-      sprite: { url: 'pieces.svg' },
-      style: { borderRadius: '4px', aspectRatio: 1 }
+  const updatePosition = () => {
+    const pos = {}
+    game.board().forEach((row, r) => {
+      row.forEach((piece, f) => {
+        if (piece) {
+          const square = 'abcdefgh'[f] + (8 - r)
+          pos[square] = { color: piece.color, type: piece.type }
+        }
+      })
+    })
+    setPosition(pos)
+  }
+
+  const handleSquareClick = (square) => {
+    if (!selected) {
+      setSelected(square)
+      return
+    }
+
+    const move = game.move({
+      from: selected,
+      to: square,
+      promotion: 'q'
     })
 
-    // Load backend FEN on startup
-    loadFEN(board)
+    if (move) {
+      updatePosition()
+    }
 
-    // Handle user moves
-    board.enableMoveInput(async (event) => {
-      if (event.type === 'moveInputFinished') {
-        const ok = await sendMove(event.squareFrom, event.squareTo, board)
-        return ok
-      }
-    })
-  }, [])
+    setSelected(null)
+  }
 
   return (
-    <div style={{ width: '400px', margin: '20px auto' }}>
-      <div ref={boardRef}></div>
+    <div style={{ padding: '40px', color: 'white' }}>
+      <h1 style={{ marginBottom: '20px' }}>React Chessboard</h1>
+
+      <div
+        style={{
+          width: '420px',
+          aspectRatio: '1',
+          border: '4px solid red',
+          margin: '0 auto'
+        }}
+      >
+        <Board position={position} onSquareClick={handleSquareClick} />
+      </div>
     </div>
   )
 }

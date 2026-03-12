@@ -7,9 +7,10 @@
     "node": ">=18"
   },
   "scripts": {
-    "dev": "concurrently \"npm:dev:client\" \"npm:dev:server\"",
-    "dev:client": "vite",
+    "dev": "npm run kill-ports && concurrently \"npm:dev:client\" \"npm:dev:server\"",
+    "dev:client": "vite --port 5174 --strictPort false",
     "dev:server": "nodemon server/index.js",
+    "kill-ports": "bash -c 'kill -9 $(lsof -t -i:5173) 2>/dev/null || true; kill -9 $(lsof -t -i:5174) 2>/dev/null || true; kill -9 $(lsof -t -i:3000) 2>/dev/null || true'",
     "build": "vite build",
     "preview": "vite preview",
     "format": "prettier --write .",

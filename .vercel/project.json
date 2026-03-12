@@ -1,15 +1,15 @@
 {
-  "projectId": "prj_0nccWH542fYDNXsvRXLyByQq2MkC",
+  "projectId": "prj_qF1IFZA7XbkQAhLzkEARGoTlRVu4",
   "orgId": "team_YFlWZLhWF9wM017lAcfDhZoo",
-  "projectName": "chess-v15",
+  "projectName": "chess-x",
   "settings": {
-    "createdAt": 1770930442522,
-    "framework": null,
+    "createdAt": 1773256520188,
+    "framework": "vite",
     "devCommand": null,
-    "installCommand": "npm install",
-    "buildCommand": "npm run build",
-    "outputDirectory": "dist",
-    "rootDirectory": "frontend",
+    "installCommand": null,
+    "buildCommand": null,
+    "outputDirectory": null,
+    "rootDirectory": null,
     "directoryListing": false,
     "nodeVersion": "24.x"
   }

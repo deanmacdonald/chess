@@ -16,30 +16,8 @@
       "use": "@vercel/static-build",
       "config": {
         "zeroConfig": true,
-        "installCommand": "npm install",
-        "buildCommand": "npm run build",
-        "outputDirectory": "dist"
-      },
-      "error": {
-        "name": "Error",
-        "stack": "Error: spawn sh ENOENT\n    at ChildProcess._handle.onexit (node:internal/child_process:285:19)\n    at onErrorNT (node:internal/child_process:483:16)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)",
-        "message": "spawn sh ENOENT",
-        "errno": -2,
-        "code": "ENOENT",
-        "syscall": "spawn sh",
-        "path": "sh",
-        "spawnargs": ["-c", "npm install"]
+        "framework": "vite"
       }
     }
-  ],
-  "error": {
-    "name": "Error",
-    "stack": "Error: spawn sh ENOENT\n    at ChildProcess._handle.onexit (node:internal/child_process:285:19)\n    at onErrorNT (node:internal/child_process:483:16)\n    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)",
-    "message": "spawn sh ENOENT",
-    "errno": -2,
-    "code": "ENOENT",
-    "syscall": "spawn sh",
-    "path": "sh",
-    "spawnargs": ["-c", "npm install"]
-  }
+  ]
 }
