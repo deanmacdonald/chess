@@ -1,37 +1,83 @@
-import React from 'react'
-import './board.css'
+import React, { useState, useMemo, useCallback } from 'react'
+import Square from './Square'
+import Piece from './Piece'
+import { Chess } from 'chess.js'
 
-export default function Board({ position, onSquareClick }) {
-  const board = []
+const Board = React.memo(function Board() {
+  const [game, setGame] = useState(() => new Chess())
+  const [dragging, setDragging] = useState(null)
 
-  const pieceImage = (piece) => {
-    if (!piece) return null
-    const { type, color } = piece
-    return `/classic/${color}${type}.svg`
-  }
+  // Freeze board array so it only recalculates when FEN changes
+  const board = useMemo(() => game.board(), [game.fen()])
 
-  for (let rank = 7; rank >= 0; rank--) {
-    for (let file = 0; file < 8; file++) {
-      const square = 'abcdefgh'[file] + (rank + 1)
-      const piece = position[square]
+  // Handle piece drag start
+  const onDragStart = useCallback((square, piece) => {
+    setDragging({ from: square, piece })
+  }, [])
 
-      board.push(
-        <div
-          key={square}
-          className={`square ${(file + rank) % 2 === 0 ? 'light' : 'dark'}`}
-          onClick={() => onSquareClick(square)}
-        >
-          {piece && (
-            <img
-              src={pieceImage(piece)}
-              alt={`${piece.color}${piece.type}`}
-              className="piece"
-            />
-          )}
-        </div>
-      )
-    }
-  }
+  // Handle piece drop
+  const onDrop = useCallback(
+    (square) => {
+      if (!dragging) return
 
-  return <div className="board">{board}</div>
-}
+      const move = game.move({
+        from: dragging.from,
+        to: square,
+        promotion: 'q'
+      })
+
+      if (move) {
+        setGame(new Chess(game.fen()))
+      }
+
+      setDragging(null)
+    },
+    [dragging, game]
+  )
+
+  // Render 8×8 grid
+  return (
+    <div
+      style={{
+        width: '100vw',
+        maxWidth: 500,
+        aspectRatio: '1 / 1',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(8, 1fr)',
+        gridTemplateRows: 'repeat(8, 1fr)',
+        border: '3px solid #0ff',
+        boxShadow: '0 0 20px #0ff'
+      }}
+    >
+      {board.flat().map((square, idx) => {
+        const row = Math.floor(idx / 8)
+        const col = idx % 8
+        const isDark = (row + col) % 2 === 1
+
+        const piece = square
+          ? `${square.color}${square.type}` // e.g. "wp", "bk"
+          : null
+
+        const file = 'abcdefgh'[col]
+        const rank = 8 - row
+        const squareName = `${file}${rank}`
+
+        return (
+          <div
+            key={squareName}
+            onMouseDown={() => piece && onDragStart(squareName, piece)}
+            onMouseUp={() => onDrop(squareName)}
+            onTouchStart={() => piece && onDragStart(squareName, piece)}
+            onTouchEnd={() => onDrop(squareName)}
+          >
+            <Square isDark={isDark}>
+              <Piece piece={piece} />
+            </Square>
+          </div>
+        )
+      })}
+    </div>
+  )
+})
+
+export default Board

@@ -1,5 +1,9 @@
-/* Base styles for your chess app */
+/* Global reset for predictable sizing */
+* {
+  box-sizing: border-box;
+}
 
+/* Base styles */
 html,
 body {
   margin: 0;
@@ -7,16 +11,32 @@ body {
   background: #0a0a0a;
   color: #fff;
   font-family: sans-serif;
+  height: 100%;
 }
 
+/* Center the app */
 #root {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
+  min-height: 100vh;
 }
 
+/* Responsive container for the board */
 .chess-container {
-  width: 400px;
+  width: min(90vw, 400px);
   margin: auto;
+
+  /* Optional Tron glow */
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+/* Ensure images never overflow */
+.chess-container img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
