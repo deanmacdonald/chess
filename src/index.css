@@ -1,40 +1,59 @@
-/* Global reset for predictable sizing */
+/* ============================
+   GLOBAL RESET
+   ============================ */
 * {
   box-sizing: border-box;
-}
-
-/* Base styles */
-html,
-body {
   margin: 0;
   padding: 0;
-  background: #0a0a0a;
-  color: #fff;
-  font-family: sans-serif;
-  height: 100%;
 }
 
-/* Center the app */
+/* ============================
+   BASE PAGE STYLING
+   ============================ */
+html,
+body {
+  height: 100%;
+  background: #05080d; /* deeper Tron black */
+  color: #e0ffff;
+  font-family: 'Orbitron', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================
+   ROOT CONTAINER
+   Centers everything
+   ============================ */
 #root {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   min-height: 100vh;
+  padding: 20px;
 }
 
-/* Responsive container for the board */
+/* ============================
+   CHESS APP WRAPPER
+   Neon panel frame
+   ============================ */
 .chess-container {
-  width: min(90vw, 400px);
+  width: min(90vw, 500px);
   margin: auto;
+  padding: 16px;
 
-  /* Optional Tron glow */
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  border-radius: 12px;
+
+  /* darker neon panel */
+  background: rgba(0, 40, 50, 0.35);
+  backdrop-filter: blur(4px);
+
+  /* tight neon frame glow */
+  box-shadow:
+    0 0 12px rgba(0, 255, 255, 0.6),
+    0 0 28px rgba(0, 255, 255, 0.35),
+    inset 0 0 10px rgba(0, 255, 255, 0.25);
 }
 
-/* Ensure images never overflow */
+/* Prevent images from overflowing */
 .chess-container img {
   max-width: 100%;
   height: auto;

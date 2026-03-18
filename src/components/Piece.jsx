@@ -32,27 +32,11 @@ const pieceMap = {
   bk: BK
 }
 
-export default function Piece({ piece, size }) {
+export default function Piece({ piece }) {
   if (!piece) return null
-
-  // Auto-scale for mobile screens
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 600
-  const finalSize = size ? size : isMobile ? 32 : 48
 
   const src = pieceMap[piece.toLowerCase()]
   if (!src) return null
 
-  return (
-    <img
-      src={src}
-      alt={piece}
-      width={finalSize}
-      height={finalSize}
-      draggable="false"
-      style={{
-        userSelect: 'none',
-        pointerEvents: 'none'
-      }}
-    />
-  )
+  return <img src={src} alt={piece} className="piece" draggable="false" />
 }

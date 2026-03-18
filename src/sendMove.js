@@ -1,22 +1,34 @@
-export async function sendMove(from, to, board) {
+const BASE_URL = 'http://localhost:3000'
+
+async function post(path, body = {}) {
   try {
-    const res = await fetch('http://localhost:3000/move', {
+    const res = await fetch(`${BASE_URL}${path}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from, to })
+      body: JSON.stringify(body)
     })
 
     const data = await res.json()
 
-    if (data.error) {
-      console.warn('Illegal move:', data.error)
-      return false
+    if (!res.ok || data.error) {
+      return { ok: false, error: data.error || 'Request failed' }
     }
 
-    board.position(data.fen)
-    return true
+    return { ok: true, state: data }
   } catch (err) {
-    console.error('Move failed:', err)
-    return false
+    console.error('Request failed:', err)
+    return { ok: false, error: 'Network error' }
   }
+}
+
+export function sendMove(from, to) {
+  return post('/move', { from, to })
+}
+
+export function undoMove() {
+  return post('/undo')
+}
+
+export function resetGame() {
+  return post('/reset')
 }

@@ -1,19 +1,20 @@
 import Fastify from 'fastify'
 import fenRoute from './routes/fen.js'
 import moveRoute from './routes/move.js'
+import undoRoute from './routes/undo.js'
+import resetRoute from './routes/reset.js'
 
 const fastify = Fastify({ logger: true })
 
-// Root route — prevents 404 on GET /
 fastify.get('/', async () => {
   return { status: 'ok', message: 'Chess backend is running' }
 })
 
-// Register API routes
 fastify.register(fenRoute)
 fastify.register(moveRoute)
+fastify.register(undoRoute)
+fastify.register(resetRoute)
 
-// Start server
 fastify
   .listen({ port: 3000, host: '0.0.0.0' })
   .then(() => {

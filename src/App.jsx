@@ -1,69 +1,57 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { loadFen } from './loadFen'
 import Board from './components/Board'
-import { Chess } from 'chess.js'
 
 export default function App() {
-  const [game] = useState(new Chess())
-  const [selected, setSelected] = useState(null)
-  const [position, setPosition] = useState(() => {
-    const pos = {}
-    game.board().forEach((row, r) => {
-      row.forEach((piece, f) => {
-        if (piece) {
-          const square = 'abcdefgh'[f] + (8 - r)
-          pos[square] = { color: piece.color, type: piece.type }
-        }
-      })
-    })
-    return pos
-  })
+  const [state, setState] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  const updatePosition = () => {
-    const pos = {}
-    game.board().forEach((row, r) => {
-      row.forEach((piece, f) => {
-        if (piece) {
-          const square = 'abcdefgh'[f] + (8 - r)
-          pos[square] = { color: piece.color, type: piece.type }
+  useEffect(() => {
+    let cancelled = false
+
+    async function init() {
+      try {
+        const data = await loadFen()
+        if (!cancelled) {
+          setState(data)
+          setLoading(false)
         }
-      })
-    })
-    setPosition(pos)
+      } catch (err) {
+        console.error(err)
+        if (!cancelled) {
+          setError('Failed to load game')
+          setLoading(false)
+        }
+      }
+    }
+
+    init()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="chess-container">
+        <div className="status-text">Loading game…</div>
+      </div>
+    )
   }
 
-  const handleSquareClick = (square) => {
-    if (!selected) {
-      setSelected(square)
-      return
-    }
-
-    const move = game.move({
-      from: selected,
-      to: square,
-      promotion: 'q'
-    })
-
-    if (move) {
-      updatePosition()
-    }
-
-    setSelected(null)
+  if (error || !state) {
+    return (
+      <div className="chess-container">
+        <div className="status-text error">{error || 'No game state'}</div>
+      </div>
+    )
   }
 
   return (
-    <div style={{ padding: '40px', color: 'white' }}>
-      <h1 style={{ marginBottom: '20px' }}>React Chessboard</h1>
-
-      <div
-        style={{
-          width: '420px',
-          aspectRatio: '1',
-          border: '4px solid red',
-          margin: '0 auto'
-        }}
-      >
-        <Board position={position} onSquareClick={handleSquareClick} />
-      </div>
+    <div className="chess-container">
+      <h1 className="chess-title">NEON CHESS</h1>
+      <Board state={state} onStateChange={setState} />
     </div>
   )
 }
