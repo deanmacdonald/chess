@@ -1,0 +1,3 @@
+.piece-animate {
+  transition: transform 0.18s ease-out;
+}

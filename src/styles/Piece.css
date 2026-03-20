@@ -1,0 +1,16 @@
+.piece {
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 8px currentColor)
+    drop-shadow(0 0 12px currentColor);
+}
+
+.piece[src*='/w'] {
+  color: #0ff;
+}
+
+.piece[src*='/b'] {
+  color: #f0f;
+}

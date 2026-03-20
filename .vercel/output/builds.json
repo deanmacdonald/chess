@@ -6,7 +6,7 @@
     "/data/data/com.termux/files/usr/bin/vercel",
     "build"
   ],
-  "cliVersion": "50.29.0",
+  "cliVersion": "50.32.5",
   "builds": [
     {
       "require": "@vercel/static-build",

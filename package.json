@@ -7,10 +7,10 @@
     "node": ">=18"
   },
   "scripts": {
-    "dev": "npm run kill-ports && concurrently \"npm:dev:client\" \"npm:dev:server\"",
+    "dev": "npm run kill-ports && concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:client": "vite --port 5174 --strictPort false",
     "dev:server": "nodemon server/index.js",
-    "kill-ports": "bash -c 'kill -9 $(lsof -t -i:5173) 2>/dev/null || true; kill -9 $(lsof -t -i:5174) 2>/dev/null || true; kill -9 $(lsof -t -i:3000) 2>/dev/null || true'",
+    "kill-ports": "bash -c 'kill -9 $(lsof -t -i:5173) 2>/dev/null || true; kill-9 $(lsof -t -i:5174) 2>/dev/null || true; kill -9 $(lsof -t -i:3000) 2>/dev/null || true'",
     "build": "vite build",
     "preview": "vite preview",
     "format": "prettier --write .",
@@ -19,14 +19,18 @@
   "dependencies": {
     "chess.js": "^1.4.0",
     "cm-chessboard": "^8.4.7",
-    "concurrently": "^8.2.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "fastify": "^4.26.2",
     "fastify-plugin": "^4.5.0",
+    "pino": "^10.3.1",
+    "pino-http": "^11.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^9.2.1",
     "eslint": "^9.0.0",
     "eslint-plugin-react": "^7.34.0",
     "nodemon": "^3.1.0",

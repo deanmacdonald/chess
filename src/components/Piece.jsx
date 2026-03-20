@@ -1,6 +1,6 @@
 import React from 'react'
+import '../styles/Piece.css'
 
-// Import SVGs as file URLs (Vite-native)
 import WP from '../assets/pieces/wp.svg'
 import WR from '../assets/pieces/wr.svg'
 import WN from '../assets/pieces/wn.svg'
@@ -15,7 +15,6 @@ import BB from '../assets/pieces/bb.svg'
 import BQ from '../assets/pieces/bq.svg'
 import BK from '../assets/pieces/bk.svg'
 
-// Map piece codes to SVG file URLs
 const pieceMap = {
   wp: WP,
   wr: WR,
@@ -23,7 +22,6 @@ const pieceMap = {
   wb: WB,
   wq: WQ,
   wk: WK,
-
   bp: BP,
   br: BR,
   bn: BN,
@@ -32,11 +30,24 @@ const pieceMap = {
   bk: BK
 }
 
-export default function Piece({ piece }) {
+export default function Piece({ piece, position }) {
   if (!piece) return null
 
   const src = pieceMap[piece.toLowerCase()]
   if (!src) return null
 
-  return <img src={src} alt={piece} className="piece" draggable="false" />
+  const handleDragStart = (e) => {
+    e.dataTransfer.setData('piece', piece)
+    e.dataTransfer.setData('from', JSON.stringify(position))
+  }
+
+  return (
+    <img
+      src={src}
+      alt={piece}
+      className="piece"
+      draggable="true"
+      onDragStart={handleDragStart}
+    />
+  )
 }

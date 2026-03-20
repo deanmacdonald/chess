@@ -1,0 +1,9 @@
+.neon-cyan {
+  filter: drop-shadow(0 0 4px #0ff) drop-shadow(0 0 8px #0ff)
+    drop-shadow(0 0 12px #0ff);
+}
+
+.neon-magenta {
+  filter: drop-shadow(0 0 4px #f0f) drop-shadow(0 0 8px #f0f)
+    drop-shadow(0 0 12px #f0f);
+}

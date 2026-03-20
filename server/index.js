@@ -1,26 +1,31 @@
-import Fastify from 'fastify'
-import fenRoute from './routes/fen.js'
-import moveRoute from './routes/move.js'
-import undoRoute from './routes/undo.js'
-import resetRoute from './routes/reset.js'
+import express from 'express'
+import cors from 'cors'
+import { Chess } from 'chess.js'
 
-const fastify = Fastify({ logger: true })
+const app = express()
+app.use(cors())
 
-fastify.get('/', async () => {
-  return { status: 'ok', message: 'Chess backend is running' }
+// Create a fresh chess game
+const game = new Chess()
+
+// Disable ALL caching
+app.use((req, res, next) => {
+  res.set(
+    'Cache-Control',
+    'no-store, no-cache, must-revalidate, proxy-revalidate'
+  )
+  res.set('Pragma', 'no-cache')
+  res.set('Expires', '0')
+  next()
 })
 
-fastify.register(fenRoute)
-fastify.register(moveRoute)
-fastify.register(undoRoute)
-fastify.register(resetRoute)
+// FEN endpoint
+app.get('/fen', (req, res) => {
+  res.json({ fen: game.fen() })
+})
 
-fastify
-  .listen({ port: 3000, host: '0.0.0.0' })
-  .then(() => {
-    console.log('Backend running at http://localhost:3000')
-  })
-  .catch((err) => {
-    console.error(err)
-    process.exit(1)
-  })
+// Start server
+const PORT = 3000
+app.listen(PORT, () => {
+  console.log(`Backend running at http://localhost:${PORT}`)
+})

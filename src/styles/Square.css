@@ -1,0 +1,19 @@
+.square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.piece {
+  text-shadow:
+    0 0 8px #0ff,
+    0 0 12px #0ff;
+}
+
+.selected {
+  outline: 3px solid #0ff;
+  box-shadow: 0 0 15px #0ff inset;
+}
