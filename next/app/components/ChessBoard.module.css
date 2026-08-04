@@ -1,0 +1,20 @@
+.boardWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.tronBoard {
+  border: 2px solid cyan;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0,255,255,0.45);
+}
+
+.squareHighlight {
+  background: rgba(0,255,255,0.25);
+}
+
+.pieceGlow {
+  filter: drop-shadow(0 0 8px cyan);
+}

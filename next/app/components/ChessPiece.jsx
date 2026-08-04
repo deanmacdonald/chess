@@ -2,24 +2,11 @@
 
 import React from "react";
 
-export default function ChessPiece({ piece }) {
-  if (!piece) return null;
-
-  // Map letters to Unicode chess symbols
-  const pieceMap = {
-    r: "♜",
-    n: "♞",
-    b: "♝",
-    q: "♛",
-    k: "♚",
-    p: "♟",
-    R: "♖",
-    N: "♘",
-    B: "♗",
-    Q: "♕",
-    K: "♔",
-    P: "♙",
-  };
-
-  return <span className="chess-piece">{pieceMap[piece]}</span>;
+export default function ChessPiece({ piece, square }) {
+  return (
+    <div className="chess-piece">
+      <span className="piece-label">{piece}</span>
+      <span className="square-label">{square}</span>
+    </div>
+  );
 }

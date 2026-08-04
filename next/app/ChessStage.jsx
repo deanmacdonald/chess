@@ -1,22 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { Chess } from "chess.js";
+import React from "react";
 import ChessBoard from "./ChessBoard";
 
-export default function ChessStage() {
-  const [game] = useState(() => new Chess());
-  const [board, setBoard] = useState(game.board());
-
-  function onMove(from, to) {
-    const move = game.move({ from, to });
-
-    if (move) {
-      setBoard(game.board());
-    }
-  }
-
+export default function ChessStage({ game, setGame }) {
   return (
-    <ChessBoard board={board} onMove={onMove} />
+    <section className="stage-wrapper">
+      <div className="stage-title">
+        <h2>Game Stage</h2>
+      </div>
+
+      <div className="stage-board">
+        <ChessBoard game={game} setGame={setGame} />
+      </div>
+    </section>
   );
 }

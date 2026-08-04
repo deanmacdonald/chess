@@ -1,63 +1,39 @@
 "use client";
 
-import { useState } from "react";
+import React, { useCallback } from "react";
+import { Chess } from "chess.js";
+import { Chessboard } from "react-chessboard";
 
-const PIECES = {
-  wK: "♔", wQ: "♕", wR: "♖", wB: "♗", wN: "♘", wP: "♙",
-  bK: "♚", bQ: "♛", bR: "♜", bB: "♝", bN: "♞", bP: "♟",
-};
+export default function ChessBoard({ game, setGame }) {
+  const handleDrop = useCallback(
+    (source, target) => {
+      const next = new Chess(game.fen());
+      const move = next.move({
+        from: source,
+        to: target,
+        promotion: "q"
+      });
 
-export default function ChessBoard({ board, onMove }) {
-  const [dragFrom, setDragFrom] = useState(null);
+      if (!move) return false;
 
-  function handleDown(square) {
-    setDragFrom(square);
-  }
-
-  function handleUp(square) {
-    if (dragFrom && dragFrom !== square) {
-      onMove(dragFrom, square);
-    }
-    setDragFrom(null);
-  }
+      setGame(next);
+      return true;
+    },
+    [game, setGame]
+  );
 
   return (
-    <div style={{ display: "inline-block", border: "2px solid #000" }}>
-      {board.map((row, rIndex) => (
-        <div key={rIndex} style={{ display: "flex" }}>
-          {row.map((cell, cIndex) => {
-            const square =
-              "abcdefgh"[cIndex] + (8 - rIndex);
-
-            const piece = cell ? PIECES[cell.color + cell.type.toUpperCase()] : "";
-
-            return (
-              <div
-                key={square}
-                onMouseDown={() => handleDown(square)}
-                onMouseUp={() => handleUp(square)}
-                onTouchStart={() => handleDown(square)}
-                onTouchEnd={() => handleUp(square)}
-                style={{
-                  width: 45,
-                  height: 45,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor:
-                    (rIndex + cIndex) % 2 === 0 ? "#eee" : "#444",
-                  color:
-                    (rIndex + cIndex) % 2 === 0 ? "#000" : "#fff",
-                  fontSize: 28,
-                  userSelect: "none",
-                }}
-              >
-                {piece}
-              </div>
-            );
-          })}
-        </div>
-      ))}
+    <div className="board-container tron-board">
+      <Chessboard
+        id="main-board"
+        position={game.fen()}
+        onPieceDrop={handleDrop}
+        animationDuration={200}
+        customBoardStyle={{
+          borderRadius: "10px",
+          boxShadow: "0 0 25px rgba(0,255,255,0.45)"
+        }}
+      />
     </div>
   );
 }

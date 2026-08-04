@@ -1,17 +1,55 @@
-/* Optional extra styles — safe to keep minimal or expand later */
-
-body {
+/* Base reset */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-h1,
-h2,
-h3,
-h4 {
-  font-weight: 600;
+/* Global font + dark theme */
+body {
+  background: #0a0f14;
+  color: #e8fefe;
+  font-family: system-ui, sans-serif;
 }
 
-.container {
-  padding: 16px;
+/* Utility classes */
+.flex {
+  display: flex;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* TRON accent */
+.tron-accent {
+  color: cyan;
+  text-shadow: 0 0 10px rgba(0,255,255,0.6);
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: #0f1a22;
+  border: 1px solid cyan;
+  color: cyan;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn:hover {
+  background: #11232d;
+  box-shadow: 0 0 12px rgba(0,255,255,0.4);
+}
+
+/* Layout helpers */
+.page {
+  padding: 30px;
+}
+
+.section {
+  margin-bottom: 20px;
 }
