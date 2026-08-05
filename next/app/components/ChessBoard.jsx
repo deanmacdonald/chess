@@ -1,17 +1,30 @@
 "use client";
 
-export default function ChessBoard({ board }) {
-  if (!board) {
-    return <div>Loading board…</div>;
+import { Chessboard } from "react-chessboard";
+import { useState } from "react";
+import { Chess } from "chess.js";
+
+export default function ChessBoard() {
+  const [game, setGame] = useState(new Chess());
+
+  function onDrop(sourceSquare, targetSquare) {
+    const move = game.move({
+      from: sourceSquare,
+      to: targetSquare,
+      promotion: "q",
+    });
+
+    if (move === null) return false;
+
+    setGame(new Chess(game.fen()));
+    return true;
   }
 
   return (
-    <div className="chessboard">
-      {Object.entries(board).map(([square, piece]) => (
-        <div key={square} className="square">
-          {piece || ""}
-        </div>
-      ))}
-    </div>
+    <Chessboard
+      position={game.fen()}
+      onPieceDrop={onDrop}
+    />
   );
 }
+

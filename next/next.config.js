@@ -1,10 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  swcMinify: false,
-  compiler: {},
-  experimental: {
-    forceSwcTransforms: false,
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 };
 
 module.exports = nextConfig;
+

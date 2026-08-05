@@ -1,26 +1,18 @@
 "use client";
 
-import React, { useCallback } from "react";
-import { Chess } from "chess.js";
 import { Chessboard } from "react-chessboard";
+import { useGameState } from "./context/GameStateProvider";
 
-export default function ChessBoard({ game, setGame }) {
-  const handleDrop = useCallback(
-    (source, target) => {
-      const next = new Chess(game.fen());
-      const move = next.move({
-        from: source,
-        to: target,
-        promotion: "q"
-      });
+export default function ChessBoard() {
+  const { game, makeMove } = useGameState();
 
-      if (!move) return false;
-
-      setGame(next);
-      return true;
-    },
-    [game, setGame]
-  );
+  const handleDrop = (source, target) => {
+    return makeMove({
+      from: source,
+      to: target,
+      promotion: "q",
+    });
+  };
 
   return (
     <div className="board-container tron-board">
@@ -31,7 +23,7 @@ export default function ChessBoard({ game, setGame }) {
         animationDuration={200}
         customBoardStyle={{
           borderRadius: "10px",
-          boxShadow: "0 0 25px rgba(0,255,255,0.45)"
+          boxShadow: "0 0 25px rgba(0,255,255,0.45)",
         }}
       />
     </div>
