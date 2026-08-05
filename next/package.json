@@ -9,11 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "chess.js": "^1.0.0",
+    "@heroicons/react": "^2.2.0",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/typography": "^0.5.20",
+    "chess.js": "^1.4.0",
+    "chessground": "^9.2.1",
+    "chessops": "^0.15.1",
+    "framer-motion": "^13.0.0",
+    "jotai": "^2.20.2",
     "next": "latest",
+    "pgn-parser": "^2.2.1",
     "react": "latest",
     "react-chessboard": "^4.3.7",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "stockfish": "^18.0.8",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.3",
